@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Booking a Table</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <h1>Book a Table</h1>
+  
+  <form action="/booking" method="POST">
+    <label for="customerName">Name:</label>
+    <input type="text" name="customerName" required>
+
+    <label for="date">Date:</label>
+    <input type="date" name="date" value="<%= selectedDate %>" required>
+
+    <label for="time">Time:</label>
+    <input type="time" name="time" required>
+
+    <label for="people">Number of People:</label>
+    <input type="number" name="people" required>
+
+    <button type="submit">Book</button>
+  </form>
+
+  <h2>Occupied Tables for <%= selectedDate %></h2>
+  <ul>
+    <% if (occupiedTables && occupiedTables.length > 0) { %>
+      <% occupiedTables.forEach(function(table) { %>
+        <li>
+          <strong>Time:</strong> <%= table.time %>, 
+          <strong>Customer:</strong> <%= table.customerName %>, 
+          <strong>People:</strong> <%= table.people %>
+        </li>
+      <% }) %>
+    <% } else { %>
+      <p>No reservations for this date.</p>
+    <% } %>
+  </ul>
+</body>
+</html>

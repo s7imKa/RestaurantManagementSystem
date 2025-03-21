@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Restaurant Home</title>
+        <link rel="stylesheet" href="/style.css" />
+    </head>
+    <body>
+        <h1>Welcome to Our Restaurant!</h1>
+        <a href="/booking">Замовити столик</a>
+        <div class="dishes">
+            <% dishes.forEach(dish => { %>
+            <div class="dish-card">
+                <h2><%= dish.name %></h2>
+                <p><%= dish.description %></p>
+                <p>Ingredients: <%= dish.ingredients %></p>
+                <p>Price: <%= dish.price %></p>
+                <a href="/order?dish=<%= dish.name %>">Order Now</a>
+            </div>
+            <% }); %>
+        </div>
+
+        <a href="/admin">Сторінка адміністратора </a>
+    </body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Manage Dishes</title>
+        <link rel="stylesheet" href="/style.css" />
+    </head>
+    <body>
+        <h1>Manage Dishes</h1>
+
+        <h2>Add New Dish</h2>
+        <form
+            action="/admin/addDish"
+            method="POST"
+            enctype="multipart/form-data"
+        >
+            <label for="name">Name:</label>
+            <input type="text" name="name" required /><br /><br />
+
+            <label for="description">Description:</label>
+            <textarea name="description"></textarea><br /><br />
+
+            <label for="ingredients">Ingredients:</label>
+            <input type="text" name="ingredients" /><br /><br />
+
+            <label for="imageUrl">Image:</label>
+            <input type="file" name="imageUrl" /><br /><br />
+
+            <label for="price">Price:</label>
+            <input
+                type="number"
+                name="price"
+                step="0.01"
+                required
+            /><br /><br />
+
+            <label for="available">Available:</label>
+            <input type="checkbox" name="available" /><br /><br />
+
+            <button type="submit">Add Dish</button>
+        </form>
+
+        <h2>Dishes</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Ingredients</th>
+                    <th>Image URL</th>
+                    <th>Price</th>
+                    <th>Available</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% dishes.forEach(dish => { %>
+                <tr>
+                    <td><%= dish.name %></td>
+                    <td><%= dish.description %></td>
+                    <td><%= dish.ingredients %></td>
+                    <td><%= dish.imageUrl %></td>
+                    <td><%= dish.price %></td>
+                    <td><%= dish.available %></td>
+                    <td>
+                        <form
+                            action="/admin/deleteDish/<%= dish.id %>"
+                            method="POST"
+                        >
+                            <button type="submit">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                <% }); %>
+            </tbody>
+        </table>
+
+        <a href="/admin">Back to Admin Dashboard</a>
+    </body>
+</html>
