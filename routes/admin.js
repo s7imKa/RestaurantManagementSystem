@@ -1,6 +1,17 @@
 const express = require("express");
 const router = express.Router();
 const adminController = require("../controllers/adminController");
+const { isAuthenticated } = require("../middleware/isAuthenticated");
+
+router.use(isAuthenticated);
+
+router.use((req, res, next) => {
+    if (req.user && req.user.isAdmin) {
+        next();
+    } else {
+        res.status(403).send("Unauthorized");
+    }
+});
 
 router.get("/", adminController.getAdminDashboard);
 router.get("/orders", adminController.getOrders);

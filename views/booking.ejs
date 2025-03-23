@@ -1,43 +1,94 @@
+Project\P\views\booking.ejs -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Booking a Table</title>
-  <link rel="stylesheet" href="/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking a Table</title>
+    <link rel="stylesheet" href="/style.css">
+    <style>
+        .table-layout {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr); /* 5 столиков в ряд */
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .table-card {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+        }
+        .table-card.occupied {
+            background-color: #f00;
+            color: #fff;
+        }
+        .table-card.selected {
+            background-color: #0f0;
+            color: #fff;
+        }
+    </style>
 </head>
 <body>
-  <h1>Book a Table</h1>
-  
-  <form action="/booking" method="POST">
-    <label for="customerName">Name:</label>
-    <input type="text" name="customerName" required>
+    <h1>Book a Table</h1>
+    
+    <form action="/booking" method="POST">
+        <label for="customerName">Name:</label>
+        <input type="text" name="customerName" required><br><br>
 
-    <label for="date">Date:</label>
-    <input type="date" name="date" value="<%= selectedDate %>" required>
+        <label for="date">Date:</label>
+        <input type="date" name="date" value="<%= selectedDate %>" required><br><br>
 
-    <label for="time">Time:</label>
-    <input type="time" name="time" required>
+        <label for="time">Time:</label>
+        <input type="time" name="time" required><br><br>
 
-    <label for="people">Number of People:</label>
-    <input type="number" name="people" required>
+        <label for="people">Number of People:</label>
+        <input type="number" name="people" required><br><br>
 
-    <button type="submit">Book</button>
-  </form>
+        <div class="table-layout">
+            <% for (let i = 1; i <= 20; i++) { %>
+                <% const isOccupied = occupiedTables.some(table => table.tableNumber === i); %>
+                <div class="table-card <%= isOccupied ? 'occupied' : '' %>" data-table-number="<%= i %>">
+                    Table <%= i %>
+                </div>
+            <% } %>
+        </div>
 
-  <h2>Occupied Tables for <%= selectedDate %></h2>
-  <ul>
-    <% if (occupiedTables && occupiedTables.length > 0) { %>
-      <% occupiedTables.forEach(function(table) { %>
-        <li>
-          <strong>Time:</strong> <%= table.time %>, 
-          <strong>Customer:</strong> <%= table.customerName %>, 
-          <strong>People:</strong> <%= table.people %>
-        </li>
-      <% }) %>
-    <% } else { %>
-      <p>No reservations for this date.</p>
-    <% } %>
-  </ul>
+        <input type="hidden" name="tableNumber" id="selectedTableNumber" required>
+
+        <button type="submit">Book</button>
+    </form>
+
+    <h2>Occupied Tables for <%= selectedDate %></h2>
+    <ul>
+        <% if (occupiedTables && occupiedTables.length > 0) { %>
+            <% occupiedTables.forEach(function(table) { %>
+                <li>
+                    <strong>Table Number:</strong> <%= table.tableNumber %>,
+                    <strong>Time:</strong> <%= table.time %>, 
+                    <strong>Customer:</strong> <%= table.customerName %>, 
+                    <strong>People:</strong> <%= table.people %>
+                </li>
+            <% }) %>
+        <% } else { %>
+            <p>No reservations for this date.</p>
+        <% } %>
+    </ul>
+
+    <a href="/">Back to Home</a>
+
+    <script>
+        const tableCards = document.querySelectorAll('.table-card');
+        const selectedTableNumberInput = document.getElementById('selectedTableNumber');
+
+        tableCards.forEach(card => {
+            card.addEventListener('click', () => {
+                const tableNumber = card.dataset.tableNumber;
+                selectedTableNumberInput.value = tableNumber;
+                tableCards.forEach(c => c.classList.remove('selected'));
+                card.classList.add('selected');
+            });
+        });
+    </script>
 </body>
 </html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <h1>Cart</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Dish Name</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% let total = 0; %>
+            <% cartItems.forEach(item => { %>
+                <tr>
+                    <td><%= item.dishName %></td>
+                    <td><%= item.dishPrice %></td>
+                    <td><%= item.quantity %></td>
+                    <td><%= item.quantity * item.dishPrice %></td>
+                </tr>
+                <% total += item.quantity * item.dishPrice; %>
+            <% }); %>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="3">Total:</td>
+                <td><%= total %></td>
+            </tr>
+        </tfoot>
+    </table>
+    <form action="/order/checkout" method="POST">
+        <label for="customerName">Customer Name:</label>
+        <input type="text" name="customerName" required><br><br>
+
+        <label for="deliveryAddress">Delivery Address:</label>
+        <textarea name="deliveryAddress" required></textarea><br><br>
+
+        <label for="phoneNumber">Phone Number:</label>
+        <input type="text" name="phoneNumber" required><br><br>
+
+        <button type="submit">Checkout</button>
+    </form>
+    <a href="/">Back to Home</a>
+</body>
+</html>

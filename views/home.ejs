@@ -9,6 +9,17 @@
     <body>
         <h1>Welcome to Our Restaurant!</h1>
         <a href="/booking">Замовити столик</a>
+        <% if (req.isAuthenticated()) { %> <% if (req.user.isAdmin) { %>
+        <a href="/admin">Сторінка адміністратора</a>
+        <% } %> <% if (!req.user.isAdmin) { %>
+        <a href="/profile">Profile</a>
+        <a href="/cart">Cart</a>
+        <% } %>
+        <a href="/auth/logout">Вихід</a>
+        <% } else { %>
+        <a href="/auth/login">Вхід</a>
+        <% } %>
+        <!-- Add this line -->
         <div class="dishes">
             <% dishes.forEach(dish => { %>
             <div class="dish-card">
@@ -17,10 +28,21 @@
                 <p>Ingredients: <%= dish.ingredients %></p>
                 <p>Price: <%= dish.price %></p>
                 <a href="/order?dish=<%= dish.name %>">Order Now</a>
+                <form action="/order/addToCart" method="POST">
+                    <input
+                        type="hidden"
+                        name="dishName"
+                        value="<%= dish.name %>"
+                    />
+                    <input
+                        type="hidden"
+                        name="dishPrice"
+                        value="<%= dish.price %>"
+                    />
+                    <button type="submit">Add to Cart</button>
+                </form>
             </div>
             <% }); %>
         </div>
-
-        <a href="/admin">Сторінка адміністратора </a>
     </body>
 </html>

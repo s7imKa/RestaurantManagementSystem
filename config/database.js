@@ -3,7 +3,8 @@ const { Sequelize } = require('sequelize');
 // Налаштування підключення до бази даних MySQL
 const sequelize = new Sequelize('restaurant', 'root', '2005', {
   host: 'localhost',
-  dialect: 'mysql'
+  dialect: 'mysql',
+  logging: false // Add this line
 });
 
 // Перевірка підключення
