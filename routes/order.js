@@ -11,8 +11,20 @@ router.get("/", isAuthenticated, (req, res) => {
 });
 
 router.post("/", isAuthenticated, (req, res) => {
-    const { customerName, dish, deliveryAddress, phoneNumber } = req.body;
+    const {
+        customerName,
+        dish,
+        city,
+        street,
+        houseNumber,
+        apartmentNumber,
+        phoneNumber,
+    } = req.body;
     const userId = req.user.id;
+
+    const deliveryAddress = `${city}, ${street}, ${houseNumber}, ${
+        apartmentNumber || ""
+    }`;
 
     Order.create({
         userId: userId,
@@ -48,16 +60,26 @@ router.post("/addToCart", isAuthenticated, async (req, res) => {
 });
 
 router.post("/checkout", isAuthenticated, async (req, res) => {
-    const { customerName, deliveryAddress, phoneNumber } = req.body;
+    const {
+        customerName,
+        city,
+        street,
+        houseNumber,
+        apartmentNumber,
+        phoneNumber,
+    } = req.body;
     const userId = req.user.id;
 
     try {
         const cartItems = await CartItem.findAll({ where: { userId: userId } });
 
         for (const item of cartItems) {
+            const deliveryAddress = `${city}, ${street}, ${houseNumber}, ${
+                apartmentNumber || ""
+            }`;
             await Order.create({
                 userId: userId,
-                customerName: customerName, // Use customerName from input
+                customerName: customerName,
                 dish: item.dishName,
                 deliveryAddress: deliveryAddress,
                 phoneNumber: phoneNumber,

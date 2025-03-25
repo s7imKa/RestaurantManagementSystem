@@ -10,6 +10,7 @@ const flash = require("connect-flash"); // Add this line
 const User = require("./models/User");
 const Session = require("./models/Session");
 const bcrypt = require("bcryptjs"); // Add this line
+const adminController = require("./controllers/adminController"); // Import the admin controller
 
 // Middleware
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -34,6 +35,7 @@ app.use(passport.session()); // Add this line
 
 app.use((req, res, next) => {
     res.locals.messages = req.flash();
+    res.locals.user = req.user;
     next();
 });
 
@@ -45,13 +47,18 @@ const indexRoutes = require("./routes/index");
 const bookingRoutes = require("./routes/booking");
 const adminRoutes = require("./routes/admin");
 const orderRoutes = require("./routes/order");
-const authRoutes = require("./routes/auth"); // Add this line
+const authRoutes = require("./routes/auth");
+const dishRoutes = require("./routes/admin");
 
 app.use("/", indexRoutes);
 app.use("/booking", bookingRoutes);
 app.use("/admin", adminRoutes);
 app.use("/order", orderRoutes);
-app.use("/auth", authRoutes); // Add this line
+app.use("/auth", authRoutes);
+app.use("/admin", dishRoutes);
+
+// Run the updateOrderStatus function every 5 minutes
+setInterval(adminController.updateOrderStatus, 300000); // 300000 milliseconds = 5 minutes
 
 sequelize.sync().then(() => {
     // Move this line here
@@ -60,7 +67,7 @@ sequelize.sync().then(() => {
 
 // Start server
 app.listen(3000, () => {
-    console.log("Server is running on http://localhost:3000");
+    console.log("Server is running on http://localhost:3000  ✅ ");
 });
 
 async function hashPassword(password) {
@@ -68,5 +75,3 @@ async function hashPassword(password) {
     const hashedPassword = await bcrypt.hash(password, salt);
     console.log(hashedPassword);
 }
-
-

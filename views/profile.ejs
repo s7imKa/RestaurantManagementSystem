@@ -1,53 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile</title>
-    <link rel="stylesheet" href="/style.css">
-</head>
-<body>
-    <h1>Profile</h1>
-    <h2>Orders</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Dish</th>
-                <th>Status</th>
-                <th>Date</th>
-                <th>Time</th> <!-- Add this line -->
-            </tr>
-        </thead>
-        <tbody>
-            <% orders.forEach(order => { %>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Profile</title>
+        <link rel="stylesheet" href="/style.css" />
+    </head>
+    <body>
+        <h1>Profile</h1>
+        <h2>Orders</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Dish</th>
+                    <th>Time</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% orders.forEach(order => { %>
                 <tr>
                     <td><%= order.dish %></td>
-                    <td><%= order.status %></td>
+                    <td><%= order.createdAt.toLocaleTimeString() %></td>
                     <td><%= order.createdAt.toLocaleDateString() %></td>
-                    <td><%= order.createdAt.toLocaleTimeString() %></td> <!-- Add this line -->
+                    <td><%= order.status %></td>
                 </tr>
-            <% }); %>
-        </tbody>
-    </table>
-    <h2>Reservations</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Table Number</th>
-                <th>Date</th>
-                <th>Time</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% reservations.forEach(reservation => { %>
+                <% }); %>
+            </tbody>
+        </table>
+        <h2>Reservations</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Table Number</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Pre-Order</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% reservations.forEach(reservation => { %>
                 <tr>
                     <td><%= reservation.tableNumber %></td>
                     <td><%= reservation.date.toLocaleDateString() %></td>
                     <td><%= reservation.time %></td>
+                    <td><%= reservation.preOrder ? reservation.preOrder : 'No pre-order' %></td>
+                    <td>
+                        <form action="/profile/reservations/cancel/<%= reservation.id %>" method="POST">
+                            <button type="submit">Cancel</button>
+                        </form>
+                    </td>
                 </tr>
-            <% }); %>
-        </tbody>
-    </table>
-    <a href="/">Back to Home</a>
-</body>
+                <% }); %>
+            </tbody>
+        </table>
+        <a href="/">Back to Home</a>
+    </body>
 </html>

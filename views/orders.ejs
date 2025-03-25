@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,6 +8,8 @@
 </head>
 <body>
     <h1>Orders</h1>
+
+    <h2>New Orders</h2>
     <table>
         <thead>
             <tr>
@@ -18,32 +19,67 @@
                 <th>Phone Number</th>
                 <th>Status</th>
                 <th>Date</th>
-                <th>Actions</th>
+                <th>Time</th>
             </tr>
         </thead>
         <tbody>
             <% orders.forEach(order => { %>
-                <tr>
-                    <td><%= order.customerName %></td>
-                    <td><%= order.dish %></td>
-                    <td><%= order.deliveryAddress %></td>
-                    <td><%= order.phoneNumber %></td>
-                    <td>
-                        <form action="/admin/updateOrder/<%= order.id %>" method="POST">
-                            <select name="status">
-                                <option value="Pending" <%= order.status === 'Pending' ? 'selected' : '' %>>Pending</option>
-                                <option value="In Progress" <%= order.status === 'In Progress' ? 'selected' : '' %>>In Progress</option>
-                                <option value="Delivered" <%= order.status === 'Delivered' ? 'selected' : '' %>>Delivered</option>
-                                <option value="Cancelled" <%= order.status === 'Cancelled' ? 'selected' : '' %>>Cancelled</option>
-                            </select>
-                            <button type="submit">Update</button>
-                        </form>
-                    </td>
-                    <td><%= order.createdAt.toLocaleDateString() %></td>
-                </tr>
+                <% if (order.status !== 'Delivered' && order.status !== 'Cancelled') { %>
+                    <tr>
+                        <td>🔔<%= order.customerName %></td>
+                        <td><%= order.dish %></td>
+                        <td><%= order.deliveryAddress %></td>
+                        <td><%= order.phoneNumber %></td>
+                        <td>
+                            <form action="/admin/updateOrder/<%= order.id %>" method="POST">
+                                <select name="status">
+                                    <option value="Pending" <%= order.status === 'Pending' ? 'selected' : '' %>>Pending</option>
+                                    <option value="In Progress" <%= order.status === 'In Progress' ? 'selected' : '' %>>In Progress</option>
+                                    <option value="Delivered" <%= order.status === 'Delivered' ? 'selected' : '' %>>Delivered</option>
+                                    <option value="Cancelled" <%= order.status === 'Cancelled' ? 'selected' : '' %>>Cancelled</option>
+                                </select>
+                                <button type="submit">Update</button>
+                            </form>
+                        </td>
+                        <td><%= order.createdAt.toLocaleDateString() %></td>
+                        <td><%= order.createdAt.toLocaleTimeString() %></td>
+                    </tr>
+                <% } %>
             <% }) %>
         </tbody>
     </table>
+
+    <h2>Completed Orders</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Customer Name</th>
+                <th>Dish</th>
+                <th>Delivery Address</th>
+                <th>Phone Number</th>
+                <th>Status</th>
+                <th>Date</th>
+                <th>Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% orders.forEach(order => { %>
+                <% if (order.status === 'Delivered' || order.status === 'Cancelled') { %>
+                    <tr>
+                        <td><%= order.customerName %></td>
+                        <td><%= order.dish %></td>
+                        <td><%= order.deliveryAddress %></td>
+                        <td><%= order.phoneNumber %></td>
+                        <td><%= order.status %></td>
+                        <td><%= order.createdAt.toLocaleDateString() %></td>
+                        <td><%= order.createdAt.toLocaleTimeString() %></td>
+                        
+                    </tr>
+                <% } %>
+            <% }) %>
+        </tbody>
+    </table>
+
     <a href="/admin">Back to Admin Dashboard</a>
 </body>
 </html>

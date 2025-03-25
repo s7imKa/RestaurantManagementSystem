@@ -1,37 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Reservations</title>
-  <link rel="stylesheet" href="/style.css">
-</head>
-<body>
-  <h1>Reservations</h1>
-  <table>
-    <thead>
-      <tr>
-        <th>Customer Name</th>
-        <th>Date</th>
-        <th>Time</th>
-        <th>People</th>
-        <th>Status</th>
-        <th>Date Created</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% reservations.forEach(reservation => { %>
-        <tr>
-          <td><%= reservation.customerName %></td>
-          <td><%= new Date(reservation.date).toLocaleDateString() %></td>
-          <td><%= reservation.time %></td>
-          <td><%= reservation.people %></td>
-          <td><%= reservation.status %></td>
-          <td><%= reservation.createdAt.toLocaleDateString() %></td>
-        </tr>
-      <% }) %>
-    </tbody>
-  </table>
-  <a href="/admin">Back to Admin Dashboard</a>
-</body>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Reservations</title>
+        <link rel="stylesheet" href="/style.css" />
+    </head>
+    <body>
+        <h1>Reservations</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Customer Name</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>People</th>
+                    <th>Status</th>
+                    <th>Date Created</th>
+                    <th>Pre Order</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% reservations.forEach(reservation => { %>
+                <tr>
+                    <td><%= reservation.customerName %></td>
+                    <td>
+                        <%= new Date(reservation.date).toLocaleDateString() %>
+                    </td>
+                    <td><%= reservation.time %></td>
+                    <td><%= reservation.people %></td>
+                    <td><%= reservation.status %></td>
+                    <td><%= reservation.createdAt.toLocaleDateString() %></td>
+                    <td><%= reservation.preOrder %></td>
+                    <td>
+                        <form
+                            action="/admin/reservations/cancel/<%= reservation.id %>"
+                            method="POST"
+                        >
+                            <button type="submit">Отменить</button>
+                        </form>
+                    </td>
+                </tr>
+                <% }) %>
+            </tbody>
+        </table>
+        <a href="/admin">Back to Admin Dashboard</a>
+    </body>
 </html>

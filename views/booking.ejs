@@ -1,94 +1,264 @@
-Project\P\views\booking.ejs -->
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Booking a Table</title>
-    <link rel="stylesheet" href="/style.css">
-    <style>
-        .table-layout {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr); /* 5 столиков в ряд */
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-        .table-card {
-            border: 1px solid #ccc;
-            padding: 10px;
-            text-align: center;
-            cursor: pointer;
-        }
-        .table-card.occupied {
-            background-color: #f00;
-            color: #fff;
-        }
-        .table-card.selected {
-            background-color: #0f0;
-            color: #fff;
-        }
-    </style>
-</head>
-<body>
-    <h1>Book a Table</h1>
-    
-    <form action="/booking" method="POST">
-        <label for="customerName">Name:</label>
-        <input type="text" name="customerName" required><br><br>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Booking a Table</title>
+        <link rel="stylesheet" href="/style.css" />
+        <style>
+            .table-layout {
+                display: grid;
+                grid-template-columns: repeat(5, 1fr); /* 5 столиков в ряд */
+                gap: 10px;
+                margin-bottom: 20px;
+            }
+            .table-card {
+                width: 100px;
+                height: 100px;
+                border: 1px solid #000;
+                display: inline-block;
+                margin: 10px;
+                text-align: center;
+                line-height: 100px;
+                cursor: pointer;
+                user-select: none;
+            }
+            .table-card.occupied {
+                background-color: red;
+                color: white;
+                cursor: not-allowed;
+            }
+            .table-card.selected {
+                background-color: #0f0;
+                color: #fff;
+            }
+            #togglePreOrder {
+                background-color: #4caf50; /* Green */
+                border: none;
+                color: white;
+                padding: 10px 20px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;
+                cursor: pointer;
+            }
+            #preOrderList {
+                display: none; 
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: flex-start; /* Align items to the start of the line */
+                width: 550px;
+            }
+            .pre-order-container {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: flex-start;
+            }
+            .pre-order-card {
+                border: 1px solid #ccc;
+                padding: 10px;
+                text-align: center;
+                cursor: pointer;
+                width: 100px; /* Adjust as needed */
+                margin: 5px;
+            }
 
-        <label for="date">Date:</label>
-        <input type="date" name="date" value="<%= selectedDate %>" required><br><br>
+            .pre-order-card:hover {
+                background-color: #f0f0f0;
+            }
 
-        <label for="time">Time:</label>
-        <input type="time" name="time" required><br><br>
+            .pre-order-card.selected {
+                background-color: #0f0;
+                color: #fff;
+            }
 
-        <label for="people">Number of People:</label>
-        <input type="number" name="people" required><br><br>
+            .pre-order-label {
+                display: block;
+                margin-top: 5px;
+                user-select: none;
+                pointer-events: none;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Book a Table</h1>
 
-        <div class="table-layout">
-            <% for (let i = 1; i <= 20; i++) { %>
-                <% const isOccupied = occupiedTables.some(table => table.tableNumber === i); %>
-                <div class="table-card <%= isOccupied ? 'occupied' : '' %>" data-table-number="<%= i %>">
+        <form action="/booking" method="POST" id="bookingForm">
+            <label for="customerName">Name:</label>
+            <input
+                type="text"
+                name="customerName"
+                id="customerName"
+                required
+            /><br /><br />
+
+            <label for="date">Date:</label>
+            <input
+                type="date"
+                name="date"
+                id="date"
+                value="<%= selectedDate %>"
+                required
+                min="<%= new Date().toISOString().split('T')[0] %>"
+                onchange="window.location.href='/booking?date=' + this.value;"
+            /><br /><br />
+
+            <label for="time">Time:</label>
+            <input
+                type="time"
+                name="time"
+                id="time"
+                required
+                min="09:00"
+                max="21:00"
+            /><br /><br />
+
+            <label for="people">Number of People:</label>
+            <input
+                type="number"
+                name="people"
+                id="people"
+                required
+                min="1"
+            /><br /><br />
+
+            <label>Pre-Order (Optional):</label><br />
+            <button type="button" id="togglePreOrder">Toggle Pre-Order</button>
+            <div id="preOrderList" style="width: 550px">
+                <div class="pre-order-container">
+                    <% const preOrderItems = ["Water", "Wine", "Sparkling Water", "Flowers", "Candles", "Coffee"]; preOrderItems.forEach(item => { %>
+                    <div class="pre-order-card" data-item="<%= item %>">
+                        <input
+                            type="checkbox"
+                            id="<%= item %>"
+                            class="pre-order-checkbox"
+                            value="<%= item %>"
+                            style="display: none"
+                        />
+                        <label for="<%= item %>" class="pre-order-label">
+                            <%= item %>
+                        </label>
+                    </div>
+                    <% }); %>
+                    <br /><br />
+                </div>
+            </div>
+
+            <!-- Скрытое поле для хранения строки с выбранными предзаказами -->
+            <input type="hidden" name="preOrder" id="preOrderInput" />
+
+            <div class="table-layout">
+                <% for (let i = 1; i <= 20; i++) { %> 
+                    <% const isOccupied = occupiedTables.some(table => table.tableNumber === i); %>
+                <div
+                    class="table-card <%= isOccupied ? 'occupied' : '' %>"
+                    data-table-number="<%= i %>"
+                >
                     Table <%= i %>
                 </div>
-            <% } %>
-        </div>
+                <% } %>
+            </div>
 
-        <input type="hidden" name="tableNumber" id="selectedTableNumber" required>
+            <input
+                type="hidden"
+                name="tableNumber"
+                id="selectedTableNumber"
+                required
+            />
 
-        <button type="submit">Book</button>
-    </form>
+            <button type="submit">Book</button>
+        </form>
 
-    <h2>Occupied Tables for <%= selectedDate %></h2>
-    <ul>
-        <% if (occupiedTables && occupiedTables.length > 0) { %>
-            <% occupiedTables.forEach(function(table) { %>
-                <li>
-                    <strong>Table Number:</strong> <%= table.tableNumber %>,
-                    <strong>Time:</strong> <%= table.time %>, 
-                    <strong>Customer:</strong> <%= table.customerName %>, 
-                    <strong>People:</strong> <%= table.people %>
-                </li>
-            <% }) %>
-        <% } else { %>
+        <h2>Occupied Tables for <%= selectedDate %></h2>
+        <ul>
+            <% if (occupiedTables && occupiedTables.length > 0) { %> <%
+            occupiedTables.forEach(function(table) { %>
+            <li>
+                <strong>Table Number:</strong> <%= table.tableNumber %>,
+                <strong>Time:</strong> <%= table.time %>,
+                <strong>Customer:</strong> <%= table.customerName %>,
+                <strong>People:</strong> <%= table.people %>
+            </li>
+            <% }) %> <% } else { %>
             <p>No reservations for this date.</p>
-        <% } %>
-    </ul>
+            <% } %>
+        </ul>
 
-    <a href="/">Back to Home</a>
 
-    <script>
-        const tableCards = document.querySelectorAll('.table-card');
-        const selectedTableNumberInput = document.getElementById('selectedTableNumber');
+        <a href="/">Back to Home</a>
 
-        tableCards.forEach(card => {
-            card.addEventListener('click', () => {
-                const tableNumber = card.dataset.tableNumber;
-                selectedTableNumberInput.value = tableNumber;
-                tableCards.forEach(c => c.classList.remove('selected'));
-                card.classList.add('selected');
+        <script>
+            const tableCards = document.querySelectorAll(
+                ".table-card:not(.occupied)"
+            );
+            const selectedTableNumberInput = document.getElementById(
+                "selectedTableNumber"
+            );
+
+            tableCards.forEach((card) => {
+                card.addEventListener("click", () => {
+                    const tableNumber = card.dataset.tableNumber;
+                    selectedTableNumberInput.value = tableNumber;
+                    tableCards.forEach((c) => c.classList.remove("selected"));
+                    card.classList.add("selected");
+                });
             });
-        });
-    </script>
-</body>
+
+            const togglePreOrderButton = document.getElementById("togglePreOrder");
+            const preOrderList = document.getElementById("preOrderList");
+
+            // Load the state from localStorage
+            const isPreOrderListVisible = localStorage.getItem("isPreOrderListVisible") === "true";
+            preOrderList.style.display = isPreOrderListVisible
+                ? "block"
+                : "none";
+
+            togglePreOrderButton.addEventListener("click", () => {
+                if (preOrderList.style.display === "none") {
+                    preOrderList.style.display = "block";
+                    // localStorage.setItem("isPreOrderListVisible", "true");
+                } else {
+                    preOrderList.style.display = "none";
+                    // localStorage.setItem("isPreOrderListVisible", "false");
+                }
+            });
+
+            const preOrderCards = document.querySelectorAll(".pre-order-card");
+            const preOrderInput = document.getElementById("preOrderInput");
+            let selectedPreOrders = [];
+
+            preOrderCards.forEach((card) => {
+                card.addEventListener("click", () => {
+                    // Переключаем выбор карточки
+                    card.classList.toggle("selected");
+                    
+                    // Получаем значение
+                    const itemValue = card.dataset.item;
+                    
+                    // Обновляем список выбранных элементов
+                    if (card.classList.contains("selected")) {
+                        // Добавляем в массив, если элемент выбран
+                        if (!selectedPreOrders.includes(itemValue)) {
+                            selectedPreOrders.push(itemValue);
+                        }
+                    } else {
+                        // Удаляем из массива, если выбор снят
+                        selectedPreOrders = selectedPreOrders.filter(item => item !== itemValue);
+                    }
+                    
+                    // Обновляем значение скрытого поля
+                    preOrderInput.value = selectedPreOrders.join(", ");
+                });
+            });
+
+            // Добавляем проверку перед отправкой формы
+            document.getElementById('bookingForm').addEventListener('submit', function(e) {
+                if (!document.getElementById('selectedTableNumber').value) {
+                    e.preventDefault();
+                    alert('Please select a table');
+                }
+            });
+        </script>
+    </body>
 </html>

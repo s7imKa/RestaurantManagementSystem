@@ -19,12 +19,15 @@ exports.getOrders = (req, res) => {
         });
 };
 
-exports.getReservations = (req, res) => {
-    Reservation.findAll()
-        .then((reservations) => {
-            res.render("reservations", { reservations });
-        })
-        .catch((err) => res.status(500).send("Error fetching reservations"));
+exports.getReservations = async (req, res) => {
+    try {
+        const reservations = await Reservation.findAll();
+        console.log(`wjindfeiw${reservations}`);
+        res.render("reservations", { reservations: reservations });
+    } catch (err) {
+        console.error("Error fetching reservations:", err);
+        res.status(500).send("Error fetching reservations");
+    }
 };
 
 exports.getDishes = (req, res) => {
@@ -38,26 +41,29 @@ exports.getDishes = (req, res) => {
         });
 };
 
-exports.addDish = (req, res) => {
-    const { name, description, ingredients, imageUrl, price, available } =
-        req.body;
+exports.addDish = [
+    upload.single("imageUrl"),
+    (req, res) => {
+        const { name, description, ingredients, price, available } = req.body;
+        const imageUrl = req.file ? req.file.path : null;
 
-    Dish.create({
-        name: name,
-        description: description,
-        ingredients: ingredients,
-        imageUrl: imageUrl,
-        price: price,
-        available: available === "on" ? true : false,
-    })
-        .then(() => {
-            res.redirect("/admin/dishes");
+        Dish.create({
+            name: name,
+            description: description,
+            ingredients: ingredients,
+            imageUrl: imageUrl,
+            price: price,
+            available: available === "on" ? true : false,
         })
-        .catch((err) => {
-            console.error("Error adding dish:", err);
-            res.status(500).send("Error adding dish");
-        });
-};
+            .then(() => {
+                res.redirect("/admin/dishes");
+            })
+            .catch((err) => {
+                console.error("Error adding dish:", err);
+                res.status(500).send("Error adding dish");
+            });
+    },
+];
 
 exports.deleteDish = (req, res) => {
     const dishId = req.params.id;
@@ -76,23 +82,37 @@ exports.deleteDish = (req, res) => {
         });
 };
 
-exports.updateOrder = (req, res) => {
-    const orderId = req.params.id;
-    const { status } = req.body;
-
-    Order.update(
-        { status: status },
-        {
-            where: {
-                id: orderId,
-            },
-        }
-    )
-        .then(() => {
-            res.redirect("/admin/orders");
-        })
-        .catch((err) => {
-            console.error("Error updating order:", err);
-            res.status(500).send("Error updating order");
+exports.updateOrderStatus = async () => {
+    try {
+        const ordersToUpdate = await Order.findAll({
+            where: { status: "Pending" },
         });
+        for (const order of ordersToUpdate) {
+            const createdAt = new Date(order.createdAt);
+            const now = new Date();
+            const diff = now.getTime() - createdAt.getTime();
+            const minutes = Math.floor(diff / 60000);
+
+            if (minutes >= 5) {
+                order.status = "Processing";
+                await order.save();
+                console.log(`Order status updated for order ID: ${order.id}`);
+            }
+        }
+    } catch (error) {
+        console.error("Error updating order status:", error);
+    }
+};
+
+exports.getOrders = async (req, res) => {
+    try {
+        await exports.updateOrderStatus(); // Call the function from the controller
+        const orders = await Order.findAll({
+            order: [["createdAt", "DESC"]], // Sort by createdAt in descending order
+        });
+        res.render("orders", { orders: orders });
+    } catch (err) {
+        console.error("Error fetching orders:", err);
+        res.status(500).send("Error fetching orders");
+    }
 };

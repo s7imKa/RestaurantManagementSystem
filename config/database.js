@@ -9,7 +9,7 @@ const sequelize = new Sequelize('restaurant', 'root', '2005', {
 
 // Перевірка підключення
 sequelize.authenticate()
-  .then(() => console.log('Connected to MySQL'))
+  .then(() => console.log('Connected to MySQL  ✅'))
   .catch(err => console.log('Error connecting to MySQL:', err));
 
 module.exports = sequelize;

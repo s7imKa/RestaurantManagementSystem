@@ -11,7 +11,6 @@ const Reservation = sequelize.define(
             autoIncrement: true,
         },
         userId: {
-            // Add this line
             type: DataTypes.INTEGER,
             allowNull: false,
         },
@@ -24,7 +23,7 @@ const Reservation = sequelize.define(
             allowNull: false,
         },
         date: {
-            type: DataTypes.DATEONLY,
+            type: DataTypes.DATE,
             allowNull: false,
         },
         time: {
@@ -37,7 +36,12 @@ const Reservation = sequelize.define(
         },
         status: {
             type: DataTypes.STRING,
-            defaultValue: "pending",
+            allowNull: false,
+            defaultValue: "Pending",
+        },
+        preOrder: {
+            type: DataTypes.TEXT,
+            allowNull: true,
         },
     },
     {

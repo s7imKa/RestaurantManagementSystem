@@ -23,19 +23,19 @@ exports.getBookingForm = (req, res) => {
 };
 
 exports.reserveTable = (req, res) => {
-  const { customerName, date, time, people } = req.body;
+  const { customerName, date, time, people, tableNumber, preOrder } = req.body;
   
   // Перевірка, чи вже є бронювання на цей час і дату
   Reservation.findOne({
-    where: { date, time }
-  })
+    where: { date, time, tableNumber }
+})
   .then((existingReservation) => {
     if (existingReservation) {
       return res.status(400).send('This time slot is already booked.');
     }
 
     // Створення нового резервування
-    Reservation.create({ customerName, date, time, people })
+    Reservation.create({ customerName, date, time, people, tableNumber, preOrder })
       .then(() => res.redirect('/'))
       .catch((err) => res.status(500).send('Error saving reservation'));
   })
