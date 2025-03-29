@@ -7,13 +7,11 @@ const upload = multer({ dest: "public/images/" }); // Destination folder for upl
 const session = require("express-session"); // Add this line
 const passport = require("./passport"); // Add this line
 const flash = require("connect-flash"); // Add this line
-const User = require("./models/User");
-const Session = require("./models/Session");
 const bcrypt = require("bcryptjs"); // Add this line
 const adminController = require("./controllers/adminController"); // Import the admin controller
 
 // Middleware
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.set("view engine", "ejs");
 
@@ -60,10 +58,13 @@ app.use("/admin", dishRoutes);
 // Run the updateOrderStatus function every 5 minutes
 setInterval(adminController.updateOrderStatus, 300000); // 300000 milliseconds = 5 minutes
 
-sequelize.sync().then(() => {
-    // Move this line here
-    console.log("Database & tables created!");
-});
+sequelize.sync() // Використовуйте { alter: true }, щоб синхронізувати модель з таблицею
+    .then(() => {
+        console.log("Database synchronized");
+    })
+    .catch(err => {
+        console.error("Error synchronizing database:", err);
+    });
 
 // Start server
 app.listen(3000, () => {

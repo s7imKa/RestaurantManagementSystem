@@ -1,60 +1,225 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Cart</title>
-        <link rel="stylesheet" href="/style.css" />
-    </head>
-    <body>
-        <h1>Cart</h1>
-        <table>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart</title>
+    <link rel="stylesheet" href="/style.css">
+    <style>
+        .cart-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        .cart-table th, .cart-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        .cart-table th {
+            background-color: #f2f2f2;
+        }
+        .checkout-form {
+            max-width: 600px;
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .payment-method {
+            margin: 20px 0;
+        }
+        #card-details {
+            margin-top: 15px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <a href="/">Back to Home</a>
+
+    <h1>Shopping Cart</h1>
+
+    <% if (cartItems && cartItems.length > 0) { %>
+        <table class="cart-table">
             <thead>
                 <tr>
-                    <th>Dish Name</th>
+                    <th>Dish</th>
                     <th>Price</th>
                     <th>Quantity</th>
                     <th>Total</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
-                <% let total = 0; %> <% cartItems.forEach(item => { %>
+                <% let total = 0; %>
+                <% cartItems.forEach(item => { %>
                 <tr>
                     <td><%= item.dishName %></td>
-                    <td><%= item.dishPrice %></td>
+                    <td><%= item.dishPrice %>$</td>
                     <td><%= item.quantity %></td>
-                    <td><%= item.quantity * item.dishPrice %></td>
+                    <td><%= item.quantity * item.dishPrice %>$</td>
+                    <td>
+                        <form action="/order/cart/<%= item.id %>/remove" method="POST">
+                            <button type="submit">Remove</button>
+                        </form>
+                    </td>
                 </tr>
                 <% total += item.quantity * item.dishPrice; %> <% }); %>
             </tbody>
             <tfoot>
                 <tr>
-                    <td colspan="3">Total:</td>
-                    <td><%= total %></td>
+                    <tr>
+                        <td colspan="3">Total:</td>
+                        <td><%= total %>$</td>
+                    </tr>
                 </tr>
             </tfoot>
         </table>
-        <form action="/order/checkout" method="POST">
-            <label for="customerName">Customer Name:</label>
-            <input type="text" name="customerName" required /><br /><br />
 
-            <label for="city">City:</label>
-            <input type="text" name="city" required /><br /><br />
+        <div class="checkout-form">
+            <h2>Checkout</h2>
+            <form action="/order/checkout" method="POST" id="checkoutForm">
+                <div class="form-group">
+                    <label for="customerName">Customer Name:</label>
+                    <input type="text" name="customerName" id="customerName" required>
+                </div>
 
-            <label for="street">Street:</label>
-            <input type="text" name="street" required /><br /><br />
+                <div class="form-group">
+                    <label for="city">City:</label>
+                    <input type="text" name="city" id="city" required>
+                </div>
 
-            <label for="houseNumber">House Number:</label>
-            <input type="text" name="houseNumber" required /><br /><br />
+                <div class="form-group">
+                    <label for="street">Street:</label>
+                    <input type="text" name="street" id="street" required>
+                </div>
 
-            <label for="apartmentNumber">Apartment Number:</label>
-            <input type="text" name="apartmentNumber" /><br /><br />
+                <div class="form-group">
+                    <label for="houseNumber">House Number:</label>
+                    <input type="text" name="houseNumber" id="houseNumber" required>
+                </div>
 
-            <label for="phoneNumber">Phone Number:</label>
-            <input type="text" name="phoneNumber" required /><br /><br />
+                <div class="form-group">
+                    <label for="apartmentNumber">Apartment Number:</label>
+                    <input type="text" name="apartmentNumber" id="apartmentNumber">
+                </div>
 
-            <button type="submit">Checkout</button>
-        </form>
-        <a href="/">Back to Home</a>
-    </body>
+                <div class="form-group">
+                    <label for="phoneNumber">Phone Number:</label>
+                    <input type="text" name="phoneNumber" id="phoneNumber" required>
+                </div>
+
+                <h2>Способ оплаты</h2>
+                <div class="payment-method">
+                    <div>
+                        <input type="radio" id="cash" name="paymentMethod" value="cash" checked>
+                        <label for="cash">Оплата наличными</label>
+                    </div>
+                    <div>
+                        <input type="radio" id="card" name="paymentMethod" value="card">
+                        <label for="card">Оплата картой</label>
+                    </div>
+                </div>
+
+                <div id="card-details" style="display: none;">
+                    <h3>Данные карты</h3>
+                    <div class="form-group">
+                        <label for="cardNumber">Номер карты:</label>
+                        <input type="text" id="cardNumber" name="cardNumber" placeholder="XXXX XXXX XXXX XXXX">
+                    </div>
+                    <div class="form-group">
+                        <label for="cardExpiry">Срок действия:</label>
+                        <input type="text" id="cardExpiry" name="cardExpiry" placeholder="MM/YY">
+                    </div>
+                    <div class="form-group">
+                        <label for="cardCvv">CVV:</label>
+                        <input type="text" id="cardCvv" name="cardCvv" placeholder="XXX">
+                    </div>
+                </div>
+
+                <button type="submit">Place Order</button>
+            </form>
+        </div>
+    <% } else { %>
+        <p>Your cart is empty.</p>
+    <% } %>
+
+
+    <script>
+        // Показывать/скрывать детали карты в зависимости от выбранного способа оплаты
+        document.querySelectorAll('input[name="paymentMethod"]').forEach(input => {
+            input.addEventListener('change', function() {
+                document.getElementById('card-details').style.display = 
+                    this.value === 'card' ? 'block' : 'none';
+            });
+        });
+        
+        // Валидация данных карты при отправке формы
+        document.getElementById('checkoutForm').addEventListener('submit', function(e) {
+            const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+            
+            if (paymentMethod === 'card') {
+                const cardNumber = document.getElementById('cardNumber').value.replace(/\s/g, '');
+                const cardExpiry = document.getElementById('cardExpiry').value;
+                const cardCvv = document.getElementById('cardCvv').value;
+                
+                if (!cardNumber || !cardExpiry || !cardCvv) {
+                    e.preventDefault();
+                    alert('Пожалуйста, заполните все данные карты');
+                } else if (cardNumber.length < 13 || cardNumber.length > 19) {
+                    e.preventDefault();
+                    alert('Неверный формат номера карты');
+                } else if (!/^\d{3,4}$/.test(cardCvv)) {
+                    e.preventDefault();
+                    alert('Неверный формат CVV');
+                }
+            }
+        });
+        
+        // Форматирование номера карты (добавление пробелов)
+        document.getElementById('cardNumber').addEventListener('input', function(e) {
+            let value = this.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+            let formattedValue = '';
+            
+            for(let i = 0; i < value.length; i++) {
+                if(i > 0 && i % 4 === 0) {
+                    formattedValue += ' ';
+                }
+                formattedValue += value[i];
+            }
+            
+            this.value = formattedValue;
+        });
+        
+        // Форматирование срока действия
+        document.getElementById('cardExpiry').addEventListener('input', function(e) {
+            let value = this.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+            
+            if (value.length > 2) {
+                this.value = value.substring(0, 2) + '/' + value.substring(2, 4);
+            } else {
+                this.value = value;
+            }
+        });
+    </script>
+</body>
 </html>
+
+
+

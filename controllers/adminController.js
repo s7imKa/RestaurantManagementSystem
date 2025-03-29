@@ -22,7 +22,6 @@ exports.getOrders = (req, res) => {
 exports.getReservations = async (req, res) => {
     try {
         const reservations = await Reservation.findAll();
-        console.log(`wjindfeiw${reservations}`);
         res.render("reservations", { reservations: reservations });
     } catch (err) {
         console.error("Error fetching reservations:", err);
