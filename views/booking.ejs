@@ -115,13 +115,15 @@
             /><br /><br />
 
             <label for="people">Number of People:</label>
-            <input
-                type="number"
-                name="people"
-                id="people"
-                required
-                min="1"
-            /><br /><br />
+            <select name="people" id="people" required>
+                <option value="" disabled selected>Select number of people</option>
+                <option value="1">1 person</option>
+                <option value="2">2 people</option>
+                <option value="3">3 people</option>
+                <option value="4">4 people</option>
+                <option value="5">5 people</option>
+            </select>
+            <br /><br />
 
             <label>Pre-Order (Optional):</label><br />
             <button type="button" id="togglePreOrder">Toggle Pre-Order</button>

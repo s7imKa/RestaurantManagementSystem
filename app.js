@@ -9,6 +9,8 @@ const passport = require("./passport"); // Add this line
 const flash = require("connect-flash"); // Add this line
 const bcrypt = require("bcryptjs"); // Add this line
 const adminController = require("./controllers/adminController"); // Import the admin controller
+const path = require("path"); // Add this line
+const methodOverride = require("method-override"); // Add this line
 
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -32,13 +34,17 @@ app.use(passport.initialize()); // Add this line
 app.use(passport.session()); // Add this line
 
 app.use((req, res, next) => {
+    res.locals.error = req.flash("error");
     res.locals.messages = req.flash();
     res.locals.user = req.user;
     next();
 });
 
+// Додаємо middleware для підтримки методів PUT і DELETE
+app.use(methodOverride("_method")); // Add this line
+
 // Static files
-app.use(express.static("public"));
+app.use(express.static(path.join(__dirname, "public"))); // Add this line
 
 // Routes
 const indexRoutes = require("./routes/index");

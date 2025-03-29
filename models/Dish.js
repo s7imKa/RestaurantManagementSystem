@@ -21,6 +21,10 @@ const Dish = sequelize.define("Dish", {
     available: {
         type: DataTypes.BOOLEAN,
     },
+    category: {
+        type: DataTypes.STRING, // Наприклад: "Супи", "Піца", "Напої", "Алкоголь"
+        allowNull: false,
+    },
 });
 
 module.exports = Dish;

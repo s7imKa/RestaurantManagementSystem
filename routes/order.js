@@ -5,6 +5,31 @@ const { isAuthenticated } = require("../middleware/isAuthenticated");
 const Dish = require("../models/Dish");
 const CartItem = require("../models/CartItem");
 const Inventory = require("../models/Inventory");
+const { Op } = require("sequelize");
+
+async function deleteOldOrders() {
+    try {
+        const threeDaysAgo = new Date();
+        threeDaysAgo.setDate(threeDaysAgo.getDate()); 
+
+        // Видаляємо замовлення, створені більше трьох днів тому
+        const deletedOrders = await Order.destroy({
+            where: {
+                createdAt: {
+                    [Op.lt]: threeDaysAgo, // Менше ніж три дні тому
+                },
+            },
+        });
+
+        console.log(`Deleted ${deletedOrders} old orders.`);
+    } catch (err) {
+        console.error("Error deleting old orders:", err);
+    }
+}
+setInterval(() => {
+    deleteOldOrders();
+}, 24 * 60 * 60 * 1000); // Виконується кожні 24 години
+
 
 router.get("/", isAuthenticated, (req, res) => {
     const dish = req.query.dish;

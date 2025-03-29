@@ -8,17 +8,16 @@
     </head>
     <body>
         <h1>Login</h1>
-        <% if (message && message.length > 0) { %>
-        <p style="color: red"><%= message %></p>
+        <% if (typeof error !== 'undefined' && error) { %>
+        <p style="color: red"><%= error %></p>
         <% } %>
         <form action="/auth/login" method="POST">
             <label for="email">Email:</label>
-            <input type="email" name="email" required /><br /><br />
+            <input type="email" name="email" autocomplete="email" required /><br /><br />
             <label for="password">Password:</label>
-            <input type="password" name="password" required /><br /><br />
+            <input type="password" name="password" autocomplete="current-password" required /><br /><br />
             <button type="submit">Login</button>
         </form>
         <a href="/auth/register">Create an account</a>
-        <!-- Add this line -->
     </body>
 </html>

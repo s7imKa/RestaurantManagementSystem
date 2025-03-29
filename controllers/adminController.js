@@ -1,8 +1,25 @@
 const Order = require("../models/Order");
 const Reservation = require("../models/Reservation");
 const Dish = require("../models/Dish");
+const Inventory = require("../models/Inventory");
 const multer = require("multer");
-const upload = multer({ dest: "public/images/" });
+const path = require("path");
+// Список категорій
+const categories = ["Супи", "Піца", "Напої", "Алкоголь"];
+
+// Налаштування для multer
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, "public/images/"); // Папка для збереження файлів
+    },
+    filename: (req, file, cb) => {
+        const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+        const extension = path.extname(file.originalname); // Отримуємо розширення файлу
+        cb(null, uniqueSuffix + extension); // Генеруємо ім'я файлу з розширенням
+    },
+});
+
+const upload = multer({ storage: storage });
 
 exports.getAdminDashboard = (req, res) => {
     res.render("admin");
@@ -29,38 +46,66 @@ exports.getReservations = async (req, res) => {
     }
 };
 
-exports.getDishes = (req, res) => {
-    Dish.findAll()
-        .then((dishes) => {
-            res.render("dishes", { dishes: dishes });
-        })
-        .catch((err) => {
-            console.error("Error fetching dishes:", err);
-            res.status(500).send("Error fetching dishes");
-        });
+exports.getDishes = async (req, res) => {
+    try {
+        const dishes = await Dish.findAll();
+        res.render("dishes", { dishes, categories });
+    } catch (err) {
+        console.error("Error fetching dishes:", err);
+        res.status(500).send("Error fetching dishes");
+    }
 };
 
 exports.addDish = [
     upload.single("imageUrl"),
-    (req, res) => {
-        const { name, description, ingredients, price, available } = req.body;
-        const imageUrl = req.file ? req.file.path : null;
+    async (req, res) => {
+        const { name, description, ingredients, price, category, available } = req.body;
+        const imageUrl = req.file ? `/images/${req.file.filename}` : null;
 
-        Dish.create({
-            name: name,
-            description: description,
-            ingredients: ingredients,
-            imageUrl: imageUrl,
-            price: price,
-            available: available === "on" ? true : false,
-        })
-            .then(() => {
-                res.redirect("/admin/dishes");
-            })
-            .catch((err) => {
-                console.error("Error adding dish:", err);
-                res.status(500).send("Error adding dish");
+        try {
+            // Додаємо нову страву
+            await Dish.create({
+                name,
+                description,
+                ingredients,
+                imageUrl,
+                price,
+                category,
+                available: available === "on" ? true : false,
             });
+
+
+
+            // Обробляємо інгредієнти
+            const ingredientList = ingredients.split(",").map(item => item.trim());
+
+            for (const ingredient of ingredientList) {
+                const existingProduct = await Inventory.findOne({ where: { name: ingredient } });
+                if (!existingProduct) {
+                    const randomMaxStock = Math.floor(Math.random() * (180 - 100 + 1)) + 100;
+
+                    await Inventory.create({
+                        name: ingredient,
+                        stock: 0,
+                        minStock: 10,
+                        maxStock: randomMaxStock,
+                    });
+                } else {
+                    console.log(`Ingredient "${ingredient}" already exists in Inventory.`);
+                }
+            }
+
+            // Якщо категорія нова, додаємо її до масиву
+            if (!categories.includes(category)) {
+                categories.push(category);
+                console.log(`New category "${category}" added.`);
+            }
+
+            res.redirect("/admin/dishes");
+        } catch (err) {
+            console.error("Error adding dish:", err);
+            res.status(500).send("Error adding dish");
+        }
     },
 ];
 

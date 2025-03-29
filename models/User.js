@@ -3,8 +3,7 @@ const sequelize = require("../config/database");
 const bcrypt = require("bcryptjs");
 const CartItem = require("./CartItem");
 
-const User = sequelize.define(
-    "User",
+const User = sequelize.define( "User",
     {
         username: {
             type: DataTypes.STRING,

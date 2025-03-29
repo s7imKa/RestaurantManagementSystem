@@ -35,6 +35,13 @@
                 required
             /><br /><br />
 
+            <label for="category">Category:</label>
+            <select name="category" required>
+                <% categories.forEach(category => { %>
+                    <option value="<%= category %>"><%= category %></option>
+                <% }); %>
+            </select><br /><br />
+
             <label for="available">Available:</label>
             <input type="checkbox" name="available" /><br /><br />
 

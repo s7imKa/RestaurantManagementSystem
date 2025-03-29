@@ -1,82 +1,85 @@
-<!DOCTYPE html>
+
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Inventory Management</title>
-  <link rel="stylesheet" href="/style.css">
-  <style>
-    .inventory-table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-    .inventory-table th, .inventory-table td {
-      border: 1px solid #ddd;
-      padding: 8px;
-      text-align: left;
-    }
-    .inventory-table th {
-      background-color: #f2f2f2;
-    }
-    .inventory-table td input {
-      width: 60px;
-    }
-  </style>
-</head>
-<body>
-  <h1>Inventory Management</h1>
-  <a href="/admin">Back to Dashboard</a>
-  <form action="/admin/inventory/update" method="POST">
-    <table class="inventory-table">
-      <thead>
-        <tr>
-          <th>Product</th>
-          <th>Min</th>
-          <th>Max</th>
-          <th>Current Stock</th>
-          <th>Restock Amount</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% inventory.forEach(item => { %>
-          <tr class="<%= item.stock < item.minStock ? 'low-stock' : '' %>">
-            <td><%= item.name %></td>
-            <td><%= item.minStock %></td>
-            <td><%= item.maxStock %></td>
-            <td><%= item.stock %></td>
-            
-            <td>
-              <input type="number" name="restock[<%= item.id %>]" min="0" placeholder="Add units">
-            </td>
-            <td>
-              <button type="button" class="fill-to-max" data-id="<%= item.id %>" data-maxstock="<%= item.maxStock %>" data-stock="<%= item.stock %>">
-                Fill to Max
-              </button>
-            </td>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Management</title>
+    <link rel="stylesheet" href="/style.css">
+    <style>
+      .inventory-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      .inventory-table th, .inventory-table td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+      }
+      .inventory-table th {
+        background-color: #f2f2f2;
+      }
+      .inventory-table td input {
+        width: 60px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Inventory Management</h1>
+    <a href="/admin">Back to Dashboard</a>
+    <form action="/admin/inventory/update" method="POST">
+      <table class="inventory-table">
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Min</th>
+            <th>Max</th>
+            <th>Current Stock</th>
+            <th>Stock (%)</th>
+            <th>Restock Amount</th>
+            <th>Actions</th>
           </tr>
-        <% }); %>
-      </tbody>
-    </table>
-    <button type="submit">Update Inventory</button>
-  </form>
-  <style>
-    .low-stock {
-      background-color: #ff9c9c; /* Червоний фон для продуктів з низьким запасом */
-    }
-  </style>
-  <script>
-    document.querySelectorAll('.fill-to-max').forEach(button => {
-      button.addEventListener('click', () => {
-        const id = button.getAttribute('data-id');
-        const maxStock = parseInt(button.getAttribute('data-maxstock'), 10);
-        const currentStock = parseInt(button.getAttribute('data-stock'), 10);
-        const input = document.querySelector(`input[name="restock[${id}]"]`);
-        if (input) {
-          input.value = maxStock - currentStock;
-        }
+        </thead>
+        <tbody>
+          <% inventory.forEach(item => { 
+            const stockPercentage = Math.round((item.stock / item.maxStock) * 100); // Обчислюємо відсоток запасу
+          %>
+            <tr class="<%= item.stock < item.minStock ? 'low-stock' : '' %>"><!DOCTYPE html>
+              <td><%= item.name %></td>
+              <td><%= item.minStock %></td>
+              <td><%= item.maxStock %></td>
+              <td><%= item.stock %></td>
+              <td><%= stockPercentage %>%</td> <!-- Відображаємо відсоток запасу -->
+              <td>
+                <input type="number" name="restock[<%= item.id %>]" min="0" placeholder="Add units">
+              </td>
+              <td>
+                <button type="button" class="fill-to-max" data-id="<%= item.id %>" data-maxstock="<%= item.maxStock %>" data-stock="<%= item.stock %>">
+                  Fill to Max
+                </button>
+              </td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+      <button type="submit">Update Inventory</button>
+    </form>
+    <style>
+      .low-stock {
+        background-color: #ff9c9c; /* Червоний фон для продуктів з низьким запасом */
+      }
+    </style>
+    <script>
+      document.querySelectorAll('.fill-to-max').forEach(button => {
+        button.addEventListener('click', () => {
+          const id = button.getAttribute('data-id');
+          const maxStock = parseInt(button.getAttribute('data-maxstock'), 10);
+          const currentStock = parseInt(button.getAttribute('data-stock'), 10);
+          const input = document.querySelector(`input[name="restock[${id}]"]`);
+          if (input) {
+            input.value = maxStock - currentStock;
+          }
+        });
       });
-    });
-  </script>
-</body>
-</html>
+    </script>
+  </body>
+  </html>
