@@ -1,0 +1,287 @@
+/* Admin Dishes Management Styles - Dark Theme */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Cormorant+Garamond:wght@500;600;700&display=swap');
+
+:root {
+    --primary: #d4a762; /* Gold/amber */
+    --primary-light: #e5c189; /* Lighter gold shade */
+    --secondary: #a34a3b; /* Deep burgundy/wine color */
+    --accent: #f9d9a7; /* Light gold/champagne accent */
+    --light: #f7f9f9;
+    --dark: #1a1814; /* Slightly warmer dark tone */
+    --darker: #0f0d0b; /* Warmer darkest tone */
+    --gray: #2a2522; /* Warmer gray */
+    --light-gray: #3a3532; /* Warmer light gray */
+    --text: #e6e1d9; /* Slightly warmer text color */
+    --text-muted: #a09a94; /* Warmer muted text */
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif;
+}
+
+body {
+    background-color: var(--dark);
+    color: var(--text);
+    line-height: 1.6;
+    padding: 20px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 700;
+    color: var(--primary);
+    letter-spacing: -0.02em;
+    font-size: 2.2rem;
+    margin: 40px auto;
+    text-align: center;
+    position: relative;
+    background-color: rgba(0, 123, 255, 0.15);
+    color: (--primary);
+    border-radius: 20px;
+    width: 60%;
+}
+
+h2::after {
+    content: "";
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 3px;
+    background: var(--secondary);
+}
+
+/* Загальний стиль для форми */
+.dish-form {
+    max-width: 800px;
+    margin: 30px auto;
+    background-color: var(--gray);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--light-gray);
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Відстань між рядками */
+}
+
+/* Рядок форми */
+.form-row {
+    display: flex;
+    gap: 20px; /* Відстань між елементами в рядку */
+}
+
+/* Повна ширина для третього рядка */
+.form-row.full-width {
+    flex-wrap: wrap;
+}
+
+/* Група форми */
+.form-group {
+    flex: 1; /* Рівномірний розподіл ширини */
+    display: flex;
+    flex-direction: column;
+}
+
+/* Інпут, селект і файл */
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid var(--light-gray);
+    border-radius: 8px;
+    font-size: 14px;
+    background-color: var(--dark); /* Темний фон */
+    color: var(--text); /* Світлий текст */
+    transition: var(--transition);
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: var(--text-muted); /* Світлий текст для плейсхолдера */
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary); /* Виділення при фокусі */
+    background-color: var(--darker); /* Трохи темніший фон при фокусі */
+}
+/* Приховуємо стандартний інпут */
+input[type="file"] {
+    display: none;
+}
+
+/* Кастомна кнопка для завантаження файлу */
+.custom-file-button {
+    background-color: var(--secondary);
+    color: var(--light);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: var(--transition);
+    display: inline-block;
+    margin-top: 10px;
+}
+
+.custom-file-button:hover {
+    background-color: var(--secondary);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(163, 74, 59, 0.3);
+}
+
+/* Стиль для відображення імені файлу */
+.file-name {
+    display: block;
+    margin-top: 10px;
+    font-size: 14px;
+    color: var(--text-muted);
+}
+
+button[type="submit"] {
+    background-color: var(--primary);
+    color: var(--dark);
+    border: none;
+    padding: 12px 25px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 15px;
+    transition: var(--transition);
+    display: block;
+    margin: 15px auto 0;
+    box-shadow: 0 5px 15px rgba(212, 167, 98, 0.2);
+}
+
+button[type="submit"]:hover {
+    background-color: var(--secondary);
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(163, 74, 59, 0.3);
+}
+
+/* Table Styles - HEIGHT REDUCED BY HALF */
+table {
+    max-width: 800px;
+    border-collapse: collapse;
+    margin: auto;
+    background-color: var(--gray);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+}
+
+thead {
+    background-color: var(--darker);
+}
+
+th {
+    padding: 10px; /* Reduced by half from 15px */
+    text-align: left;
+    color: var(--primary);
+    font-weight: 600;
+    border-bottom: 3px solid var(--secondary);
+}
+
+td {
+    padding: 10px 20px; /* Reduced by half from 0 20px */
+    border-bottom: 1px solid var(--light-gray);
+    color: var(--text);
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    line-height: 0.8; /* Added to reduce vertical height */
+    height: 20px; /* Added explicit height */
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+tr:hover {
+    background-color: rgba(79, 7, 7, 0.175);
+}
+
+
+ /* Back button - fixed at top center */
+ a[href="/admin"] {
+    position: absolute;
+    top: 20px; /* Відступ від верхнього краю */
+    left: 50%; /* Вирівнювання по центру */
+    transform: translateX(-50%); /* Центрування по горизонталі */
+    z-index: 1000;
+    background: var(--primary);
+    color: var(--dark);
+    border: none;
+    padding: 12px 25px;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    width: auto;
+    max-width: 200px;
+    display: inlin-block;
+}
+
+a[href="/admin"]:hover {
+    background: var(--secondary);
+    color: white;
+    transform: translate(-50%, -3px); /* Легкий підйом при наведенні */
+    box-shadow: 0 8px 20px rgba(163, 74, 59, 0.3);
+}
+
+/* Delete button in table */
+table button {
+    background-color: var(--secondary);
+    color: white;
+    border: none;
+    padding: 4px 7.5px; /* Reduced by half from 8px 15px */
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    transition: var(--transition);
+}
+
+table button:hover {
+    background-color: #8c3a2d;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(163, 74, 59, 0.3);
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+    form {
+        padding: 20px;
+    }
+    
+    table {
+        display: block;
+        overflow-x: auto;
+    }
+    
+    th, td {
+        padding: 5px; /* Reduced by half from 10px */
+    }
+    
+    button[type="submit"] {
+        width: 100%;
+    }
+}

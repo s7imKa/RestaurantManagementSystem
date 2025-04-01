@@ -1,0 +1,470 @@
+/* Profile Page Styles for Restaurant Dark Theme - Покращена версія */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Cormorant+Garamond:wght@500;600;700&display=swap');
+
+:root {
+    --primary: #d4a762; /* Gold/amber */
+    --primary-light: #e5c189; /* Lighter gold shade */
+    --secondary: #a34a3b; /* Deep burgundy/wine color */
+    --accent: #f9d9a7; /* Light gold/champagne accent */
+    --light: #f7f9f9;
+    --dark: #1a1814; /* Slightly warmer dark tone */
+    --darker: #0f0d0b; /* Warmer darkest tone */
+    --gray: #2a2522; /* Warmer gray */
+    --light-gray: #3a3532; /* Warmer light gray */
+    --text: #e6e1d9; /* Slightly warmer text color */
+    --text-muted: #a09a94; /* Warmer muted text */
+    --shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    --transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif;
+}
+
+body {
+    background-color: var(--dark);
+    color: var(--text);
+    line-height: 1.6;
+    padding: 0;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* Typography - менш помітний заголовок */
+h1, h2, h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600; /* Трохи легший */
+    color: var(--primary);
+    letter-spacing: -0.01em;
+}
+
+h1 {
+    font-size: 2.2rem; /* Зменшений розмір */
+    text-align: center;
+    padding: 25px 15px; /* Менше відступів */
+    margin-bottom: 15px;
+    position: relative;
+}
+
+h1::after {
+    content: "";
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px; /* Менша лінія */
+    height: 2px; /* Тонша лінія */
+    background: var(--secondary);
+}
+
+h2 {
+    font-size: 1.8rem;
+    margin: 35px 0 25px;
+    text-align: center;
+    position: relative;
+    background-color: rgba(0, 123, 255, 0.15);
+    color: (--primary);
+    border-radius: 20px;
+}
+
+h2::after {
+    content: "";
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 2px;
+    background: var(--secondary);
+}
+
+a {
+    text-decoration: none;
+    color: var(--primary);
+    font-weight: 500; /* Легший */
+    transition: var(--transition);
+    padding: 10px 16px;
+    display: inline-block;
+    margin: 4px;
+    border-radius: 10px; /* Заокругленіші кути */
+    text-align: center;
+}
+
+a:hover {
+    color: var(--accent);
+    background-color: rgba(212, 167, 98, 0.08);
+    transform: translateY(-1px);
+}
+
+/* Profile Container - більш зручний */
+.profile-container {
+    padding: 0 25px 50px;
+    max-width: 1000px; /* Трохи вужчий контейнер */
+    margin: 0 auto;
+}
+
+/* Table Styles - більш симпатичні */
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 25px 0;
+    background-color: var(--gray);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--light-gray);
+}
+
+thead {
+    background-color: var(--darker);
+    color: var(--primary);
+}
+
+th {
+    padding: 14px 16px;
+    text-align: left;
+    font-weight: 600;
+    border-bottom: 1px solid var(--primary-light);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.05rem;
+}
+
+td {
+    padding: 10px 25px;
+    border-bottom: 1px solid var(--light-gray);
+    color: var(--text);
+    font-size: 0.92rem;
+}
+
+tbody tr {
+    transition: var(--transition);
+}
+
+tbody tr:hover {
+    background-color: rgba(58, 53, 50, 0.7); /* Трохи прозоріший при наведенні */
+}
+
+tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Button Styles - більш красиві */
+button {
+    background-color: var(--secondary);
+    color: white;
+    border: none;
+    padding: 8px 18px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: var(--transition);
+    box-shadow: 0 3px 8px rgba(163, 74, 59, 0.15);
+}
+
+button:hover {
+    background-color: var(--primary);
+    color: var(--dark);
+    transform: translateY(-1px);
+    box-shadow: 0 5px 12px rgba(212, 167, 98, 0.25);
+}
+
+/* Status Styling - більш симпатичний */
+.status {
+    padding: 5px 12px;
+    border-radius: 50px;
+    font-size: 0.82rem;
+    font-weight: 500;
+    display: inline-block;
+}
+
+.status-pending {
+    background-color: rgba(255, 193, 7, 0.15);
+    color: #ffc107;
+}
+
+.status-delivered {
+    background-color: rgba(40, 167, 69, 0.15);
+    color: #28a745;
+}
+
+.status-processing {
+    background-color: rgba(0, 123, 255, 0.15);
+    color: #007bff;
+}
+
+.status-cancelled {
+    background-color: rgba(220, 53, 69, 0.15);
+    color: #dc3545;
+}
+
+/* Payment Status */
+.payment-paid {
+    background-color: rgba(40, 167, 69, 0.15);
+    color: #28a745;
+}
+
+.payment-pending {
+    background-color: rgba(255, 193, 7, 0.15);
+    color: #ffc107;
+}
+
+
+/* Back button - fixed at top center */
+a[href="/"] {
+    position: absolute;
+    top: 20px; /* Відступ від верхнього краю */
+    left: 50%; /* Вирівнювання по центру */
+    transform: translateX(-50%); /* Центрування по горизонталі */
+    z-index: 1000;
+    background: var(--primary);
+    color: var(--dark);
+    border: none;
+    padding: 12px 25px;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    width: auto;
+    max-width: 200px;
+    display: inline-block;
+}
+
+a[href="/"]:hover {
+    background: var(--secondary);
+    color: white;
+    transform: translate(-50%, -3px); /* Легкий підйом при наведенні */
+    box-shadow: 0 8px 20px rgba(163, 74, 59, 0.3);
+}
+
+
+/* Empty State - більш симпатичний */
+.empty-state {
+    text-align: center;
+    padding: 35px;
+    background-color: var(--gray);
+    border-radius: 12px;
+    margin: 25px 0;
+    border: 1px dashed rgba(58, 53, 50, 0.7);
+}
+
+.empty-state p {
+    color: var(--text-muted);
+    font-size: 1rem;
+    margin-bottom: 18px;
+}
+
+/* Стилі для відстеження доставки - додайте до вашого profile.css */
+.delivery-timeline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 12px 0;
+    position: relative;
+    width: 100%;
+}
+
+.delivery-timeline::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background-color: var(--light-gray);
+    transform: translateY(-50%);
+    z-index: 1;
+}
+
+.timeline-progress {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+    transform: translateY(-50%);
+    z-index: 2;
+    transition: width 0.5s ease-in-out;
+}
+
+.timeline-step {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: var(--gray);
+    border: 2px solid var(--light-gray);
+    position: relative;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+    margin: 0 20px; /* Додаємо відстань між іконками */
+}
+
+.timeline-step-active {
+    background-color: var(--primary);
+    border-color: var(--primary);
+    box-shadow: 0 0 10px rgba(212, 167, 98, 0.5);
+}
+
+.timeline-step-completed {
+    background-color: var(--secondary);
+    border-color: var(--secondary);
+}
+
+.timeline-step i {
+    color: var(--text);
+    font-size: 12px;
+}
+
+.timeline-step-active i,
+.timeline-step-completed i {
+    color: var(--dark);
+}
+
+.timeline-labels {
+    display: flex;
+    justify-content: space-between;
+    width: calc(100% + 40px); /* Збільшуємо ширину для врахування відстані */
+    margin-top: 8px;
+    margin-left: -20px; /* Вирівнюємо зміщення */
+}
+
+.timeline-label {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    text-align: center;
+    width: 70px;
+    margin-left: -20px;
+}
+
+.timeline-label-active {
+    color: var(--primary);
+    font-weight: 600;
+}
+
+.timeline-label-completed {
+    color: var(--text);
+}
+
+/* Анімація для іконки кур'єра */
+@keyframes moveIcon {
+    0% {
+        transform: translateX(-3px);
+    }
+    50% {
+        transform: translateX(3px);
+    }
+    100% {
+        transform: translateX(-3px);
+    }
+}
+
+.icon-moving {
+    animation: moveIcon 1.5s infinite;
+}
+
+/* Оновлені стилі статусів */
+.status {
+    padding: 5px 12px;
+    border-radius: 50px;
+    font-size: 0.82rem;
+    font-weight: 500;
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+.status-pending {
+    background-color: rgba(255, 193, 7, 0.15);
+    color: #ffc107;
+}
+
+.status-processing {
+    background-color: rgba(0, 123, 255, 0.15);
+    color: #007bff;
+}
+
+.status-cooking {
+    background-color: rgba(255, 102, 0, 0.15);
+    color: #ff6600;
+}
+
+.status-ontheway {
+    background-color: rgba(138, 43, 226, 0.15);
+    color: #8a2be2;
+}
+
+.status-delivered {
+    background-color: rgba(40, 167, 69, 0.15);
+    color: #28a745;
+}
+
+.status-cancelled {
+    background-color: rgba(220, 53, 69, 0.15);
+    color: #dc3545;
+}
+
+/* Адаптивні налаштування */
+@media screen and (max-width: 768px) {
+    .timeline-label {
+        font-size: 0.65rem;
+        width: 60px;
+        margin-left: -15px;
+    }
+    
+    .timeline-step {
+        width: 24px;
+        height: 24px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .timeline-label {
+        font-size: 0.6rem;
+        width: 50px;
+        margin-left: -15px;
+        transform: rotate(-15deg);
+    }
+}
+
+/* Responsive */
+@media screen and (max-width: 900px) {
+    h1 {
+        font-size: 2rem;
+    }
+    
+    h2 {
+        font-size: 1.6rem;
+    }
+    
+    table {
+        display: block;
+        overflow-x: auto;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    h1 {
+        font-size: 1.7rem;
+        padding: 20px 10px;
+    }
+    
+    h2 {
+        font-size: 1.4rem;
+    }
+    
+    th, td {
+        padding: 10px;
+    }
+    
+    .profile-header {
+        padding: 15px 12px;
+    }
+}

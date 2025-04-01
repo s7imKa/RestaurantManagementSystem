@@ -4,11 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Orders</title>
-    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/admin_orders.css">
 </head>
 <body>
-    <h1>Orders</h1>
-
+    <a href="/admin">Back to Admin</a>
+    <br>
+    <br>
+    <br>
     <h2>New Orders</h2>
     <table>
         <thead>
@@ -43,6 +45,9 @@
                         </td>
                         <td><%= order.createdAt.toLocaleDateString() %></td>
                         <td><%= order.createdAt.toLocaleTimeString() %></td>
+                        <td>
+                          
+                        </td>
                     </tr>
                 <% } %>
             <% }) %>
@@ -60,6 +65,7 @@
                 <th>Status</th>
                 <th>Date</th>
                 <th>Time</th>
+                
             </tr>
         </thead>
         <tbody>
@@ -80,6 +86,5 @@
         </tbody>
     </table>
 
-    <a href="/admin">Back to Admin Dashboard</a>
 </body>
 </html>

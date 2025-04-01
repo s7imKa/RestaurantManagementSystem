@@ -130,4 +130,21 @@ router.post("/inventory/update", isAdmin, async (req, res) => {
     }
 });
 
+router.post("/admin/deleteOrder/:id", isAdmin, async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        // Видаляємо замовлення з бази даних
+        await Order.destroy({
+            where: {
+                id: id,
+            },
+        });
+        res.redirect("/admin/orders"); // Повертаємося до сторінки замовлень
+    } catch (err) {
+        console.error("Error deleting order:", err);
+        res.status(500).send("Error deleting order");
+    }
+});
+
 module.exports = router;

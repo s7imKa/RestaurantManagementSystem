@@ -1,0 +1,234 @@
+/* Admin Dashboard Main Page Styles - List Style Dark Theme */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Cormorant+Garamond:wght@500;600;700&family=Playfair+Display:wght@500;600;700&display=swap');
+
+:root {
+    --primary: #d4a762; /* Gold/amber */
+    --primary-light: #e5c189; /* Lighter gold shade */
+    --primary-dark: #b38945; /* Darker gold for hover states */
+    --secondary: #a34a3b; /* Deep burgundy/wine color */
+    --secondary-light: #b85849; /* Lighter burgundy */
+    --accent: #f9d9a7; /* Light gold/champagne accent */
+    --light: #f7f9f9;
+    --dark: #1a1814; /* Slightly warmer dark tone */
+    --darker: #0f0d0b; /* Warmer darkest tone */
+    --gray: #2a2522; /* Warmer gray */
+    --light-gray: #3a3532; /* Warmer light gray */
+    --text: #e6e1d9; /* Slightly warmer text color */
+    --text-muted: #a09a94; /* Warmer muted text */
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    --card-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+    --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    --border-radius: 12px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif;
+}
+
+body {
+    background: linear-gradient(145deg, var(--dark) 0%, var(--darker) 100%);
+    color: var(--text);
+    line-height: 1.6;
+    padding: 30px;
+    max-width: 1000px; /* Narrower for list style */
+    margin: 0 auto;
+    min-height: 100vh;
+    background-attachment: fixed;
+}
+
+/* Typography */
+h1 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    color: var(--primary);
+    font-size: 3rem;
+    text-align: center;
+    padding: 40px 20px 25px;
+    margin-bottom: 50px;
+    position: relative;
+    letter-spacing: -0.02em;
+    text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.3);
+}
+
+h1::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--secondary), var(--primary), var(--secondary), transparent);
+}
+
+/* Admin Links Container as a list */
+.admin-links {
+    display: flex;
+    flex-direction: column;
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 10px;
+    background: rgba(15, 13, 11, 0.4);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+}
+
+/* List style links */
+a {
+    text-decoration: none;
+    color: var(--text);
+    background: linear-gradient(145deg, var(--gray) 0%, var(--darker) 100%);
+    border-left: 3px solid transparent;
+    border-bottom: 1px solid var(--gray);
+    font-weight: 500;
+    transition: var(--transition);
+    padding: 28px 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    box-shadow: none;
+    border-radius: 10px;
+    font-size: 1.05rem;
+    position: relative;
+}
+
+a:last-child {
+    border-bottom: none;
+}
+
+a:first-child {
+    border-top-left-radius: var(--border-radius);
+    border-top-right-radius: var(--border-radius);
+}
+
+a:last-child {
+    border-bottom-left-radius: var(--border-radius);
+    border-bottom-right-radius: var(--border-radius);
+}
+
+a::after {
+    content: "→";
+    font-size: 1.3rem;
+    color: var(--primary);
+    opacity: 0;
+    transition: var(--transition);
+    margin-left: 10px;
+}
+
+a:hover {
+    background: linear-gradient(145deg, var(--gray) 0%, var(--darker) 80%);
+    border-left: 3px solid var(--primary);
+    padding-left: 30px;
+    color: var(--primary);
+    transform: translateX(5px);
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+a:hover::after {
+    opacity: 1;
+}
+
+/* Back button - fixed at top center */
+a[href="/"] {
+    position: absolute;
+    top: 20px; /* Відступ від верхнього краю */
+    left: 50%; /* Вирівнювання по центру */
+    transform: translateX(-50%); /* Центрування по горизонталі */
+    z-index: 1000;
+    background: var(--primary);
+    color: var(--dark);
+    border: none;
+    padding: 12px 25px;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    width: auto;
+    max-width: 200px;
+    display: inline-block;
+}
+
+a[href="/"]:hover {
+    background: var(--secondary);
+    color: white;
+    transform: translate(-50%, -3px); /* Легкий підйом при наведенні */
+    box-shadow: 0 8px 20px rgba(163, 74, 59, 0.3);
+}
+
+a[href="/"]::after {
+    display: none;
+}
+
+/* Add subtle animated gradient background */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 100% 0%, rgba(212, 167, 98, 0.1) 0%, transparent 25%),
+                radial-gradient(circle at 0% 100%, rgba(163, 74, 59, 0.1) 0%, transparent 25%);
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* Add numbers to list items */
+.admin-links a {
+    counter-increment: item;
+}
+
+.admin-links a::before {
+    content: counter(item) ".";
+    margin-right: 15px;
+    color: var(--primary);
+    font-weight: 600;
+    font-size: 1.1rem;
+    min-width: 25px;
+    display: inline-block;
+}
+
+/* Back button doesn't get numbered */
+a[href="/"]::before {
+    display: none;
+    counter-increment: none;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 900px) {
+    h1 {
+        font-size: 2.5rem;
+        padding: 30px 20px 20px;
+    }
+    
+    .admin-links {
+        width: 95%;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    h1 {
+        font-size: 2.2rem;
+        margin-bottom: 30px;
+    }
+    
+    body {
+        padding: 15px;
+    }
+    
+    a {
+        padding: 15px 20px;
+        font-size: 0.95rem;
+    }
+    
+    a:hover {
+        padding-left: 25px;
+    }
+}

@@ -1,0 +1,764 @@
+/* Modern Restaurant Website Dark Theme Styles */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Cormorant+Garamond:wght@500;600;700&display=swap');
+
+:root {
+    --primary: #d4a762; /* Changed to gold/amber */
+    --primary-light: #e5c189; /* Lighter gold shade */
+    --secondary: #a34a3b; /* Changed to deep burgundy/wine color */
+    --accent: #f9d9a7; /* Light gold/champagne accent */
+    --light: #f7f9f9;
+    --dark: #1a1814; /* Slightly warmer dark tone */
+    --darker: #0f0d0b; /* Warmer darkest tone */
+    --gray: #2a2522; /* Warmer gray */
+    --light-gray: #3a3532; /* Warmer light gray */
+    --text: #e6e1d9; /* Slightly warmer text color */
+    --text-muted: #a09a94; /* Warmer muted text */
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif;
+}
+
+body {
+    background-color: var(--dark);
+    color: var(--text);
+    line-height: 1.6;
+    padding: 0;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* Кнопка "Прогорнути вгору" */
+.scroll-to-top {
+    position: fixed;
+    bottom: -60px; /* Початкове положення за межами екрану */
+    right: 20px; /* Відступ від правого краю */
+    z-index: 1000; /* Поверх усього контенту */
+    background-color: var(--primary);
+    color: (--dark);
+    border: none;
+    padding: 10px 15px;
+    border-radius: 40%;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(162, 125, 13, 0.589);
+    opacity: 0; /* Спочатку прихована */
+    visibility: hidden; /* Прихована для взаємодії */
+    transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease, bottom 0.3s ease;
+}
+
+.scroll-to-top.show {
+    bottom: 20px; /* Виповзає знизу */
+    opacity: 1; /* Показуємо кнопку */
+    visibility: visible; /* Робимо її видимою */
+
+}
+
+.scroll-to-top:hover {
+    background-color: var(--secondary);
+    transform: scale(1.1); /* Легке збільшення при наведенні */
+    box-shadow: 0 5px 15px rgba(180, 7, 7, 0.849);
+    color: var(--light);
+
+}
+
+/* Welcome Banner */
+.welcome-banner {
+    background: linear-gradient(135deg, #1a1814, #2a1a10);
+    padding: 40px 20px;
+    text-align: center;
+    margin-bottom: 30px;
+    border-radius: 0 0 20px 20px;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.welcome-banner::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') center/cover;
+    opacity: 0.15;
+    z-index: 1;
+}
+
+.welcome-banner h1 {
+    font-size: 3.5rem;
+    color: var(--accent);
+    position: relative;
+    z-index: 2;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+    margin-bottom: 15px;
+}
+
+.welcome-banner p {
+    font-size: 1.2rem;
+    color: var(--text);
+    position: relative;
+    z-index: 2;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.welcome-banner::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 4px;
+    background: var(--primary);
+    z-index: 2;
+    border-radius: 4px 4px 0 0;
+}
+
+/* Header Styles - REDUCED HEIGHT */
+header {
+    padding: 0; /* Removed padding */
+    background-color: var(--darker);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 1px solid var(--primary-light);
+    transition: transform 0.3s ease, opacity 0.3s ease, background-color 0.3s ease;
+    height: 60px; /* Set fixed smaller height */
+}
+
+/* Hidden header */
+header.hidden {
+    transform: translateY(-100%);
+    opacity: 0;
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: nowrap; /* Changed to nowrap */
+    padding: 0 20px; /* Reduced vertical padding */
+    max-width: 1400px;
+    margin: 0 auto;
+    height: 100%; /* Make container take full height of header */
+}
+
+.logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem; /* Reduced font size */
+    font-weight: 700;
+    color: var(--primary);
+    margin-right: 20px;
+    padding: 0;
+    text-shadow: 0 0 10px rgba(212, 167, 98, 0.3);
+}
+
+nav {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+nav a {
+    color: var(--text);
+    background-color: transparent;
+    border-radius: 8px;
+    transition: var(--transition);
+    padding: 7px 14px; /* Reduced padding */
+    font-size: 14px; /* Reduced font size */
+}
+
+nav a:hover {
+    color: var(--primary);
+    background-color: rgba(212, 167, 98, 0.1);
+    transform: translateY(-2px);
+}
+
+.cart-button {
+    position: absolute; /* Прив'язуємо до хедера */
+    top: 50%; /* Вирівнюємо по вертикалі відносно хедера */
+    right: 20px; /* Відступ від правого краю */
+    transform: translateY(-50%); /* Центруємо по вертикалі */
+    z-index: 1000; /* Поверх іншого контенту */
+    background-color: var(--primary);
+    color: var(--dark);
+    border: none;
+    padding: 12px 25px;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.cart-button:hover {
+    background-color: var(--secondary);
+    color: white;
+    transform: translateY(-50%) scale(1.1); /* Легке збільшення при наведенні */
+    box-shadow: 0 8px 20px rgba(163, 74, 59, 0.3);
+}
+
+/* Typography */
+h1, h2, h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 700;
+    color: var(--primary);
+    letter-spacing: -0.02em;
+}
+
+h1 {
+    font-size: 3rem;
+    text-align: center;
+    padding: 40px 20px;
+    margin-bottom: 10px;
+    position: relative;
+}
+
+h1::after {
+    content: "";
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background: var(--secondary);
+}
+
+h2 {
+    font-size: 2.2rem;
+    margin: 50px 0 30px;
+    text-align: center;
+    position: relative;
+}
+
+h2::after {
+    content: "";
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: var(--primary);
+}
+
+a {
+    text-decoration: none;
+    color: var(--primary);
+    font-weight: 600;
+    transition: var(--transition);
+    padding: 10px 18px;
+    display: inline-block;
+    margin: 5px;
+    border-radius: 8px;
+}
+
+a:hover {
+    color: var(--accent);
+    background-color: rgba(212, 167, 98, 0.1);
+    transform: translateY(-2px);
+}
+
+/* Main navigation */
+.nav-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    background-color: var(--darker);
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+}
+
+.scroll-to-reviews {
+    background-color: var(--secondary);
+    color: white;
+    padding: 7px 14px; /* Reduced padding */
+    margin: 0 auto;
+    display: block;
+    width: fit-content;
+    font-weight: 600;
+    text-align: center;
+    border-radius: 50px;
+    box-shadow: 0 8px 20px rgba(163, 74, 59, 0.2);
+    transition: var(--transition);
+    font-size: 14px; /* Reduced font size */
+}
+
+.scroll-to-reviews:hover {
+    color: var(--dark);
+    background-color: var(--primary);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 25px rgba(212, 167, 98, 0.3);
+}
+
+/* Category buttons */
+.category-buttons {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 30px 0;
+    gap: 12px;
+    padding: 0 20px;
+}
+
+.category-btn {
+    padding: 12px 25px;
+    background-color: var(--gray);
+    color: var(--text);
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 600;
+    transition: var(--transition);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.category-btn:hover {
+    background-color: var(--primary-light);
+    color: var(--dark);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(229, 193, 137, 0.3);
+}
+
+.category-btn.active {
+    background-color: var(--primary);
+    color: var(--dark);
+    box-shadow: 0 6px 15px rgba(212, 167, 98, 0.3);
+}
+
+/* Dishes display */
+.dishes {
+    padding: 0 20px;
+}
+
+.category-section {
+    margin-bottom: 50px;
+    padding: 10px;
+}
+
+.category-section > h2 {
+    margin-bottom: 40px;
+}
+
+.dish-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.dish-card {
+    background-color: var(--gray);
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+    display: flex;
+    flex-direction: column;
+    max-width: 100%;
+    position: relative;
+    margin-bottom: 15px;
+    max-height: 550px;
+    width: 300px;
+    border: 1px solid var(--light-gray);
+}
+
+.dish-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--primary-light);
+}
+
+.dish-card h3 {
+    padding: 15px;
+    font-size: 1.1rem;
+    text-align: center;
+    color: var(--text);
+    background-color: var(--gray);
+    margin: 0;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.dish-image {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    transition: var(--transition);
+    filter: brightness(0.85);
+}
+
+.dish-card:hover .dish-image {
+    transform: scale(1.05);
+    filter: brightness(1);
+}
+
+.dish-card p {
+    padding: 12px 15px;
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--text);
+    line-height: 1.5;
+}
+
+.dish-card p:nth-of-type(2) {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    flex-grow: 1;
+}
+
+.dish-card p:last-of-type {
+    font-weight: 700;
+    color: var(--primary);
+    font-size: 1.1rem;
+    border-top: 1px solid var(--light-gray);
+    padding-top: 15px;
+}
+
+.dish-card form {
+    padding: 15px;
+    margin-top: auto;
+    background-color: var(--gray);
+}
+
+.dish-card button {
+    background-color: var(--primary);
+    color: var(--dark);
+    border: none;
+    padding: 10px 15px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.9rem;
+    width: 100%;
+    transition: var(--transition);
+    box-shadow: 0 4px 10px rgba(212, 167, 98, 0.2);
+}
+
+.dish-card button:hover {
+    background-color: var(--secondary);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 15px rgba(163, 74, 59, 0.3);
+}
+
+/* Reviews section */
+#reviews-section {
+    text-align: center;
+    margin-top: 80px;
+    padding-top: 30px;
+    position: relative;
+}
+
+#reviews-section::before {
+    content: "";
+    font-family: 'Cormorant Garamond', serif;
+    position: absolute;
+    top: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 120px;
+    line-height: 1;
+    color: rgba(212, 167, 98, 0.1);
+}
+
+form {
+    max-width: 650px;
+    margin: 0 auto 60px;
+    background-color: var(--gray);
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--light-gray);
+}
+
+textarea {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid var(--light-gray);
+    border-radius: 12px;
+    font-size: 15px;
+    margin-bottom: 20px;
+    resize: vertical;
+    min-height: 120px;
+    transition: var(--transition);
+    font-family: 'Montserrat', sans-serif;
+    background-color: var(--dark);
+    color: var(--text);
+}
+
+textarea:focus {
+    border-color: var(--primary-light);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(212, 167, 98, 0.2);
+}
+
+form button {
+    background-color: var(--secondary);
+    color: white;
+    border: none;
+    padding: 14px 30px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: var(--transition);
+    display: block;
+    margin: 25px auto 0;
+    box-shadow: 0 8px 20px rgba(163, 74, 59, 0.2);
+}
+
+form button:hover {
+    background-color: var(--primary);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 25px rgba(212, 167, 98, 0.3);
+}
+
+/* Star rating */
+.star-rating {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.star-rating input {
+    display: none;
+}
+
+.star-rating label {
+    font-size: 36px;
+    color: #444;
+    cursor: pointer;
+    margin: 0 5px;
+    transition: color 0.2s ease-in-out;
+}
+
+.star-rating label:hover,
+.star-rating label:hover ~ label,
+.star-rating input:checked ~ label {
+    color: var(--primary); /* Changed to match theme */
+    text-shadow: 0 0 10px rgba(212, 167, 98, 0.3);
+}
+
+/* Reviews carousel */
+.reviews-carousel {
+    position: relative;
+    width: 100%;
+    max-width: 1100px;
+    margin: 50px auto;
+    overflow: hidden;
+    padding: 40px 70px;
+    border-radius: 20px;
+}
+
+.carousel-track-container {
+    overflow: hidden;
+    width: 100%;
+}
+
+.carousel-track {
+    display: flex;
+    transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+    gap: 25px;
+}
+
+.review-card {
+    flex: 0 0 300px;
+    padding: 25px 20px;
+    border-radius: 20px;
+    background-color: var(--gray);
+    text-align: center;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+    margin: 10px;
+    position: relative;
+    border: 1px solid var(--light-gray);
+}
+
+.review-card::before {
+    content: "";
+    position: absolute;
+    top: 10px;
+    left: 15px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 60px;
+    line-height: 1;
+    color: rgba(212, 167, 98, 0.1);
+}
+
+.review-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--primary-light);
+}
+
+.review-card p {
+    margin: 0 0 20px;
+    font-size: 15px;
+    line-height: 1.8;
+    color: var(--text);
+}
+
+.review-card small {
+    display: block;
+    margin-top: 15px;
+    color: var(--text-muted);
+    font-size: 13px;
+    font-style: italic;
+}
+
+.review-rating {
+    display: flex;
+    justify-content: center;
+    margin: 15px 0;
+}
+
+.review-rating .star {
+    font-size: 22px;
+    color: #444;
+    margin: 0 2px;
+}
+
+.review-rating .star.filled {
+    color: var(--primary); /* Changed to match theme */
+    text-shadow: 0 0 5px rgba(212, 167, 98, 0.3);
+}
+
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: var(--gray);
+    color: var(--primary);
+    border: none;
+    font-size: 22px;
+    cursor: pointer;
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    transition: var(--transition);
+    z-index: 10;
+}
+
+.prev-btn {
+    left: 15px;
+}
+
+.next-btn {
+    right: 15px;
+}
+
+.carousel-btn:hover {
+    background-color: var(--primary);
+    color: var(--dark);
+    transform: translateY(-50%) scale(1.1);
+    box-shadow: 0 8px 20px rgba(212, 167, 98, 0.3);
+}
+
+.delete-btn {
+    background-color: var(--secondary);
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 13px;
+    margin-top: 15px;
+    transition: var(--transition);
+    box-shadow: 0 4px 10px rgba(163, 74, 59, 0.2);
+}
+
+.delete-btn:hover {
+    background-color: #8c3a2d; /* Darker variant of secondary */
+    transform: translateY(-2px);
+    box-shadow: 0 8px 15px rgba(163, 74, 59, 0.3);
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 1200px) {
+    .dish-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media screen and (max-width: 900px) {
+    .dish-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    header {
+        height: auto; /* Allow header to expand on mobile */
+    }
+    
+    .nav-container {
+        flex-direction: column;
+        padding: 10px;
+    }
+    
+    nav {
+        margin-top: 10px;
+        justify-content: center;
+    }
+    
+    .welcome-banner h1 {
+        font-size: 2.5rem;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .dish-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    h1 {
+        font-size: 2.2rem;
+        padding: 20px 0;
+    }
+    
+    h2 {
+        font-size: 1.8rem;
+    }
+    
+    .review-card {
+        flex: 0 0 90%;
+    }
+    
+    .carousel-btn {
+        width: 45px;
+        height: 45px;
+        font-size: 18px;
+    }
+    
+    .welcome-banner h1 {
+        font-size: 2rem;
+    }
+    
+    .welcome-banner p {
+        font-size: 1rem;
+    }
+    
+    nav a {
+        margin: 3px;
+        padding: 8px 15px;
+        font-size: 14px;
+    }
+}

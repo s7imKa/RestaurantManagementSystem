@@ -4,206 +4,73 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Restaurant Home</title>
-        <link rel="stylesheet" href="/style.css" />
+        <link rel="stylesheet" href="/home_page.css" />
+        <link rel="stylesheet" href="/dark-theme.css" />
     </head>
-    <style>
-        .reviews {
-        margin-top: 20px;
-        padding: 10px;
-        border-top: 1px solid #ccc;
-    }
-
-    .review-card {
-        flex: 0 0 300px; /* Ширина кожного відгуку */
-        margin: 10px;
-        padding: 10px;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        background-color: #f9f9f9;
-        text-align: center;
-    }
-
-    .review-card p {
-        margin: 0;
-        font-size: 16px;
-    }
-
-    .review-card small {
-        display: block;
-        margin-top: 5px;
-        color: #666;
-        font-size: 12px;
-    }
-    /* Рейтинг із зірочками */
-    .star-rating {
-        display: flex;
-        flex-direction: row-reverse;
-        justify-content: center;
-        margin-bottom: 10px;
-    }
-
-    .star-rating input {
-        display: none; /* Приховуємо радіо-кнопки */
-    }
-
-    .star-rating label {
-        font-size: 30px; /* Розмір зірочок */
-        color: #ccc; /* Колір неактивних зірочок */
-        cursor: pointer;
-        margin: 0 5px;
-    }
-
-    .star-rating label:hover,
-    .star-rating label:hover ~ label,
-    .star-rating input:checked ~ label {
-        color: #f5c518; /* Колір активних зірочок */
-    }
-
-    /* Відображення рейтингу у відгуках */
-    .review-rating {
-        display: flex;
-        margin-top: 5px;
-    }
-
-    .review-rating .star {
-        font-size: 20px;
-        color: #ccc; /* Колір неактивних зірочок */
-        margin-right: 2px;
-    }
-
-    .review-rating .star.filled {
-        color: #f5c518; /* Колір активних зірочок */
-    }
-
-    /* Карусель відгуків */
-    .reviews-carousel {
-        position: relative;
-        width: 100%;
-        max-width: 800px;
-        margin: 20px auto;
-        overflow: hidden;
-    }
-
-    .carousel-track-container {
-        overflow: hidden;
-        width: 100%;
-    }
-
-    .carousel-track {
-        display: flex;
-        transition: transform 0.5s ease-in-out;
-    }
-
-    .carousel-btn {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        background-color: rgba(0, 0, 0, 0.5);
-        color: white;
-        border: none;
-        font-size: 24px;
-        cursor: pointer;
-        padding: 10px;
-        z-index: 10;
-    }
-
-    .prev-btn {
-        left: 10px;
-    }
-
-    .next-btn {
-        right: 10px;
-    }
-
-    .carousel-btn:hover {
-        background-color: rgba(0, 0, 0, 0.8);
-    }
-
-    .delete-btn {
-    background-color: #ff4d4d;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
-}
-
-.delete-btn:hover {
-    background-color: #cc0000;
-}
-
-.category-buttons {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 20px;
-    gap: 10px;
-}
-
-.category-btn {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-}
-
-.category-btn:hover {
-    background-color: #0056b3;
-}
-
-.category-btn.active {
-    background-color: #0056b3;
-}
-    </style>
+    
     <body>
-        <h1>Welcome to Our Restaurant!</h1>
-        <a href="/booking">Замовити столик</a>
-        <% if (req.isAuthenticated()) { %>
-            <% if (req.user.isAdmin) { %>
-                <a href="/admin">Сторінка адміністратора</a>
-            <% } %>
-            <% if (!req.user.isAdmin) { %>
-                <a href="/profile">Profile</a>
-                <a href="/cart">Cart</a>
-            <% } %>
-            <a href="/auth/logout">Вихід</a>
-        <% } else { %>
-            <a href="/auth/login">Вхід</a>
-        <% } %>
+        <button id="scrollToTop" class="scroll-to-top" title="Прогорнути вгору">⬆</button>
+        <!-- Updated smaller header with navigation -->
+        <header>
+            <div class="nav-container">
+                <a href="/" class="logo">Our Restaurant</a>
+                <nav>
+                    <a href="/booking">Замовити столик</a>
+                    <a href="#reviews-section">Відгуки</a>
+                    <a href="#menu-section" class="scroll-to-menu">Меню</a>
+                    <% if (req.isAuthenticated()) { %>
+                        <% if (req.user.isAdmin) { %>
+                            <a href="/admin">Адмін</a>
+                        <% } %>
+                            <a href="/auth/logout">Вихід</a>
+                        <% if (!req.user.isAdmin) { %>
+                            <button onclick="window.location.href='/cart'" class="cart-button">Кошик</button>
+                            <a href="/profile"" class="scroll-to-reviews">Профіль</a>
+                        <% } %>
+                        <% } else { %>
+                            <a href="/auth/login">Вхід</a>
+                        <% } %>
 
-        <!-- Кнопка для переходу до відгуків -->
-        <a href="#reviews-section" class="scroll-to-reviews">Go to Reviews</a>
+                </nav>
+            </div>
+        </header>
+
+         <!-- Rest of the page content remains the same -->
+        <!-- New Welcome Banner -->
+        <div class="welcome-banner">
+            <h1>Ласкаво просимо до нашого ресторану!</h1>
+            <p>Відчуйте неперевершений смак справжньої кухні та атмосферу затишку</p>
+        </div>
 
         <!-- Кнопки для вибору категорій -->
         <div class="category-buttons">
-            <button class="category-btn" data-category="all">All</button>
+            <button class="category-btn active" data-category="all">All</button>
             <% for (const category in categories) { %>
                 <button class="category-btn" data-category="<%= category %>"><%= category %></button>
             <% } %>
         </div>
 
         <!-- Секція страв -->
-        <div class="dishes">
+        <div id="menu-section" class="dishes">
             <% for (const category in categories) { %>
                 <div class="category-section" data-category="<%= category %>">
                     <h2><%= category %></h2>
-                    <% categories[category].forEach(dish => { %>
-                        <div class="dish-card">
-                            <h3><%= dish.name %></h3>
-                            <img src="<%= dish.imageUrl %>" alt="<%= dish.name %>" class="dish-image" />
-                            <p><%= dish.description %></p>
-                            <p>Ingredients: <%= dish.ingredients %></p>
-                            <p>Price: <%= dish.price %></p>
-                            <form action="/order/addToCart" method="POST">
-                                <input type="hidden" name="dishName" value="<%= dish.name %>" />
-                                <input type="hidden" name="dishPrice" value="<%= dish.price %>" />
-                                <button type="submit">Add to Cart</button>
-                            </form>
-                        </div>
-                    <% }); %>
+                    <div class="dish-grid">
+                        <% categories[category].forEach(dish => { %>
+                            <div class="dish-card">
+                                <img src="<%= dish.imageUrl %>" alt="<%= dish.name %>" class="dish-image" />
+                                <h3><%= dish.name %></h3>
+                                <p><%= dish.description %></p>
+                                <p>Ingredients: <%= dish.ingredients %></p>
+                                <p>Price: <%= dish.price %>$</p>
+                                <form action="/order/addToCart" method="POST">
+                                    <input type="hidden" name="dishName" value="<%= dish.name %>" />
+                                    <input type="hidden" name="dishPrice" value="<%= dish.price %>" />
+                                    <button type="submit">Add to Cart</button>
+                                </form>
+                            </div>
+                        <% }); %>
+                    </div>
                 </div>
             <% } %>
         </div>
@@ -218,7 +85,6 @@
                 placeholder="Leave your review here..."
                 required
             ></textarea>
-            <br /><br />
 
             <!-- Рейтинг із зірочками -->
             <div class="star-rating">
@@ -233,50 +99,46 @@
                 <input type="radio" id="star1" name="rating" value="1" />
                 <label for="star1" title="1 star">★</label>
             </div>
-            <br />
 
             <button type="submit">Submit Review</button>
-            </form>
+        </form>
 
-            <div class="reviews-carousel">
-                <div class="carousel-track-container">
-                    <div class="carousel-track">
-                        <% if (reviews && reviews.length > 0) { %>
-                            <% reviews.forEach(review => { %>
-                                <div class="review-card">
-                                    <p><%= review.text %></p>
-                                    <div class="review-rating">
-                                        <% for (let i = 1; i <= 5; i++) { %>
-                                            <span class="star <%= i <= review.rating ? 'filled' : '' %>">★</span>
-                                        <% } %>
-                                    </div>
-                                    <small>Posted on: <%= new Date(review.date).toLocaleString() %></small>
-                                    
-                                    <% if (req.user && req.user.isAdmin) { %>
-                                        <!-- Кнопка видалення -->
-                                        <form action="/reviews/<%= review.id %>?_method=DELETE" method="POST" style="margin-top: 10px;">
-                                            <button type="submit" class="delete-btn">Delete</button>
-                                        </form>
+        <div class="reviews-carousel">
+            <div class="carousel-track-container">
+                <div class="carousel-track">
+                    <% if (reviews && reviews.length > 0) { %>
+                        <% reviews.forEach(review => { %>
+                            <div class="review-card">
+                                <p><%= review.text %></p>
+                                <div class="review-rating">
+                                    <% for (let i = 1; i <= 5; i++) { %>
+                                        <span class="star <%= i <= review.rating ? 'filled' : '' %>">★</span>
                                     <% } %>
                                 </div>
-                            <% }); %>
-                        <% } else { %>
-                        <% } %>
-                    </div>
+                                <small>Posted on: <%= new Date(review.date).toLocaleString() %></small>
+                                
+                                <% if (req.user && req.user.isAdmin) { %>
+                                    <form action="/reviews/<%= review.id %>?_method=DELETE" method="POST">
+                                        <button type="submit" class="delete-btn">Delete</button>
+                                    </form>
+                                <% } %>
+                            </div>
+                        <% }); %>
+                    <% } %>
                 </div>
-                <button class="carousel-btn prev-btn">❮</button>
-                <button class="carousel-btn next-btn">❯</button>
             </div>
-            <script>
+            <button class="carousel-btn prev-btn">❮</button>
+            <button class="carousel-btn next-btn">❯</button>
+        </div>
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                const track = document.querySelector(".carousel-track");
+                const prevBtn = document.querySelector(".prev-btn");
+                const nextBtn = document.querySelector(".next-btn");
+                const cards = Array.from(track.children);
                 
-
-                document.addEventListener("DOMContentLoaded", () => {
-                    const track = document.querySelector(".carousel-track");
-                    const prevBtn = document.querySelector(".prev-btn");
-                    const nextBtn = document.querySelector(".next-btn");
-                    const cards = Array.from(track.children);
+                if (cards.length > 0) {
                     const cardWidth = cards[0].getBoundingClientRect().width;
-
                     let currentIndex = 0;
 
                     // Функція для переміщення каруселі
@@ -295,7 +157,7 @@
                         currentIndex = (currentIndex + 1) % cards.length;
                         moveToCard(currentIndex);
                     });
-                });
+                }
 
                 // Збереження позиції прокрутки перед перезавантаженням
                 window.addEventListener("beforeunload", () => {
@@ -310,33 +172,70 @@
                     }
                 });
 
-                document.addEventListener("DOMContentLoaded", () => {
-                    const buttons = document.querySelectorAll(".category-btn");
-                    const sections = document.querySelectorAll(".category-section");
+                // Функціональність кнопок категорій
+                const buttons = document.querySelectorAll(".category-btn");
+                const sections = document.querySelectorAll(".category-section");
 
-                    buttons.forEach((button) => {
-                        button.addEventListener("click", () => {
-                            // Видаляємо клас "active" з усіх кнопок
-                            buttons.forEach((btn) => btn.classList.remove("active"));
-                            // Додаємо клас "active" до натиснутої кнопки
-                            button.classList.add("active");
+                buttons.forEach((button) => {
+                    button.addEventListener("click", () => {
+                        // Видаляємо клас "active" з усіх кнопок
+                        buttons.forEach((btn) => btn.classList.remove("active"));
+                        // Додаємо клас "active" до натиснутої кнопки
+                        button.classList.add("active");
 
-                            const category = button.getAttribute("data-category");
+                        const category = button.getAttribute("data-category");
 
-                            // Показуємо або приховуємо секції страв
-                            sections.forEach((section) => {
-                                if (category === "all" || section.getAttribute("data-category") === category) {
-                                    section.style.display = "block";
-                                } else {
-                                    section.style.display = "none";
-                                }
-                            });
+                        // Показуємо або приховуємо секції страв
+                        sections.forEach((section) => {
+                            if (category === "all" || section.getAttribute("data-category") === category) {
+                                section.style.display = "block";
+                            } else {
+                                section.style.display = "none";
+                            }
                         });
                     });
-
-                    // Встановлюємо початковий стан (показуємо всі категорії)
-                    document.querySelector(".category-btn[data-category='all']").click();
                 });
-            </script>
+
+                // Встановлюємо початковий стан (показуємо всі категорії)
+                document.querySelector(".category-btn[data-category='all']").click();
+            });
+
+            document.addEventListener("DOMContentLoaded", () => {
+                const header = document.querySelector("header");
+                let lastScrollY = window.scrollY;
+
+                window.addEventListener("scroll", () => {
+                    if (window.scrollY > lastScrollY) {
+                        // Скролимо вниз — хедер зникає
+                        header.classList.add("hidden");
+                    } else {
+                        // Скролимо вверх — хедер з'являється
+                        header.classList.remove("hidden");
+                    }
+                    lastScrollY = window.scrollY;
+                });
+            });
+
+            document.addEventListener("DOMContentLoaded", () => {
+                const scrollToTopButton = document.getElementById("scrollToTop");
+
+                // Показуємо або приховуємо кнопку залежно від позиції скролу
+                window.addEventListener("scroll", () => {
+                    if (window.scrollY > 200) {
+                        scrollToTopButton.classList.add("show");
+                    } else {
+                        scrollToTopButton.classList.remove("show");
+                    }
+                });
+
+                // Прокрутка до верху при натисканні на кнопку
+                scrollToTopButton.addEventListener("click", () => {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: "smooth"
+                    });
+                });
+            });
+        </script>
     </body>
 </html>

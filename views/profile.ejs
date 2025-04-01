@@ -4,62 +4,219 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Profile</title>
-        <link rel="stylesheet" href="/style.css" />
+        <link rel="stylesheet" href="/profile.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
     </head>
     <body>
-        <h1>Profile</h1>
-        <h2>Orders</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Dish</th>
-                    <th>Time</th>
-                    <th>Date</th>
-                    <th>Status</th>
-                    <th>Pay</th>
-                </tr>
-            </thead>
-            <tbody>
-                <% orders.forEach(order => { %>
-                <tr>
-                    <td><%= order.dish %></td>
-                    <td><%= order.createdAt.toLocaleTimeString() %></td>
-                    <td><%= order.createdAt.toLocaleDateString() %></td>
-                    <td><%= order.status %></td>
-                    <td><%= order.paymentMethod %></td>
-                    <td><%= order.paymentStatus %></td>
-
-
-                </tr>
-                <% }); %>
-            </tbody>
-        </table>
-        <h2>Reservations</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Table Number</th>
-                    <th>Date</th>
-                    <th>Time</th>
-                    <th>Pre-Order</th>
-                </tr>
-            </thead>
-            <tbody>
-                <% reservations.forEach(reservation => { %>
-                <tr>
-                    <td><%= reservation.tableNumber %></td>
-                    <td><%= reservation.date.toLocaleDateString() %></td>
-                    <td><%= reservation.time %></td>
-                    <td><%= reservation.preOrder ? reservation.preOrder : 'No pre-order' %></td>
-                    <td>
-                        <form action="/profile/reservations/cancel/<%= reservation.id %>" method="POST">
-                            <button type="submit">Cancel</button>
-                        </form>
-                    </td>
-                </tr>
-                <% }); %>
-            </tbody>
-        </table>
         <a href="/">Back to Home</a>
+
+        <div class="profile-container">
+            <br>
+            <br>
+            <h2>Orders</h2>
+            <% if (orders && orders.length > 0) { %>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Dish</th>
+                        <th>Time</th>
+                        <!-- <th>Date</th> -->
+                        <th>Status</th>
+                        <th>Payment</th>
+                        <th>Pay Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% orders.forEach(order => { %>
+                    <tr>
+                        <td><%= order.dish %></td>
+                        <td><%= order.createdAt.toLocaleTimeString() %></td>
+                        <!-- <td><%= order.createdAt.toLocaleDateString() %></td> -->
+                        <!-- Візуалізація доставки -->
+                        <td>
+                            <!-- <span class="status status-<%= order.status.toLowerCase() %>">
+                                <%= order.status %>
+                            </span> -->
+                            
+                            <div class="delivery-timeline" 
+                                 data-status="<%= order.status %>" 
+                                 data-status-index="<%= ['Pending', 'Processing', 'Cooking', 'OnTheWay', 'Delivered'].indexOf(order.status) !== -1 ? ['Pending', 'Processing', 'Cooking', 'OnTheWay', 'Delivered'].indexOf(order.status) : 0 %>">
+                            </div>
+                        </td>
+                        <td><%= order.paymentMethod %></td>
+                        <td>
+                            <span class="payment-<%= order.paymentStatus.toLowerCase() %>">
+                                <%= order.paymentStatus %>
+                            </span>
+                        </td>
+                    </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+            <% } else { %>
+            <div class="empty-state">
+                <p>You don't have any orders yet</p>
+            </div>
+            <% } %>
+            
+            <h2>Reservations</h2>
+            <% if (reservations && reservations.length > 0) { %>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Table Number</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Pre-Order</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% reservations.forEach(reservation => { %>
+                    <tr>
+                        <td><%= reservation.tableNumber %></td>
+                        <td><%= reservation.date.toLocaleDateString() %></td>
+                        <td><%= reservation.time %></td>
+                        <td><%= reservation.preOrder ? reservation.preOrder : 'No pre-order' %></td>
+                        <td>
+                            <form action="/profile/reservations/cancel/<%= reservation.id %>" method="POST">
+                                <button type="submit">Cancel</button>
+                            </form>
+                        </td>
+                    </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+            <% } else { %>
+            <div class="empty-state">
+                <p>You don't have any reservations yet</p>
+            </div>
+            <% } %>
+            
+        </div>
+        
+        <!-- JavaScript для візуалізації доставки -->
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Ініціалізація всіх таймлайнів
+            const timelines = document.querySelectorAll('.delivery-timeline');
+            
+            timelines.forEach(timeline => {
+                const status = timeline.getAttribute('data-status');
+                const statusIndex = parseInt(timeline.getAttribute('data-status-index'));
+                const allStatuses = ['Pending', 'Processing', 'Cooking', 'OnTheWay', 'Delivered'];
+                
+                // Створення прогрес-бару
+                const progressPercentage = (statusIndex / (allStatuses.length - 1)) * 100;
+                const progressBar = document.createElement('div');
+                progressBar.className = 'timeline-progress';
+                progressBar.style.width = `${progressPercentage}%`;
+                timeline.appendChild(progressBar);
+                
+                // Створення кроків
+                allStatuses.forEach((stepStatus, index) => {
+                    const step = document.createElement('div');
+                    step.className = 'timeline-step';
+                    
+                    if (index === statusIndex) {
+                        step.classList.add('timeline-step-active');
+                    } else if (index < statusIndex) {
+                        step.classList.add('timeline-step-completed');
+                    }
+                    
+                    const icon = document.createElement('i');
+                    icon.className = 'fas';
+                    
+                    switch (stepStatus) {
+                        case 'Pending':
+                            icon.classList.add('fa-file-invoice');
+                            break;
+                        case 'Processing':
+                            icon.classList.add('fa-utensils');
+                            break;
+                        case 'Cooking':
+                            icon.classList.add('fa-fire');
+                            break;
+                        case 'OnTheWay':
+                            icon.classList.add('fa-motorcycle');
+                            icon.classList.add('icon-moving');
+                            break;
+                        case 'Delivered':
+                            icon.classList.add('fa-check');
+                            break;
+                    }
+                    
+                    step.appendChild(icon);
+                    timeline.appendChild(step);
+                });
+                
+                // Створення контейнера для написів
+                const labelsContainer = document.createElement('div');
+                labelsContainer.className = 'timeline-labels';
+                
+                // Створення написів
+                allStatuses.forEach((labelStatus, index) => {
+                    const label = document.createElement('div');
+                    label.className = 'timeline-label';
+                    
+                    if (index === statusIndex) {
+                        label.classList.add('timeline-label-active');
+                    } else if (index < statusIndex) {
+                        label.classList.add('timeline-label-completed');
+                    }
+                    
+                    label.textContent = labelStatus === 'OnTheWay' ? 'On The Way' : labelStatus;
+                    labelsContainer.appendChild(label);
+                });
+                
+                // Додавання написів після таймлайну
+                timeline.parentNode.insertBefore(labelsContainer, timeline.nextSibling);
+            });
+            
+            // Функція для автоматичного оновлення статусу (кожні 5 хвилин)
+            function updateDeliveryStatus() {
+                timelines.forEach(timeline => {
+                    const statusIndex = parseInt(timeline.getAttribute('data-status-index'));
+                    const allStatuses = ['Pending', 'Processing', 'Cooking', 'OnTheWay', 'Delivered'];
+                    
+                    // Переходимо до наступного статусу, якщо це не останній
+                    if (statusIndex < allStatuses.length - 1) {
+                        const nextStatusIndex = statusIndex + 1;
+                        const newStatus = allStatuses[nextStatusIndex];
+                        
+                        // Оновлюємо атрибути
+                        timeline.setAttribute('data-status', newStatus);
+                        timeline.setAttribute('data-status-index', nextStatusIndex);
+                        
+                        // Оновлюємо прогрес-бар
+                        const progressBar = timeline.querySelector('.timeline-progress');
+                        const newProgressPercentage = (nextStatusIndex / (allStatuses.length - 1)) * 100;
+                        progressBar.style.width = `${newProgressPercentage}%`;
+                        
+                        // Оновлюємо кроки
+                        const steps = timeline.querySelectorAll('.timeline-step');
+                        steps[statusIndex].classList.remove('timeline-step-active');
+                        steps[statusIndex].classList.add('timeline-step-completed');
+                        steps[nextStatusIndex].classList.add('timeline-step-active');
+                        
+                        // Оновлюємо написи
+                        const labels = timeline.nextSibling.querySelectorAll('.timeline-label');
+                        labels[statusIndex].classList.remove('timeline-label-active');
+                        labels[statusIndex].classList.add('timeline-label-completed');
+                        labels[nextStatusIndex].classList.add('timeline-label-active');
+                        
+                        // Оновлюємо текстовий статус
+                        const statusElement = timeline.previousElementSibling;
+                        statusElement.textContent = newStatus === 'OnTheWay' ? 'On The Way' : newStatus;
+                        statusElement.className = `status status-${newStatus.toLowerCase()}`;
+                    }
+                });
+            }
+            
+            // Встановлюємо інтервал оновлення (5 хвилин = 300000 мс)
+            // Для тестування можна змінити на менший інтервал, наприклад 10000 мс (10 секунд)
+            setInterval(updateDeliveryStatus, 200000);
+        });
+        </script>
     </body>
 </html>
