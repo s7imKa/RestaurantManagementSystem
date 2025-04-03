@@ -28,7 +28,18 @@
                 <tr>
                     <td><%= item.dishName %></td>
                     <td><%= item.dishPrice %>$</td>
-                    <td><%= item.quantity %></td>
+                    <td>
+                        <form action="/order/cart/<%= item.id %>/update" method="POST" style="display: inline;">
+                            <input type="hidden" name="quantity" value="<%= item.quantity - 1 %>" />
+                            <button style="background-color: #465362;" type="submit" <%= item.quantity <= 1 ? 'disabled' : '' %>>-</button>
+                        </form>
+                        <span><%= item.quantity %></span>
+                        <form action="/order/cart/<%= item.id %>/update" method="POST" style="display: inline;">
+                            <input type="hidden" name="quantity" value="<%= item.quantity + 1 %>" />
+                            <button style="background-color: #465362;"  type="submit">+</button>
+                        </form>
+                    </td>
+                    
                     <td>
                         <form action="/order/cart/<%= item.id %>/remove" method="POST">
                             <button type="submit">Remove</button>
@@ -79,7 +90,7 @@
                     <input type="text" name="phoneNumber" id="phoneNumber" placeholder="Phone Number" required>
                 </div>
 
-                <h2>Pay</h2>
+                <p style="padding-bottom: 10px;" >Pay:</p>
                 <div class="payment-method">
                     <div>
                         <input type="radio" id="cash" name="paymentMethod" value="cash" checked>

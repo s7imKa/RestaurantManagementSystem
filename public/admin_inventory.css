@@ -1,0 +1,420 @@
+/* Modern Restaurant Inventory Management Styles - Dark Theme */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Cormorant+Garamond:wght@500;600;700&display=swap');
+
+:root {
+    --primary: #d7993c; /* Gold/amber */
+    --primary-light: #e5b568; /* Lighter gold shade */
+    --secondary: #a34a3b; /* Deep burgundy/wine color */
+    --accent: #fbc979; /* Light gold/champagne accent */
+    --light: #f7f9f9;
+    --dark: #1a1814; /* Slightly warmer dark tone */
+    --darker: #0f0d0b; /* Warmer darkest tone */
+    --gray: #2a2522; /* Warmer gray */
+    --light-gray: #3a3532; /* Warmer light gray */
+    --text: #e6e1d9; /* Slightly warmer text color */
+    --text-muted: #a09a94; /* Warmer muted text */
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif;
+}
+
+body {
+    background-color: var(--dark);
+    color: var(--text);
+    line-height: 1.6;
+    padding: 20px;
+    max-width: 1400px;
+    margin: 0 auto;
+    overflow-x: hidden;
+    position: relative;
+}
+
+h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 700;
+    color: var(--primary);
+    letter-spacing: -0.02em;
+    font-size: 2.5rem;
+    text-align: center;
+    padding: 30px 0;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+h1::after {
+    content: "";
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 3px;
+    background: var(--secondary);
+}
+
+a {
+    text-decoration: none;
+    color: var(--primary);
+    font-weight: 600;
+    transition: var(--transition);
+    padding: 10px 18px;
+    display: inline-block;
+    margin: 5px;
+    border-radius: 8px;
+    background-color: var(--gray);
+}
+
+a:hover {
+    color: var(--accent);
+    background-color: rgba(212, 167, 98, 0.1);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(212, 167, 98, 0.2);
+}
+
+/* Inventory Table Styles */
+.inventory-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 20px 0;
+    box-shadow: var(--shadow);
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.inventory-table th, 
+.inventory-table td {
+    border: none;
+    padding: 12px;
+    text-align: left;
+}
+
+.inventory-table th {
+    background-color: var(--gray);
+    color: var(--primary);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    border-bottom: 2px solid var(--primary-light);
+}
+
+.inventory-table tr {
+    background-color: var(--darker);
+    transition: var(--transition);
+}
+
+.inventory-table tr:nth-child(even) {
+    background-color: var(--dark);
+}
+
+.inventory-table tr:hover {
+    background-color: var(--gray);
+}
+
+.inventory-table td {
+    border-bottom: 1px solid var(--light-gray);
+}
+
+.inventory-table td input {
+    width: 150px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--light-gray);
+    background-color: var(--darker);
+    color: var(--text);
+    font-size: 0.9rem;
+    transition: var(--transition);
+}
+
+.inventory-table td input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(215, 153, 60, 0.2);
+}
+
+/* Low stock warning styles */
+.low-stock {
+    background-color: rgba(163, 74, 59, 0.3) !important;
+    border-left: 4px solid var(--secondary);
+}
+
+.error-message {
+    color: red;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+/* Buttons */
+button {
+    background-color: var(--gray);
+    color: var(--text);
+    border: none;
+    border-radius: 8px;
+    padding: 8px 15px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: var(--transition);
+}
+
+button:hover {
+    background-color: var(--light-gray);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+button.fill-to-max {
+    background-color: var(--secondary);
+    color: var(--light);
+    font-size: 0.85rem;
+    padding: 6px 12px;
+}
+
+button.fill-to-max:hover {
+    background-color: var(--primary);
+    color: var(--darker);
+}
+
+button[type="submit"] {
+    background-color: var(--primary);
+    color: var(--darker);
+    font-size: 1rem;
+    padding: 12px 25px;
+    border-radius: 50px;
+    display: block;
+    margin: 30px auto 20px;
+    box-shadow: 0 8px 20px rgba(212, 167, 98, 0.2);
+}
+
+button[type="submit"]:hover {
+    background-color: var(--secondary);
+    color: var(--light);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 25px rgba(163, 74, 59, 0.3);
+}
+
+/* Оформлення таблиці накладної */
+.invoice-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-bottom: 25px;
+    background-color: var(--dark-bg);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    font-family: 'Courier New', monospace; /* Шрифт як у класичних накладних */
+  }
+
+  /* Штамп "Invoice" для більш автентичного вигляду накладної */
+.invoice-table::before {
+    content: "INVENTARY";
+    position: absolute;
+    color: rgba(215, 153, 60, 0.07);
+    font-size: 8rem;
+    font-weight: bold;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-20deg);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  
+
+/* Заголовок розділу Invoice */
+h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    color: var(--primary);
+    font-size: 1.8rem;
+    margin-top: 40px;
+    margin-bottom: 20px;
+    position: relative;
+    display: inline-block;
+}
+
+h2::after {
+    content: "";
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 80px;
+    height: 2px;
+    background: var(--secondary);
+}
+
+/* Заголовки таблиці */
+.invoice-table th {
+    background-color: var(--gray);
+    color: var(--primary);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    padding: 14px 15px;
+    border-bottom: 2px solid var(--primary-light);
+}
+
+/* Клітинки таблиці */
+.invoice-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid var(--light-gray);
+    background-color: var(--darker);
+    color: var(--text);
+}
+
+/* Чергування рядків */
+.invoice-table tbody tr:nth-child(even) td {
+    background-color: var(--dark);
+}
+
+/* Ефект при наведенні */
+.invoice-table tbody tr:hover td {
+    background-color: var(--gray);
+}
+
+/* Останній рядок без рамки знизу */
+.invoice-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Поля введення в таблиці */
+.invoice-table input[type="number"] {
+    width: 80px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--light-gray);
+    background-color: var(--darker);
+    color: var(--text);
+    font-size: 0.9rem;
+    text-align: center;
+    transition: var(--transition);
+}
+
+.invoice-table input[type="number"]:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(215, 153, 60, 0.2);
+}
+
+/* Кнопка видалення з накладної */
+.invoice-table .remove-from-invoice {
+    background-color: var(--secondary);
+    color: var(--light);
+    border: none;
+    padding: 6px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.85rem;
+    transition: var(--transition);
+}
+
+.invoice-table .remove-from-invoice:hover {
+    background-color: #b95a4a; /* Світліший відтінок secondary */
+    transform: translateY(-2px);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Кнопка "Process Invoice" */
+form .invoice-table + button[type="submit"] {
+    background-color: var(--primary);
+    color: var(--darker);
+    font-size: 1rem;
+    padding: 12px 25px;
+    border-radius: 50px;
+    display: block;
+    margin: 30px auto 20px;
+    font-weight: 600;
+    box-shadow: 0 8px 20px rgba(212, 167, 98, 0.2);
+    transition: var(--transition);
+}
+
+form .invoice-table + button[type="submit"]:hover {
+    background-color: var(--secondary);
+    color: var(--light);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 25px rgba(163, 74, 59, 0.3);
+}
+
+/* Текст "Додати товар" коли таблиця порожня */
+#invoiceTable:empty::before {
+    content: "Додайте товари до накладної";
+    display: block;
+    text-align: center;
+    padding: 20px;
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+/* Адаптивні налаштування */
+@media screen and (max-width: 900px) {
+    .invoice-table {
+        font-size: 0.9rem;
+    }
+    
+    .invoice-table th, 
+    .invoice-table td {
+        padding: 12px 8px;
+    }
+    
+    h2 {
+        font-size: 1.6rem;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .invoice-table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+        font-size: 0.85rem;
+    }
+    
+    .invoice-table input[type="number"] {
+        width: 70px;
+        padding: 6px 10px;
+    }
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 900px) {
+    .inventory-table {
+        font-size: 0.9rem;
+    }
+    
+    .inventory-table th, 
+    .inventory-table td {
+        padding: 12px 8px;
+    }
+    
+    h1 {
+        font-size: 2rem;
+        padding: 20px 0;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .inventory-table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+        font-size: 0.85rem;
+    }
+    
+    .inventory-table td input {
+        width: 70px;
+        padding: 6px 10px;
+    }
+    
+    h1 {
+        font-size: 1.8rem;
+    }
+}

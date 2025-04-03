@@ -11,6 +11,11 @@ const Order = sequelize.define("Order", {
         type: DataTypes.INTEGER,
         allowNull: false,
     },
+    quantity: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 1, // Значення за замовчуванням
+    },
     customerName: {
         type: DataTypes.STRING,
         allowNull: false,

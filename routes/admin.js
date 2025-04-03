@@ -100,7 +100,6 @@ router.get("/inventory", isAdmin, async (req, res) => {
         res.status(500).send("Error fetching inventory");
     }
 });
-
 // Маршрут для оновлення запасів
 router.post("/inventory/update", isAdmin, async (req, res) => {
     try {
@@ -111,22 +110,74 @@ router.post("/inventory/update", isAdmin, async (req, res) => {
 
         console.log("Restock data:", Object.entries(restockData)); // Логування отриманих даних
 
-        for (const [id, amount] of Object.entries(restockData)) {
-            const realId = parseInt(id, 10) + 1; // Віднімаємо 1, щоб отримати реальний id
-            console.log(`Processing real id: ${realId}, amount: ${amount}`);
+        for (const [name, amount] of Object.entries(restockData)) {
+            console.log(`Processing restock for product name: ${name}, amount: ${amount}`);
 
             if (amount > 0) {
-                const product = await Inventory.findByPk(realId);
+                // Знаходимо продукт за його ім'ям
+                const product = await Inventory.findOne({ where: { name: name } });
                 if (product) {
-                    product.stock += parseInt(amount, 10); // Збільшуємо запас
+                    const newStock = product.stock + parseInt(amount, 10); // Обчислюємо новий запас
+                    if (newStock > 300) {
+                        message += `Cannot add product "${product.name}" from invoice. Stock would exceed 300 units.<br>`;
+                        continue; // Пропускаємо оновлення, якщо перевищує 300
+                    }
+
+                    product.stock = newStock; // Оновлюємо запас
                     await product.save();
+                } else {
+                    console.error(`Product with name "${name}" not found in inventory.`);
                 }
             }
         }
+
         res.redirect("/admin/inventory");
     } catch (err) {
         console.error("Error updating inventory:", err);
         res.status(500).send("Error updating inventory");
+    }
+});
+
+router.post("/inventory/process", isAdmin, async (req, res) => {
+    try {
+        const invoiceData = req.body.invoice || {}; // Дані для обробки накладної
+        console.log("Invoice data:", invoiceData);
+
+        let message = ""; // Ініціалізуємо змінну для повідомлень
+
+        // Обробка накладної
+        for (const [name, amount] of Object.entries(invoiceData)) {
+            console.log(`Processing invoice for product name: ${name}, amount: ${amount}`);
+
+            if (amount > 0) {
+                // Знаходимо продукт за його ім'ям
+                const product = await Inventory.findOne({ where: { name: name } });
+                if (product) {
+                    const newStock = product.stock + parseInt(amount, 10); // Обчислюємо новий запас
+                    if (newStock > 300) {
+                        message += `Cannot add product "${product.name}" from invoice. Stock would exceed 230 units.<br>`;
+                        continue; // Пропускаємо оновлення, якщо перевищує 230
+                    }
+
+                    product.stock = newStock; // Оновлюємо запас
+                    await product.save();
+                } else {
+                    message += `Product with name "${name}" not found in inventory.<br>`;
+                }
+            }
+        }
+
+        const inventory = await Inventory.findAll(); // Оновлений список товарів
+        res.render("inventory", {
+            inventory: inventory,
+            message: message || "Invoice processed successfully.",
+        });
+    } catch (err) {
+        console.error("Error processing invoice:", err);
+        res.status(500).render("inventory", {
+            inventory: await Inventory.findAll(),
+            message: "An error occurred while processing the invoice.",
+        });
     }
 });
 

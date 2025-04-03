@@ -66,40 +66,54 @@ router.delete("/reviews/:id", async (req, res) => {
 
 router.get("/profile", isAuthenticated, async (req, res) => {
     try {
-        // Update order statuses
+        // Масив статусів у правильному порядку
+        const statuses = ['Pending', 'Processing', 'Cooking', 'OnTheWay', 'Delivered'];
+
+        // Отримуємо всі замовлення користувача зі статусом, який ще не "Delivered"
         const ordersToUpdate = await Order.findAll({
-            where: { userId: req.user.id, status: "Pending" },
+            where: {
+                userId: req.user.id,
+                status: {
+                    [Op.ne]: 'Delivered', // Вибираємо замовлення, які ще не доставлені
+                },
+            },
         });
+
         for (const order of ordersToUpdate) {
             const createdAt = new Date(order.createdAt);
             const now = new Date();
             const diff = now.getTime() - createdAt.getTime();
             const minutes = Math.floor(diff / 60000);
 
-            if (minutes >= 5) {
-                order.status = "Processing";
+            // Визначаємо поточний індекс статусу
+            const currentStatusIndex = statuses.indexOf(order.status);
+
+            // Якщо минуло 5 хвилин і статус можна змінити
+            if (minutes >= (currentStatusIndex + 1) * 5 && currentStatusIndex < statuses.length - 1) {
+                order.status = statuses[currentStatusIndex + 1]; // Змінюємо статус на наступний
                 await order.save();
             }
         }
 
+        // Отримуємо всі замовлення користувача
         const orders = await Order.findAll({
             where: {
                 userId: req.user.id,
                 createdAt: {
-                    [Op.gte]: new Date(new Date() - 60 * 60 * 1000), // Orders created in the last hour
+                    [Op.gte]: new Date(new Date() - 60 * 60 * 1000), // Замовлення, створені за останню годину
                 },
             },
         });
 
+        // Отримуємо всі бронювання користувача
         const reservations = await Reservation.findAll({
             where: {
                 userId: req.user.id,
                 date: {
-                    [Op.gte]: literal("CURRENT_DATE"), // Reservations for future dates
+                    [Op.gte]: literal("CURRENT_DATE"), // Бронювання на майбутні дати
                 },
             },
         });
-
 
         res.render("profile", {
             orders: orders,

@@ -4,82 +4,120 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inventory Management</title>
-    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/admin_inventory.css">
     <style>
-      .inventory-table {
-        width: 100%;
-        border-collapse: collapse;
-      }
-      .inventory-table th, .inventory-table td {
-        border: 1px solid #ddd;
-        padding: 8px;
-        text-align: left;
-      }
-      .inventory-table th {
-        background-color: #f2f2f2;
-      }
-      .inventory-table td input {
-        width: 60px;
-      }
+
     </style>
   </head>
   <body>
     <h1>Inventory Management</h1>
     <a href="/admin">Back to Dashboard</a>
+  
+    <!-- Форма для оновлення запасів -->
     <form action="/admin/inventory/update" method="POST">
       <table class="inventory-table">
-        <thead>
-          <tr>
-            <th>Product</th>
-            <th>Min</th>
-            <th>Max</th>
-            <th>Current Stock</th>
-            <th>Stock (%)</th>
-            <th>Restock Amount</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% inventory.forEach(item => { 
-            const stockPercentage = Math.round((item.stock / item.maxStock) * 100); // Обчислюємо відсоток запасу
-          %>
-            <tr class="<%= item.stock < item.minStock ? 'low-stock' : '' %>"><!DOCTYPE html>
-              <td><%= item.name %></td>
-              <td><%= item.minStock %></td>
-              <td><%= item.maxStock %></td>
-              <td><%= item.stock %></td>
-              <td><%= stockPercentage %>%</td> <!-- Відображаємо відсоток запасу -->
-              <td>
-                <input type="number" name="restock[<%= item.id %>]" min="0" placeholder="Add units">
-              </td>
-              <td>
-                <button type="button" class="fill-to-max" data-id="<%= item.id %>" data-maxstock="<%= item.maxStock %>" data-stock="<%= item.stock %>">
-                  Fill to Max
-                </button>
-              </td>
-            </tr>
-          <% }); %>
-        </tbody>
+          <thead>
+              <tr>
+                  <th>Product</th>
+                  <th>Min</th>
+                  <th>Max</th>
+                  <th>Current Stock</th>
+                  <th>Stock (%)</th>
+                  <th>Restock Amount</th>
+                  <th>Actions</th>
+              </tr>
+          </thead>
+          <tbody>
+              <% inventory.forEach(item => { 
+                  const stockPercentage = Math.round((item.stock / item.maxStock) * 100); // Обчислюємо відсоток запасу
+              %>
+              <tr class="<%= item.stock < item.minStock ? 'low-stock' : '' %>">
+                  <td><%= item.name %></td>
+                  <td><%= item.minStock %></td>
+                  <td><%= item.maxStock %></td>
+                  <td><%= item.stock %></td>
+                  <td><%= stockPercentage %>%</td> <!-- Відображаємо відсоток запасу -->
+                  <td>
+                      <input type="number" name="restock[<%= item.name %>]" min="0" placeholder="Add units">
+                  </td>
+                  <td>
+                      <button type="button" class="fill-to-max" data-id="<%= item.name %>" data-maxstock="<%= item.maxStock %>" data-stock="<%= item.stock %>">
+                          Fill to Max
+                      </button>
+                      <button type="button" class="add-to-invoice" data-id="<%= item.id %>" data-name="<%= item.name %>">
+                          Add to Invoice
+                      </button>
+                  </td>
+              </tr>
+              <% }); %>
+          </tbody>
       </table>
       <button type="submit">Update Inventory</button>
-    </form>
-    <style>
-      .low-stock {
-        background-color: #ff9c9c; /* Червоний фон для продуктів з низьким запасом */
-      }
-    </style>
-    <script>
+  </form>
+
+  <!-- Таблиця накладної -->
+  <h2>Invoice</h2>
+  <form action="/admin/inventory/process" method="POST">
+      <table class="invoice-table">
+          <thead>
+              <tr>
+                  <th>Product</th>
+                  <th>Amount</th>
+                  <th>Actions</th>
+              </tr>
+          </thead>
+          <tbody id="invoiceTable">
+              <!-- Динамічно додані рядки -->
+          </tbody>
+      </table>
+      <button type="submit">Process Invoice</button>
+  </form>
+
+  <script>
+      // Заповнення до максимального запасу
       document.querySelectorAll('.fill-to-max').forEach(button => {
-        button.addEventListener('click', () => {
-          const id = button.getAttribute('data-id');
-          const maxStock = parseInt(button.getAttribute('data-maxstock'), 10);
-          const currentStock = parseInt(button.getAttribute('data-stock'), 10);
-          const input = document.querySelector(`input[name="restock[${id}]"]`);
-          if (input) {
-            input.value = maxStock - currentStock;
-          }
-        });
+          button.addEventListener('click', () => {
+              const id = button.getAttribute('data-id');
+              const maxStock = parseInt(button.getAttribute('data-maxstock'), 10);
+              const currentStock = parseInt(button.getAttribute('data-stock'), 10);
+              const input = document.querySelector(`input[name="restock[${id}]"]`);
+              if (input) {
+                  input.value = maxStock - currentStock;
+                  if (input.value < 0) {
+                      input.value = 0; // Не дозволяємо негативні значення
+                  }
+              }
+          });
       });
-    </script>
+
+      // Додавання до накладної
+      document.querySelectorAll('.add-to-invoice').forEach(button => {
+          button.addEventListener('click', () => {
+              const id = button.getAttribute('data-id');
+              const name = button.getAttribute('data-name');
+
+              const invoiceTable = document.getElementById('invoiceTable');
+              const existingRow = document.querySelector(`#invoiceTable tr[data-id="${id}"]`);
+              if (existingRow) {
+                  alert('This product is already in the invoice.');
+                  return;
+              }
+
+              const newRow = document.createElement('tr');
+              newRow.setAttribute('data-id', id);
+              newRow.innerHTML = `
+                  <td>${name}</td>
+                  <td><input type="number" name="invoice[${name}]" value="1" min="1"></td>
+                  <td><button type="button" class="remove-from-invoice">Remove</button></td>
+              `;
+              invoiceTable.appendChild(newRow);
+
+              // Видалення з накладної
+              newRow.querySelector('.remove-from-invoice').addEventListener('click', () => {
+                  newRow.remove();
+              });
+          });
+      });
+  </script>
   </body>
   </html>

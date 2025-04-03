@@ -2,10 +2,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Cormorant+Garamond:wght@500;600;700&display=swap');
 
 :root {
-    --primary: #d4a762; /* Changed to gold/amber */
-    --primary-light: #e5c189; /* Lighter gold shade */
+    --primary: #d7993c; /* Gold/amber */
+    --primary-light: #e5b568; /* Lighter gold shade */
     --secondary: #a34a3b; /* Changed to deep burgundy/wine color */
-    --accent: #f9d9a7; /* Light gold/champagne accent */
+    --accent: #fbc979; /* Light gold/champagne accent */
     --light: #f7f9f9;
     --dark: #1a1814; /* Slightly warmer dark tone */
     --darker: #0f0d0b; /* Warmer darkest tone */
@@ -31,6 +31,8 @@ body {
     padding: 0;
     max-width: 1400px;
     margin: 0 auto;
+    overflow-x: hidden;
+    position: relative; /* This helps with iOS compatibility */
 }
 
 /* Кнопка "Прогорнути вгору" */
@@ -68,16 +70,30 @@ body {
 
 }
 
-/* Welcome Banner */
+/* Welcome Banner - FULL WIDTH */
 .welcome-banner {
     background: linear-gradient(135deg, #1a1814, #2a1a10);
-    padding: 40px 20px;
+    padding: 120px 0; /* Remove horizontal padding */
     text-align: center;
     margin-bottom: 30px;
-    border-radius: 0 0 20px 20px;
+    border-radius: 0; /* Remove border radius since it's full width */
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
     position: relative;
     overflow: hidden;
+    width: 100vw; /* Full viewport width */
+    height: 500px;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+}
+
+/* Add a content container inside the banner to maintain content width */
+.welcome-banner-content {
+    margin: 0 auto;
+    padding: 0 20px;
+    position: relative;
+    z-index: 2;
 }
 
 .welcome-banner::before {
@@ -116,30 +132,64 @@ body {
     bottom: 0;
     left: 50%;
     transform: translateX(-50%);
-    width: 100px;
+    width: 150px;
     height: 4px;
-    background: var(--primary);
+    background: var(--secondary);
     z-index: 2;
     border-radius: 4px 4px 0 0;
 }
 
-/* Header Styles - REDUCED HEIGHT */
 header {
-    padding: 0; /* Removed padding */
-    background-color: var(--darker);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-    position: sticky;
+    width: 100vw; /* Займає всю ширину вікна браузера */
+    position: fixed; /* Фіксується у верхній частині екрану */
     top: 0;
-    z-index: 100;
-    border-bottom: 1px solid var(--primary-light);
+    left: 0;
+    z-index: 1000; /* Високий пріоритет для відображення поверх іншого контенту */
+    background-color: var(--darker); /* Фон хедера */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); /* Тінь для хедера */
+    border-bottom: 1px solid var(--primary-light); /* Лінія внизу */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px; /* Відступи з боків */
+    height: 60px; /* Фіксована висота */
     transition: transform 0.3s ease, opacity 0.3s ease, background-color 0.3s ease;
-    height: 60px; /* Set fixed smaller height */
 }
 
-/* Hidden header */
 header.hidden {
     transform: translateY(-100%);
     opacity: 0;
+}
+
+/* Shopping cart button styling */
+.cart-button {
+    background-color: var(--primary);
+    color: var(--dark);
+    border: none;
+    padding: 7px 13px;
+    margin-left: 20px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+    box-shadow: 0 4px 10px rgba(215, 153, 60, 0.2);
+}
+
+.cart-button:hover {
+    background-color: var(--secondary);
+    color: var(--light);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 15px rgba(163, 74, 59, 0.3);
+}
+
+/* Optional: add an icon before the text */
+.cart-button::before {
+    content: "🛒"; /* You can replace this with an actual icon */
+    margin-right: 8px;
 }
 
 .nav-container {
@@ -184,32 +234,6 @@ nav a:hover {
     transform: translateY(-2px);
 }
 
-.cart-button {
-    position: absolute; /* Прив'язуємо до хедера */
-    top: 50%; /* Вирівнюємо по вертикалі відносно хедера */
-    right: 20px; /* Відступ від правого краю */
-    transform: translateY(-50%); /* Центруємо по вертикалі */
-    z-index: 1000; /* Поверх іншого контенту */
-    background-color: var(--primary);
-    color: var(--dark);
-    border: none;
-    padding: 12px 25px;
-    border-radius: 50px;
-    font-size: 14px;
-    font-weight: 600;
-    text-align: center;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    cursor: pointer;
-    transition: var(--transition);
-}
-
-.cart-button:hover {
-    background-color: var(--secondary);
-    color: white;
-    transform: translateY(-50%) scale(1.1); /* Легке збільшення при наведенні */
-    box-shadow: 0 8px 20px rgba(163, 74, 59, 0.3);
-}
-
 /* Typography */
 h1, h2, h3 {
     font-family: 'Cormorant Garamond', serif;
@@ -226,23 +250,19 @@ h1 {
     position: relative;
 }
 
-h1::after {
-    content: "";
-    position: absolute;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 80px;
-    height: 3px;
-    background: var(--secondary);
-}
+
 
 h2 {
+    width: 90%;
     font-size: 2.2rem;
-    margin: 50px 0 30px;
+    margin: auto;
     text-align: center;
     position: relative;
+    background-color: rgba(0, 123, 255, 0.15);
+    color: (--primary);
+    border-radius: 30px;
 }
+
 
 h2::after {
     content: "";
@@ -250,9 +270,9 @@ h2::after {
     bottom: -10px;
     left: 50%;
     transform: translateX(-50%);
-    width: 60px;
+    width: 80px;
     height: 3px;
-    background: var(--primary);
+    background: var(--secondary);
 }
 
 a {
@@ -328,17 +348,18 @@ a:hover {
 }
 
 .category-btn:hover {
-    background-color: var(--primary-light);
+    background-color: var(--primary);
     color: var(--dark);
     transform: translateY(-2px);
     box-shadow: 0 6px 15px rgba(229, 193, 137, 0.3);
 }
 
 .category-btn.active {
-    background-color: var(--primary);
-    color: var(--dark);
-    box-shadow: 0 6px 15px rgba(212, 167, 98, 0.3);
+    background-color: var(--secondary);
+    color: var(--light);
+    box-shadow: 0 6px 15px rgba(195, 32, 32, 0.537);
 }
+
 
 /* Dishes display */
 .dishes {
@@ -422,37 +443,55 @@ a:hover {
     flex-grow: 1;
 }
 
-.dish-card p:last-of-type {
-    font-weight: 700;
-    color: var(--primary);
-    font-size: 1.1rem;
-    border-top: 1px solid var(--light-gray);
-    padding-top: 15px;
-}
 
-.dish-card form {
+.dish-card .form-add-cart-routs {
     padding: 15px;
     margin-top: auto;
     background-color: var(--gray);
 }
 
-.dish-card button {
-    background-color: var(--primary);
-    color: var(--dark);
-    border: none;
-    padding: 10px 15px;
-    border-radius: 50px;
-    cursor: pointer;
-    font-weight: 600;
-    font-size: 0.9rem;
-    width: 100%;
-    transition: var(--transition);
-    box-shadow: 0 4px 10px rgba(212, 167, 98, 0.2);
+/* Контейнер для ціни та кнопки */
+.price-and-cart {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 10px;
+
 }
 
-.dish-card button:hover {
+/* Стиль для ціни */
+.price-and-cart .price {
+    font-weight: 700;
+    color: var(--primary);
+    font-size: 1.1rem;
+    border-top: 1px solid var(--light-gray);
+    padding-top: 15px;
+    border-radius: 0 20px 0 0;
+    box-shadow: inset 0px 15px 15px -10px rgba(248, 138, 28, 0.238); /* Тінь тільки зверху */
+
+}
+
+/* Кнопка "Додати в кошик" */
+.button-add-cart {
     background-color: var(--secondary);
-    transform: translateY(-3px);
+    color: var(--light);
+    border: none;
+    padding: 5px 15px;
+    border-radius: 20%;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+    box-shadow: 0 4px 10px rgba(212, 98, 98, 0.2);
+}
+
+.button-add-cart:hover {
+    background-color: var(--primary);
+    color: var(--dark);
+    transform: scale(1.1);
     box-shadow: 0 8px 15px rgba(163, 74, 59, 0.3);
 }
 
@@ -476,7 +515,7 @@ a:hover {
     color: rgba(212, 167, 98, 0.1);
 }
 
-form {
+.form-review {
     max-width: 650px;
     margin: 0 auto 60px;
     background-color: var(--gray);
@@ -507,7 +546,7 @@ textarea:focus {
     box-shadow: 0 0 0 3px rgba(212, 167, 98, 0.2);
 }
 
-form button {
+.submit-review-btn {
     background-color: var(--secondary);
     color: white;
     border: none;
@@ -522,7 +561,7 @@ form button {
     box-shadow: 0 8px 20px rgba(163, 74, 59, 0.2);
 }
 
-form button:hover {
+.submit-review-btn:hover {
     background-color: var(--primary);
     transform: translateY(-3px);
     box-shadow: 0 12px 25px rgba(212, 167, 98, 0.3);
@@ -691,6 +730,326 @@ form button:hover {
     background-color: #8c3a2d; /* Darker variant of secondary */
     transform: translateY(-2px);
     box-shadow: 0 8px 15px rgba(163, 74, 59, 0.3);
+}
+
+
+/* ========================================================= */
+/*             About Us Section Styles - FULL WIDTH */
+/* =========================================================== */
+
+.about-section {
+    padding: 50px 0; /* Removed horizontal padding */
+    margin: 50px 0;
+    background: linear-gradient(135deg, var(--darker) 0%, var(--gray) 100%);
+    position: relative;
+    overflow: hidden;
+    width: 100vw; /* Full viewport width */
+    left: 50%; /* Position it in the center */
+    right: 50%;
+    margin-left: -50vw; /* Negative margin trick to extend beyond parent container */
+    margin-right: -50vw;
+    box-shadow: 0px -15px 15px -10px var(--darker), /* Тінь зверху */
+                0px 15px 15px -10px var(--darker); 
+
+}
+
+.about-section::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') center/cover;
+    opacity: 0.07;
+    z-index: 1;
+    filter: grayscale(40%) contrast(120%);
+}
+
+.about-content {
+    display: flex;
+    max-width: 1400px; /* Match the max-width of body */
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+    gap: 40px;
+    align-items: center;
+    padding: 0 15px; /* Add horizontal padding to the content */
+}
+
+/* Rest of the about section CSS remains the same */
+
+.about-text {
+    flex: 1;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: rgba(26, 24, 20, 0.6);
+    border-radius: 20px;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(215, 153, 60, 0.2);
+    backdrop-filter: blur(5px);
+}
+
+.about-title-container {
+    position: relative;
+    margin-bottom: 40px;
+}
+
+.about-text h2 {
+    text-align: left;
+    margin-bottom: 5px;
+    font-size: 2.8rem;
+    background: linear-gradient(45deg, var(--primary) 30%, var(--accent) 70%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    display: inline-block;
+}
+
+.about-text h2::after {
+    left: 0;
+    transform: none;
+    width: 100px;
+    height: 4px;
+    background: var(--secondary);
+    border-radius: 2px;
+}
+
+.about-subtitle {
+    color: var(--accent);
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 30px;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.about-text p {
+    margin-bottom: 15px;
+    line-height: 1.6;
+    color: var(--text);
+    font-size: 1rem;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.about-features {
+    list-style-type: none;
+    margin: 30px 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.about-features li {
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+    color: var(--text);
+    transition: transform 0.3s ease;
+    padding: 10px 15px;
+    border-radius: 10px;
+    background-color: rgba(42, 37, 34, 0.5);
+    border-left: 3px solid var(--primary);
+}
+
+.about-features li:hover {
+    transform: translateX(5px);
+    background-color: rgba(215, 153, 60, 0.15);
+}
+
+.feature-icon {
+    margin-right: 12px;
+    color: var(--primary);
+    font-size: 1.3rem;
+    text-shadow: 0 0 10px rgba(215, 153, 60, 0.5);
+}
+
+.about-btn {
+    background-color: var(--secondary);
+    color: white;
+    border: none;
+    padding: 16px 34px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+    width: fit-content;
+    margin-top: 30px;
+    box-shadow: 0 10px 20px rgba(163, 74, 59, 0.3);
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.about-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    background-color: var(--primary);
+    transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+    z-index: -1;
+    border-radius: 50px;
+}
+
+.about-btn:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(212, 167, 98, 0.4);
+    color: var(--dark);
+}
+
+.about-btn:hover::before {
+    width: 100%;
+}
+
+.about-image-container {
+    flex: 1;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.about-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    position: relative;
+    z-index: 2;
+    border: 5px solid var(--darker);
+    transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+    transform: rotate(-3deg);
+}
+
+.about-image:hover {
+    transform: rotate(0deg) scale(1.02);
+    border-color: var(--primary);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+.about-image-accent {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, var(--secondary) 0%, var(--primary) 100%);
+    border-radius: 20px;
+    top: 25px;
+    left: 25px;
+    z-index: 1;
+    opacity: 0.4;
+    transform: rotate(-5deg);
+    transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.about-image-container:hover .about-image-accent {
+    transform: rotate(-8deg) scale(1.05);
+    opacity: 0.6;
+}
+
+/* Add decorative elements */
+.about-section .deco-element {
+    position: absolute;
+    background-color: var(--primary);
+    opacity: 0.1;
+    border-radius: 50%;
+    z-index: 1;
+}
+
+.about-section .deco-1 {
+    width: 200px;
+    height: 200px;
+    top: -100px;
+    right: 10%;
+}
+
+.about-section .deco-2 {
+    width: 150px;
+    height: 150px;
+    bottom: -50px;
+    left: 5%;
+}
+
+/* Responsive adjustments for gallery and about sections */
+@media screen and (max-width: 1200px) {
+    .about-content {
+        gap: 40px;
+    }
+}
+
+@media screen and (max-width: 900px) {
+    .about-content {
+        flex-direction: column;
+    }
+    
+    .about-image-container {
+        margin-top: 60px;
+        order: -1;
+        width: 80%;
+        max-width: 500px;
+    }
+    
+    .about-text h2 {
+        text-align: center;
+    }
+    
+    .about-text h2::after {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    
+    .about-btn {
+        margin: 30px auto 0;
+    }
+    
+    .gallery-item {
+        width: 260px;
+        height: 240px;
+    }
+    
+    @keyframes scrollGallery {
+        0% {
+            transform: translateX(0);
+        }
+        100% {
+            transform: translateX(calc(-260px * 6)); /* Adjust based on new width */
+        }
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .about-features {
+        grid-template-columns: 1fr;
+    }
+    
+    .about-text {
+        padding: 30px 20px;
+    }
+    
+    .about-image-container {
+        width: 100%;
+    }
+    
+    .gallery-item {
+        width: 220px;
+        height: 200px;
+        margin: 0 10px;
+    }
+    
+    @keyframes scrollGallery {
+        0% {
+            transform: translateX(0);
+        }
+        100% {
+            transform: translateX(calc(-220px * 6)); /* Adjust based on new width */
+        }
+    }
 }
 
 /* Responsive adjustments */

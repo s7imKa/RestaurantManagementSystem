@@ -2,8 +2,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Cormorant+Garamond:wght@500;600;700&family=Playfair+Display:wght@500;600;700&display=swap');
 
 :root {
-    --primary: #d4a762; /* Gold/amber */
-    --primary-light: #e5c189; /* Lighter gold shade */
+    --primary: #d7993c; /* Gold/amber */
+    --primary-light: #e5b568; /* Lighter gold shade */
     --primary-dark: #b38945; /* Darker gold for hover states */
     --secondary: #a34a3b; /* Deep burgundy/wine color */
     --secondary-light: #b85849; /* Lighter burgundy */

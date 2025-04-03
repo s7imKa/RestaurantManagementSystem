@@ -2,20 +2,20 @@
  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Cormorant+Garamond:wght@500;600;700&display=swap');
 
  :root {
-     --primary: #d4a762; /* Gold/amber */
-     --primary-light: #e5c189; /* Lighter gold shade */
-     --secondary: #a34a3b; /* Deep burgundy/wine color */
-     --accent: #f9d9a7; /* Light gold/champagne accent */
-     --light: #f7f9f9;
-     --dark: #1a1814; /* Slightly warmer dark tone */
-     --darker: #0f0d0b; /* Warmer darkest tone */
-     --gray: #2a2522; /* Warmer gray */
-     --light-gray: #3a3532; /* Warmer light gray */
-     --text: #e6e1d9; /* Slightly warmer text color */
-     --text-muted: #a09a94; /* Warmer muted text */
-     --shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
-     --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
- }
+    --primary: #d7993c; /* Gold/amber */
+    --primary-light: #e5b568; /* Lighter gold shade */
+    --secondary: #a34a3b; /* Deep burgundy/wine color */
+    --accent: #fbc979; /* Light gold/champagne accent */
+    --light: #f7f9f9;
+    --dark: #1a1814; /* Slightly warmer dark tone */
+    --darker: #0f0d0b; /* Warmer darkest tone */
+    --gray: #2a2522; /* Warmer gray */
+    --light-gray: #3a3532; /* Warmer light gray */
+    --text: #e6e1d9; /* Slightly warmer text color */
+    --text-muted: #a09a94; /* Warmer muted text */
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
 
  * {
      margin: 0;

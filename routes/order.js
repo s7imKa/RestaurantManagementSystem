@@ -114,14 +114,17 @@ router.post("/", isAuthenticated, async (req, res) => {
 });
 
 router.post("/addToCart", isAuthenticated, async (req, res) => {
-    const { dishName, dishPrice } = req.body;
+    const { dishName, dishPrice, quantity } = req.body;
     const userId = req.user.id;
+
+    console.log("Data received:", { userId, dishName, dishPrice, quantity }); // Логування даних
 
     try {
         await CartItem.create({
             userId: userId,
             dishName: dishName,
             dishPrice: dishPrice,
+            quantity: quantity || 1, // Використовуємо значення за замовчуванням, якщо не передано
         });
         res.redirect("/");
     } catch (err) {
@@ -138,10 +141,10 @@ router.post("/checkout", isAuthenticated, async (req, res) => {
         houseNumber,
         apartmentNumber,
         phoneNumber,
-        paymentMethod, // Нове поле
-        cardNumber,     // Для оплати карткою
-        cardExpiry,     // Для оплати карткою
-        cardCvv         // Для оплати карткою
+        paymentMethod,
+        cardNumber,
+        cardExpiry,
+        cardCvv,
     } = req.body;
     const userId = req.user.id;
 
@@ -150,7 +153,7 @@ router.post("/checkout", isAuthenticated, async (req, res) => {
         const deliveryAddress = `${city}, ${street}, ${houseNumber}, ${apartmentNumber || ""}`;
 
         // Якщо метод оплати - картка, перевіряємо дані картки
-        if (paymentMethod === 'card') {
+        if (paymentMethod === "card") {
             if (!cardNumber || !cardExpiry || !cardCvv) {
                 return res.status(400).send("Payment failed: Missing card details");
             }
@@ -168,17 +171,18 @@ router.post("/checkout", isAuthenticated, async (req, res) => {
                 userId: userId,
                 customerName: customerName,
                 dish: item.dishName,
+                quantity: item.quantity, // Зберігаємо кількість
                 deliveryAddress: deliveryAddress,
                 phoneNumber: phoneNumber,
                 paymentMethod: paymentMethod,
-                paymentStatus: paymentMethod === 'cash' ? 'completed' : 'completed' // Для прикладу завжди completed
+                paymentStatus: paymentMethod === "cash" ? "completed" : "pending",
             });
 
             // Зменшуємо запаси на складі
-            const dishData = await Dish.findOne({ where: { name: item.dishName } }); // Знаходимо страву за назвою
+            const dishData = await Dish.findOne({ where: { name: item.dishName } });
             if (dishData) {
-                const ingredientsText = dishData.ingredients; // Наприклад: "Тісто, томати, моцарела, базилік"
-                const ingredients = ingredientsText.split(",").map(item => item.trim()); // ["Тісто", "томати", "моцарела", "базилік"]
+                const ingredientsText = dishData.ingredients;
+                const ingredients = ingredientsText.split(",").map((item) => item.trim());
 
                 console.log("Ingredients to process:", ingredients);
 
@@ -186,7 +190,7 @@ router.post("/checkout", isAuthenticated, async (req, res) => {
                     console.log(`Processing ingredient: ${ingredient}`);
                     const product = await Inventory.findOne({ where: { name: ingredient } });
                     if (product) {
-                        product.stock -= 1;
+                        product.stock -= item.quantity; // Враховуємо кількість
                         if (product.stock < 0) product.stock = 0;
                         await product.save();
                     } else {
@@ -234,6 +238,32 @@ router.post("/cart/:id/remove", isAuthenticated, async (req, res) => {
     } catch (err) {
         console.error("Error removing item from cart:", err);
         res.status(500).send("Error removing item from cart");
+    }
+});
+
+router.post("/cart/:id/update", isAuthenticated, async (req, res) => {
+    const { id } = req.params;
+    const { quantity } = req.body;
+
+    try {
+        // Перевіряємо, чи кількість є валідною
+        if (quantity <= 0) {
+            return res.status(400).send("Quantity must be greater than 0");
+        }
+
+        // Оновлюємо кількість у базі даних
+        const cartItem = await CartItem.findByPk(id);
+        if (cartItem) {
+            cartItem.quantity = quantity;
+            await cartItem.save();
+            console.log("Cart item updated:", cartItem.quantity); 
+            return res.redirect("/cart"); // Перенаправлення після успішного оновлення
+        } else {
+            return res.status(404).send("Cart item not found");
+        }
+    } catch (err) {
+        console.error("Error updating cart item:", err);
+        return res.status(500).send("Error updating cart item");
     }
 });
 

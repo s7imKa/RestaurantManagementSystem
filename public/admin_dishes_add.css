@@ -2,10 +2,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Cormorant+Garamond:wght@500;600;700&display=swap');
 
 :root {
-    --primary: #d4a762; /* Gold/amber */
-    --primary-light: #e5c189; /* Lighter gold shade */
+    --primary: #d7993c; /* Gold/amber */
+    --primary-light: #e5b568; /* Lighter gold shade */
     --secondary: #a34a3b; /* Deep burgundy/wine color */
-    --accent: #f9d9a7; /* Light gold/champagne accent */
+    --accent: #fbc979; /* Light gold/champagne accent */
     --light: #f7f9f9;
     --dark: #1a1814; /* Slightly warmer dark tone */
     --darker: #0f0d0b; /* Warmer darkest tone */
@@ -72,6 +72,19 @@ h2::after {
     flex-direction: column;
     gap: 20px; /* Відстань між рядками */
 }
+
+.dish-form::before {
+    content: "DISHES";
+    position: absolute;
+    color: rgba(215, 153, 60, 0.07);
+    font-size: 8rem;
+    font-weight: bold;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-20deg);
+    pointer-events: none;
+    z-index: 0;
+  }
 
 /* Рядок форми */
 .form-row {

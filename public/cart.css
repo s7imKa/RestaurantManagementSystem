@@ -3,8 +3,8 @@
 
 :root {
   /* Enhanced Color Scheme */
-  --primary: #d4a762; /* Gold/amber primary color */
-  --primary-light: #e5c189; /* Lighter gold shade */
+  --primary: #d7993c; /* Gold/amber */
+  --primary-light: #ecad48; /* Lighter gold shade */
   --primary-dark: #b38a4d; /* Darker gold for contrast */
   --secondary: #a34a3b; /* Deep burgundy/wine color */
   --secondary-light: #c25a4b; /* Lighter burgundy */
@@ -34,15 +34,30 @@
 }
 
 body {
-  background-color: var(--dark);
+  background-image: url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=2070');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
   color: var(--text);
   line-height: 1.6;
   padding: 0;
   max-width: 1400px;
   margin: 0 auto;
-  background-image: radial-gradient(circle at top right, rgba(163, 74, 59, 0.05) 0%, transparent 70%), 
-                    radial-gradient(circle at bottom left, rgba(212, 167, 98, 0.05) 0%, transparent 70%);
-  background-attachment: fixed;
+  position: relative;
+}
+
+/* Added overlay for the background */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(26, 24, 20, 0.85);
+  backdrop-filter: blur(10px);
+  z-index: -1;
 }
 
 /* Typography */
@@ -115,24 +130,6 @@ a:hover {
   box-shadow: var(--shadow-light);
 }
 
-/* Header Styles */
-header {
-  padding: 0;
-  background-color: var(--darker);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  border-bottom: 1px solid var(--primary-light);
-  transition: transform 0.3s ease, opacity 0.3s ease, background-color 0.3s ease;
-  height: 60px;
-}
-
-header.hidden {
-  transform: translateY(-100%);
-  opacity: 0;
-}
-
 .nav-container {
   display: flex;
   justify-content: space-between;
@@ -186,7 +183,6 @@ button {
   font-weight: 600;
   cursor: pointer;
   transition: var(--transition);
-  box-shadow: var(--shadow-light);
   position: relative;
   overflow: hidden;
 }
@@ -195,7 +191,7 @@ button:hover {
   background-color: var(--secondary);
   color: white;
   transform: translateY(-3px) scale(1.05);
-  box-shadow: 0 8px 20px rgba(163, 74, 59, 0.3);
+  box-shadow: 0 8px 20px rgba(163, 120, 59, 0.3);
 }
 
 button::after {
@@ -230,6 +226,7 @@ button:focus:not(:active)::after {
     transform: scale(40, 40);
   }
 }
+
 
 /* Form Elements */
 .form {

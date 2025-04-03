@@ -109,21 +109,41 @@ exports.addDish = [
     },
 ];
 
-exports.deleteDish = (req, res) => {
+exports.deleteDish = async (req, res) => {
     const dishId = req.params.id;
 
-    Dish.destroy({
-        where: {
-            id: dishId,
-        },
-    })
-        .then(() => {
-            res.redirect("/admin/dishes");
-        })
-        .catch((err) => {
-            console.error("Error deleting dish:", err);
-            res.status(500).send("Error deleting dish");
+    try {
+        // Знаходимо страву, яку потрібно видалити
+        const dish = await Dish.findByPk(dishId);
+
+        if (!dish) {
+            return res.status(404).send("Dish not found");
+        }
+
+        // Отримуємо список інгредієнтів із страви
+        const ingredientList = dish.ingredients.split(",").map(item => item.trim());
+
+        // Видаляємо інгредієнти з таблиці inventories
+        for (const ingredient of ingredientList) {
+            await Inventory.destroy({
+                where: {
+                    name: ingredient,
+                },
+            });
+        }
+
+        // Видаляємо саму страву
+        await Dish.destroy({
+            where: {
+                id: dishId,
+            },
         });
+
+        res.redirect("/admin/dishes"); // Повертаємося до списку страв
+    } catch (err) {
+        console.error("Error deleting dish:", err);
+        res.status(500).send("Error deleting dish");
+    }
 };
 
 exports.updateOrderStatus = async () => {

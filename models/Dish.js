@@ -27,4 +27,6 @@ const Dish = sequelize.define("Dish", {
     },
 });
 
+
+
 module.exports = Dish;

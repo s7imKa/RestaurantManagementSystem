@@ -1,0 +1,206 @@
+/* Reservation page styles to match main dark theme */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Cormorant+Garamond:wght@500;600;700&display=swap');
+
+:root {
+    --primary: #d7993c; /* Gold/amber */
+    --primary-light: #e5b568; /* Lighter gold shade */
+    --secondary: #a34a3b; /* Deep burgundy/wine color */
+    --accent: #fbc979; /* Light gold/champagne accent */
+    --light: #f7f9f9;
+    --dark: #1a1814; /* Slightly warmer dark tone */
+    --darker: #0f0d0b; /* Warmer darkest tone */
+    --gray: #2a2522; /* Warmer gray */
+    --light-gray: #3a3532; /* Warmer light gray */
+    --text: #e6e1d9; /* Slightly warmer text color */
+    --text-muted: #a09a94; /* Warmer muted text */
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif;
+}
+
+body {
+    background-color: var(--dark);
+    color: var(--text);
+    line-height: 1.6;
+    padding: 0;
+    max-width: 1400px;
+    margin: 0 auto;
+    overflow-x: hidden;
+    position: relative;
+    padding: 20px;
+}
+
+h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 700;
+    color: var(--primary);
+    letter-spacing: -0.02em;
+    font-size: 3rem;
+    text-align: center;
+    padding: 40px 20px;
+    margin-bottom: 30px;
+    position: relative;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+h1::after {
+    content: "";
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background: var(--secondary);
+    border-radius: 2px;
+}
+
+a {
+    text-decoration: none;
+    color: var(--primary);
+    font-weight: 600;
+    transition: var(--transition);
+    padding: 10px 18px;
+    display: inline-block;
+    margin: 5px;
+    border-radius: 8px;
+}
+
+a:hover {
+    color: var(--accent);
+    background-color: rgba(212, 167, 98, 0.1);
+    transform: translateY(-2px);
+}
+
+/* Table styles */
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 20px 0 40px;
+    overflow: hidden;
+    border-radius: 15px;
+    box-shadow: var(--shadow);
+    background-color: var(--gray);
+    border: 1px solid var(--light-gray);
+}
+
+thead {
+    background-color: var(--darker);
+    color: var(--primary);
+}
+
+th {
+    text-align: left;
+    padding: 16px;
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 2px solid var(--secondary);
+}
+
+td {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--light-gray);
+    color: var(--text);
+    font-size: 0.95rem;
+}
+
+tbody tr {
+    transition: var(--transition);
+}
+
+tbody tr:hover {
+    background-color: rgba(212, 167, 98, 0.1);
+}
+
+tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Button styles */
+button {
+    background-color: var(--secondary);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: var(--transition);
+    box-shadow: 0 4px 10px rgba(163, 74, 59, 0.2);
+}
+
+button:hover {
+    background-color: var(--primary);
+    color: var(--dark);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 15px rgba(212, 167, 98, 0.3);
+}
+
+/* Back to Admin link */
+a[href="/admin"] {
+    background-color: var(--primary);
+    color: var(--dark);
+    padding: 12px 25px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: var(--transition);
+    box-shadow: 0 8px 20px rgba(163, 74, 59, 0.2);
+    display: block;
+    width: fit-content;
+    margin: 20px auto 40px;
+    text-align: center;
+}
+
+a[href="/admin"]:hover {
+    background-color: var(--secondary);
+    color: var(--dark);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 25px rgba(212, 167, 98, 0.3);
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 900px) {
+    h1 {
+        font-size: 2.5rem;
+    }
+    
+    table {
+        display: block;
+        overflow-x: auto;
+    }
+    
+    th, td {
+        white-space: nowrap;
+        padding: 12px;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    h1 {
+        font-size: 2rem;
+        padding: 30px 10px;
+    }
+    
+    th, td {
+        padding: 10px 8px;
+        font-size: 0.85rem;
+    }
+    
+    button {
+        padding: 6px 12px;
+        font-size: 0.8rem;
+    }
+}

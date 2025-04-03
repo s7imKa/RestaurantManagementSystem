@@ -1,23 +1,291 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Login</title>
-        <link rel="stylesheet" href="/style.css" />
-    </head>
-    <body>
-        <h1>Login</h1>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Restaurant Name</title>
+    <style>
+        /* Import the same fonts as the main page */
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Cormorant+Garamond:wght@500;600;700&display=swap');
+
+        :root {
+            --primary: #d7993c; /* Gold/amber */
+            --primary-light: #e5b568; /* Lighter gold shade */
+            --secondary: #a34a3b; /* Deep burgundy/wine color */
+            --accent: #fbc979; /* Light gold/champagne accent */
+            --light: #f7f9f9;
+            --dark: #1a1814; /* Slightly warmer dark tone */
+            --darker: #0f0d0b; /* Warmer darkest tone */
+            --gray: #2a2522; /* Warmer gray */
+            --light-gray: #3a3532; /* Warmer light gray */
+            --text: #e6e1d9; /* Slightly warmer text color */
+            --text-muted: #a09a94; /* Warmer muted text */
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        body {
+            background-color: var(--dark);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Background Image */
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') center/cover;
+            filter: brightness(0.3) contrast(1.2);
+            z-index: -2;
+        }
+
+        /* Decorative elements */
+        .deco-element {
+            position: absolute;
+            background-color: var(--primary);
+            opacity: 0.1;
+            border-radius: 50%;
+            z-index: -1;
+        }
+
+        .deco-1 {
+            width: 300px;
+            height: 300px;
+            top: -150px;
+            right: 10%;
+        }
+
+        .deco-2 {
+            width: 250px;
+            height: 250px;
+            bottom: -100px;
+            left: 5%;
+        }
+
+        .logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 30px;
+            text-shadow: 0 0 10px rgba(212, 167, 98, 0.5);
+        }
+
+        .auth-container {
+            width: 90%;
+            max-width: 450px;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            background-color: rgba(26, 24, 20, 0.7);
+            border: 1px solid rgba(215, 153, 60, 0.2);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 10;
+            transform: translateY(0);
+            transition: transform 0.5s ease;
+        }
+
+        .auth-container:hover {
+            transform: translateY(-5px);
+        }
+
+        h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 700;
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.2rem;
+            position: relative;
+        }
+
+        h1::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: var(--secondary);
+            border-radius: 2px;
+        }
+
+        .error-message {
+            color: #e74c3c;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text);
+        }
+
+        input {
+            width: 100%;
+            padding: 14px 15px;
+            border: 1px solid var(--light-gray);
+            border-radius: 10px;
+            background-color: rgba(15, 13, 11, 0.6);
+            color: var(--text);
+            font-size: 16px;
+            transition: var(--transition);
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(215, 153, 60, 0.2);
+        }
+
+        button {
+            background-color: var(--secondary);
+            color: var(--light);
+            border: none;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background-color: var(--primary);
+            transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+            z-index: -1;
+            border-radius: 10px;
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(163, 74, 59, 0.3);
+            color: var(--dark);
+        }
+
+        button:hover::before {
+            width: 100%;
+        }
+
+        .alt-link {
+            display: block;
+            text-align: center;
+            margin-top: 25px;
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .alt-link:hover {
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .back-home {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            text-decoration: none;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            padding: 8px 15px;
+            background-color: rgba(26, 24, 20, 0.7);
+            border-radius: 20px;
+            transition: var(--transition);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+
+        .back-home:hover {
+            background-color: var(--primary);
+            color: var(--dark);
+            transform: translateY(-2px);
+        }
+
+        @media screen and (max-width: 600px) {
+            .auth-container {
+                padding: 30px 20px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="deco-element deco-1"></div>
+    <div class="deco-element deco-2"></div>
+    
+    <a href="/" class="back-home">← Back to Home</a>
+    
+    <div class="auth-container">
+        <h1>Welcome Back</h1>
+        
         <% if (typeof error !== 'undefined' && error) { %>
-        <p style="color: red"><%= error %></p>
+        <div class="error-message"><%= error %></div>
         <% } %>
+        
         <form action="/auth/login" method="POST">
-            <label for="email">Email:</label>
-            <input type="email" name="email" autocomplete="email" required /><br /><br />
-            <label for="password">Password:</label>
-            <input type="password" name="password" autocomplete="current-password" required /><br /><br />
-            <button type="submit">Login</button>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" autocomplete="email" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" autocomplete="current-password" required>
+            </div>
+            
+            <button type="submit">Sign In</button>
         </form>
-        <a href="/auth/register">Create an account</a>
-    </body>
+        
+        <a href="/auth/register" class="alt-link">Don't have an account? Create one now</a>
+    </div>
+</body>
 </html>

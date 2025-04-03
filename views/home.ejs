@@ -15,23 +15,23 @@
             <div class="nav-container">
                 <a href="/" class="logo">Our Restaurant</a>
                 <nav>
-                    <a href="/booking">Замовити столик</a>
-                    <a href="#reviews-section">Відгуки</a>
-                    <a href="#menu-section" class="scroll-to-menu">Меню</a>
-                    <% if (req.isAuthenticated()) { %>
-                        <% if (req.user.isAdmin) { %>
-                            <a href="/admin">Адмін</a>
-                        <% } %>
-                            <a href="/auth/logout">Вихід</a>
-                        <% if (!req.user.isAdmin) { %>
-                            <button onclick="window.location.href='/cart'" class="cart-button">Кошик</button>
-                            <a href="/profile"" class="scroll-to-reviews">Профіль</a>
-                        <% } %>
-                        <% } else { %>
-                            <a href="/auth/login">Вхід</a>
-                        <% } %>
-
-                </nav>
+                <a href="/booking">Замовити столик</a>
+                <a href="#about">Про нас</a>
+                <a href="#reviews-section">Відгуки</a>
+                <a href="#menu-section" class="scroll-to-menu">Меню</a>
+                <% if (req.isAuthenticated()) { %>
+                    <% if (req.user.isAdmin) { %>
+                        <a href="/admin">Адмін</a>
+                    <% } %>
+                        <a href="/auth/logout">Вихід</a>
+                    <% if (!req.user.isAdmin) { %>
+                        <a href="/profile" class="scroll-to-reviews">Профіль</a>
+                        <button onclick="window.location.href='/cart'" class="cart-button">Кошик</button>
+                    <% } %>
+                    <% } else { %>
+                        <a href="/auth/login">Вхід</a>
+                    <% } %>
+            </nav>
             </div>
         </header>
 
@@ -62,12 +62,14 @@
                                 <h3><%= dish.name %></h3>
                                 <p><%= dish.description %></p>
                                 <p>Ingredients: <%= dish.ingredients %></p>
-                                <p>Price: <%= dish.price %>$</p>
-                                <form action="/order/addToCart" method="POST">
-                                    <input type="hidden" name="dishName" value="<%= dish.name %>" />
-                                    <input type="hidden" name="dishPrice" value="<%= dish.price %>" />
-                                    <button type="submit">Add to Cart</button>
-                                </form>
+                                <div class="price-and-cart">
+                                    <p class="price">Price: <%= dish.price %>$</p>
+                                    <form class="form-add-cart-routs" action="/order/addToCart" method="POST">
+                                        <input type="hidden" name="dishName" value="<%= dish.name %>" />
+                                        <input type="hidden" name="dishPrice" value="<%= dish.price %>" />
+                                        <button class="button-add-cart" type="submit">+</button>
+                                    </form>
+                                </div>
                             </div>
                         <% }); %>
                     </div>
@@ -75,9 +77,51 @@
             <% } %>
         </div>
 
+        <!-- Оновлений стильний блок "Про нас" -->
+        <section class="about-section" id="about">
+            <div class="about-content">
+                <div class="about-text">
+                    <div class="about-title-container">
+                        <h2>Про наш ресторан</h2>
+                        <p class="about-subtitle">Традиції та інновації в кожній страві</p>
+                    </div>
+                    
+                    <p>Ми — це не просто ресторан, а місце, де створюються гастрономічні спогади. Наша історія почалася понад 10 років тому з маленького сімейного закладу, який з часом перетворився на улюблене місце для гурманів.</p>
+                    
+                    <p>Наша кухня — це поєднання традиційних рецептів та сучасних кулінарних технік. Ми використовуємо лише найсвіжіші інгредієнти від місцевих фермерів та виробників, щоб запропонувати вам неповторний смак у кожній страві.</p>
+                    
+                    <ul class="about-features">
+                        <li>
+                            <span class="feature-icon"><i class="fas fa-leaf"></i></span>
+                            Органічні інгредієнти
+                        </li>
+                        <li>
+                            <span class="feature-icon"><i class="fas fa-utensils"></i></span>
+                            Авторська кухня
+                        </li>
+                        <li>
+                            <span class="feature-icon"><i class="fas fa-glass-cheers"></i></span>
+                            Вишукані напої
+                        </li>
+                        <li>
+                            <span class="feature-icon"><i class="fas fa-music"></i></span>
+                            Жива музика щовихідних
+                        </li>
+                    </ul>
+                    
+                    <a href="#menu-section" class="about-btn">Преглянути меню</a>
+                </div>
+                
+                <div class="about-image-container">
+                    <img src="https://images.unsplash.com/photo-1525648199074-cee30ba79a4a" alt="Наша команда" class="about-image">
+                    <div class="about-image-accent"></div>
+                </div>
+            </div>
+        </section>
+
         <!-- Відгуки -->
-        <h2 id="reviews-section">Customer Reviews</h2>
-        <form action="/reviews" method="POST">
+        <p id="reviews-section" style="color: #d4a762; font-size: 1.5rem; border-top: 1px solid #d4a66283;">Customer Reviews</p>
+        <form class="form-review" action="/reviews" method="POST">
             <textarea
                 name="review"
                 id="review"
@@ -100,7 +144,7 @@
                 <label for="star1" title="1 star">★</label>
             </div>
 
-            <button type="submit">Submit Review</button>
+            <button type="submit" class="submit-review-btn">Submit Review</button>
         </form>
 
         <div class="reviews-carousel">
@@ -205,7 +249,7 @@
                 let lastScrollY = window.scrollY;
 
                 window.addEventListener("scroll", () => {
-                    if (window.scrollY > lastScrollY) {
+                    if (window.scrollY > lastScrollY ) {
                         // Скролимо вниз — хедер зникає
                         header.classList.add("hidden");
                     } else {
@@ -236,6 +280,7 @@
                     });
                 });
             });
+
         </script>
     </body>
 </html>

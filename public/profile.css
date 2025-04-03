@@ -1,9 +1,9 @@
-/* Profile Page Styles for Restaurant Dark Theme - Покращена версія */
+/* Profile Page Styles for Restaurant Dark Theme - Покращена версія з фоном і блюром */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Cormorant+Garamond:wght@500;600;700&display=swap');
 
 :root {
-    --primary: #d4a762; /* Gold/amber */
-    --primary-light: #e5c189; /* Lighter gold shade */
+    --primary: #d7993c; /* Gold/amber */
+    --primary-light: #e5b568; /* Lighter gold shade */
     --secondary: #a34a3b; /* Deep burgundy/wine color */
     --accent: #f9d9a7; /* Light gold/champagne accent */
     --light: #f7f9f9;
@@ -31,6 +31,44 @@ body {
     padding: 0;
     max-width: 1400px;
     margin: 0 auto;
+    position: relative;
+    min-height: 100vh;
+}
+
+/* Background Image */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') center/cover;
+    filter: brightness(0.3) contrast(1.2);
+    z-index: -2;
+}
+
+/* Decorative elements */
+.deco-element {
+    position: fixed;
+    background-color: var(--primary);
+    opacity: 0.1;
+    border-radius: 50%;
+    z-index: -1;
+}
+
+.deco-1 {
+    width: 300px;
+    height: 300px;
+    top: -150px;
+    right: 10%;
+}
+
+.deco-2 {
+    width: 250px;
+    height: 250px;
+    bottom: -100px;
+    left: 5%;
 }
 
 /* Typography - менш помітний заголовок */
@@ -47,6 +85,7 @@ h1 {
     padding: 25px 15px; /* Менше відступів */
     margin-bottom: 15px;
     position: relative;
+    text-shadow: 0 0 10px rgba(212, 167, 98, 0.5);
 }
 
 h1::after {
@@ -101,40 +140,51 @@ a:hover {
 
 /* Profile Container - більш зручний */
 .profile-container {
-    padding: 0 25px 50px;
+    padding: 25px;
     max-width: 1000px; /* Трохи вужчий контейнер */
-    margin: 0 auto;
+    margin: 30px auto 50px;
+    background-color: rgba(26, 24, 20, 0.7);
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(215, 153, 60, 0.2);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    transform: translateY(0);
+    transition: transform 0.5s ease;
 }
+
+
 
 /* Table Styles - більш симпатичні */
 table {
     width: 100%;
     border-collapse: separate;
     border-spacing: 0;
-    margin: 25px 0;
+    margin: 35px 0;
     background-color: var(--gray);
     border-radius: 12px;
     overflow: hidden;
-    box-shadow: var(--shadow);
     border: 1px solid var(--light-gray);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
 }
 
 thead {
-    background-color: var(--darker);
+    background-color: rgba(15, 13, 11, 0.8);
     color: var(--primary);
 }
 
 th {
     padding: 14px 16px;
     text-align: left;
-    font-weight: 600;
+    font-weight: 500;
     border-bottom: 1px solid var(--primary-light);
     font-family: 'Cormorant Garamond', serif;
     font-size: 1.05rem;
 }
 
 td {
-    padding: 10px 25px;
+    padding: 5px 25px;
     border-bottom: 1px solid var(--light-gray);
     color: var(--text);
     font-size: 0.92rem;
@@ -164,6 +214,22 @@ button {
     font-weight: 500;
     transition: var(--transition);
     box-shadow: 0 3px 8px rgba(163, 74, 59, 0.15);
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+
+button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    background-color: var(--primary);
+    transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+    z-index: -1;
+    border-radius: 50px;
 }
 
 button:hover {
@@ -173,6 +239,10 @@ button:hover {
     box-shadow: 0 5px 12px rgba(212, 167, 98, 0.25);
 }
 
+button:hover::before {
+    width: 100%;
+}
+
 /* Status Styling - більш симпатичний */
 .status {
     padding: 5px 12px;
@@ -180,6 +250,7 @@ button:hover {
     font-size: 0.82rem;
     font-weight: 500;
     display: inline-block;
+    margin-bottom: 10px;
 }
 
 .status-pending {
@@ -197,6 +268,16 @@ button:hover {
     color: #007bff;
 }
 
+.status-cooking {
+    background-color: rgba(255, 102, 0, 0.15);
+    color: #ff6600;
+}
+
+.status-ontheway {
+    background-color: rgba(138, 43, 226, 0.15);
+    color: #8a2be2;
+}
+
 .status-cancelled {
     background-color: rgba(220, 53, 69, 0.15);
     color: #dc3545;
@@ -212,7 +293,6 @@ button:hover {
     background-color: rgba(255, 193, 7, 0.15);
     color: #ffc107;
 }
-
 
 /* Back button - fixed at top center */
 a[href="/"] {
@@ -234,6 +314,8 @@ a[href="/"] {
     width: auto;
     max-width: 200px;
     display: inline-block;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
 }
 
 a[href="/"]:hover {
@@ -243,15 +325,16 @@ a[href="/"]:hover {
     box-shadow: 0 8px 20px rgba(163, 74, 59, 0.3);
 }
 
-
 /* Empty State - більш симпатичний */
 .empty-state {
     text-align: center;
     padding: 35px;
-    background-color: var(--gray);
+    background-color: rgba(42, 37, 34, 0.7);
     border-radius: 12px;
     margin: 25px 0;
     border: 1px dashed rgba(58, 53, 50, 0.7);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
 }
 
 .empty-state p {
@@ -260,7 +343,7 @@ a[href="/"]:hover {
     margin-bottom: 18px;
 }
 
-/* Стилі для відстеження доставки - додайте до вашого profile.css */
+/* Стилі для відстеження доставки */
 .delivery-timeline {
     display: flex;
     align-items: center;
@@ -268,6 +351,11 @@ a[href="/"]:hover {
     margin: 12px 0;
     position: relative;
     width: 100%;
+    padding: 15px;
+    background-color: rgba(42, 37, 34, 0.7);
+    border-radius: 12px;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
 }
 
 .delivery-timeline::before {
@@ -354,6 +442,188 @@ a[href="/"]:hover {
     color: var(--text);
 }
 
+
+/* Анімоване випадаюче вікно для "View Dishes" */
+details {
+    position: relative;
+    cursor: pointer;
+}
+
+details summary {
+    list-style: none;
+    padding: 8px 12px;
+    background-color: var(--primary);
+    color: var(--dark);
+    border-radius: 6px;
+    font-weight: 500;
+    font-size: 0.9rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+details summary:hover {
+    background-color: var(--secondary);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+details summary::-webkit-details-marker {
+    display: none;
+}
+
+/* Вміст випадаючого вікна - ПОВЕРХ УСІХ ЕЛЕМЕНТІВ */
+details[open] ul {
+    position: fixed; /* Фіксована позиція замість absolute */
+    z-index: 9999; /* Найвищий z-index */
+    top: 50%; /* Центрування по вертикалі */
+    left: 50%; /* Центрування по горизонталі */
+    transform: translate(-50%, -50%); /* Повне центрування */
+    width: 300px;
+    max-height: 80vh; /* Максимальна висота */
+    overflow-y: auto; /* Додаємо прокрутку, якщо потрібно */
+    padding: 20px;
+    border-radius: 12px;
+    background-color: var(--darker);
+    border: 2px solid var(--primary); /* Товстіша рамка */
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    list-style-type: none;
+    animation: popupAppear 0.4s cubic-bezier(0.17, 0.67, 0.21, 1.69) forwards;
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+}
+
+/* Затемнення фону при відкритті випадаючого вікна */
+details[open]::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 9990; /* Нижче, ніж у вікна, але вище всього іншого */
+    animation: fadeBackground 0.3s ease forwards;
+}
+
+/* Заголовок випадаючого вікна */
+details[open] ul::before {
+    content: "Деталі замовлення";
+    display: block;
+    text-align: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    font-size: 1.3rem;
+    color: var(--primary);
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--primary-light);
+}
+
+/* Add this to your existing CSS */
+
+/* Close button for popup */
+.popup-close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px;
+    color: var(--text-muted);
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    border-radius: 50%;
+    z-index: 10;
+}
+
+.popup-close:hover {
+    color: var(--primary);
+    background-color: rgba(58, 53, 50, 0.7);
+}
+
+/* Remove the existing pseudo-element that was showing the X */
+details[open] ul::after {
+    content: none;
+}
+
+/* Елементи списку */
+details[open] ul li {
+    padding: 12px;
+    margin-bottom: 8px;
+    border-radius: 8px;
+    background-color: rgba(42, 37, 34, 0.7);
+    color: var(--text);
+    font-size: 0.95rem;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: itemAppear 0.5s ease forwards;
+    border-left: 3px solid var(--primary);
+}
+
+details[open] ul li:last-child {
+    margin-bottom: 0;
+}
+
+/* Ефект при наведенні на елементи списку */
+details[open] ul li:hover {
+    background-color: rgba(215, 153, 60, 0.2);
+    transform: translateX(5px);
+    transition: all 0.3s ease;
+}
+
+/* Анімація появи вікна */
+@keyframes popupAppear {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.7);
+    }
+    70% {
+        transform: translate(-50%, -50%) scale(1.05);
+    }
+    100% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+/* Анімація затемнення фону */
+@keyframes fadeBackground {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+/* Анімація появи елементів */
+@keyframes itemAppear {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Затримка для кожного елемента */
+details[open] ul li:nth-child(1) { animation-delay: 0.2s; }
+details[open] ul li:nth-child(2) { animation-delay: 0.25s; }
+details[open] ul li:nth-child(3) { animation-delay: 0.3s; }
+details[open] ul li:nth-child(4) { animation-delay: 0.35s; }
+details[open] ul li:nth-child(5) { animation-delay: 0.4s; }
+details[open] ul li:nth-child(6) { animation-delay: 0.45s; }
+details[open] ul li:nth-child(7) { animation-delay: 0.5s; }
+details[open] ul li:nth-child(8) { animation-delay: 0.55s; }
+
+
 /* Анімація для іконки кур'єра */
 @keyframes moveIcon {
     0% {
@@ -371,69 +641,6 @@ a[href="/"]:hover {
     animation: moveIcon 1.5s infinite;
 }
 
-/* Оновлені стилі статусів */
-.status {
-    padding: 5px 12px;
-    border-radius: 50px;
-    font-size: 0.82rem;
-    font-weight: 500;
-    display: inline-block;
-    margin-bottom: 10px;
-}
-
-.status-pending {
-    background-color: rgba(255, 193, 7, 0.15);
-    color: #ffc107;
-}
-
-.status-processing {
-    background-color: rgba(0, 123, 255, 0.15);
-    color: #007bff;
-}
-
-.status-cooking {
-    background-color: rgba(255, 102, 0, 0.15);
-    color: #ff6600;
-}
-
-.status-ontheway {
-    background-color: rgba(138, 43, 226, 0.15);
-    color: #8a2be2;
-}
-
-.status-delivered {
-    background-color: rgba(40, 167, 69, 0.15);
-    color: #28a745;
-}
-
-.status-cancelled {
-    background-color: rgba(220, 53, 69, 0.15);
-    color: #dc3545;
-}
-
-/* Адаптивні налаштування */
-@media screen and (max-width: 768px) {
-    .timeline-label {
-        font-size: 0.65rem;
-        width: 60px;
-        margin-left: -15px;
-    }
-    
-    .timeline-step {
-        width: 24px;
-        height: 24px;
-    }
-}
-
-@media screen and (max-width: 480px) {
-    .timeline-label {
-        font-size: 0.6rem;
-        width: 50px;
-        margin-left: -15px;
-        transform: rotate(-15deg);
-    }
-}
-
 /* Responsive */
 @media screen and (max-width: 900px) {
     h1 {
@@ -447,6 +654,11 @@ a[href="/"]:hover {
     table {
         display: block;
         overflow-x: auto;
+    }
+
+    .profile-container {
+        margin: 20px 15px;
+        padding: 20px 15px;
     }
 }
 
@@ -466,5 +678,17 @@ a[href="/"]:hover {
     
     .profile-header {
         padding: 15px 12px;
+    }
+
+    .timeline-label {
+        font-size: 0.6rem;
+        width: 50px;
+        margin-left: -15px;
+        transform: rotate(-15deg);
+    }
+
+    .timeline-step {
+        width: 24px;
+        height: 24px;
     }
 }

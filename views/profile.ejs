@@ -12,44 +12,54 @@
 
         <div class="profile-container">
             <br>
-            <br>
-            <h2>Orders</h2>
+            <h2>Ваші замовлення тут</h2>
             <% if (orders && orders.length > 0) { %>
             <table>
                 <thead>
                     <tr>
-                        <th>Dish</th>
-                        <th>Time</th>
-                        <!-- <th>Date</th> -->
-                        <th>Status</th>
-                        <th>Payment</th>
+                        <th>Dishes</th>
+                        <th>Order Time</th>
+                        <th>Status Delivery</th>
+                        <th>Pay Method</th>
                         <th>Pay Status</th>
                     </tr>
                 </thead>
                 <tbody>
+                    <% let groupedOrders = {}; %>
                     <% orders.forEach(order => { %>
-                    <tr>
-                        <td><%= order.dish %></td>
-                        <td><%= order.createdAt.toLocaleTimeString() %></td>
-                        <!-- <td><%= order.createdAt.toLocaleDateString() %></td> -->
-                        <!-- Візуалізація доставки -->
-                        <td>
-                            <!-- <span class="status status-<%= order.status.toLowerCase() %>">
-                                <%= order.status %>
-                            </span> -->
+                        <% 
+                            const groupKey = `${order.createdAt.toISOString()}`; // Використовуємо час створення як ключ
+                            if (!groupedOrders[groupKey]) { groupedOrders[groupKey] = []; } 
+                            groupedOrders[groupKey].push(order); 
+                        %>
+                    <% }); %>
+        
+                    <% Object.keys(groupedOrders).forEach(groupKey => { %>
+                        <tr>
+                            <td>
+                                <details>
+                                    <summary>View Dishes</summary>
+                                    <ul>
+                                        <% groupedOrders[groupKey].forEach(order => { %>
+                                            <li><%= order.dish %> - <%= order.quantity %> pcs</li>
+                                        <% }); %>
+                                    </ul>
+                                </details>
+                            </td>
+                            <td><%= new Date(groupKey).toLocaleTimeString() %></td>
+                            <td>
+                                <div class="delivery-timeline" 
+                                     data-status-index="<%= ['Pending', 'Processing', 'Cooking', 'OnTheWay', 'Delivered'].indexOf(groupedOrders[groupKey][0].status) !== -1 ? ['Pending', 'Processing', 'Cooking', 'OnTheWay', 'Delivered'].indexOf(groupedOrders[groupKey][0].status) : 0 %>">
+                                </div>
+                            </td>
+                            <td><%= groupedOrders[groupKey][0].paymentMethod %></td>
+                            <td>
+                                <span class="payment-<%= groupedOrders[groupKey][0].paymentStatus.toLowerCase() %>">
+                                    <%= groupedOrders[groupKey][0].paymentStatus %>
+                                </span>
+                            </td>
                             
-                            <div class="delivery-timeline" 
-                                 data-status="<%= order.status %>" 
-                                 data-status-index="<%= ['Pending', 'Processing', 'Cooking', 'OnTheWay', 'Delivered'].indexOf(order.status) !== -1 ? ['Pending', 'Processing', 'Cooking', 'OnTheWay', 'Delivered'].indexOf(order.status) : 0 %>">
-                            </div>
-                        </td>
-                        <td><%= order.paymentMethod %></td>
-                        <td>
-                            <span class="payment-<%= order.paymentStatus.toLowerCase() %>">
-                                <%= order.paymentStatus %>
-                            </span>
-                        </td>
-                    </tr>
+                        </tr>
                     <% }); %>
                 </tbody>
             </table>
@@ -58,6 +68,7 @@
                 <p>You don't have any orders yet</p>
             </div>
             <% } %>
+        </div>
             
             <h2>Reservations</h2>
             <% if (reservations && reservations.length > 0) { %>
@@ -173,49 +184,124 @@
                 timeline.parentNode.insertBefore(labelsContainer, timeline.nextSibling);
             });
             
-            // Функція для автоматичного оновлення статусу (кожні 5 хвилин)
-            function updateDeliveryStatus() {
-                timelines.forEach(timeline => {
-                    const statusIndex = parseInt(timeline.getAttribute('data-status-index'));
-                    const allStatuses = ['Pending', 'Processing', 'Cooking', 'OnTheWay', 'Delivered'];
+            // // Функція для автоматичного оновлення статусу (кожні 5 хвилин)
+            // function updateDeliveryStatus() {
+            //     timelines.forEach(timeline => {
+            //         const statusIndex = parseInt(timeline.getAttribute('data-status-index'));
+            //         const allStatuses = ['Pending', 'Processing', 'Cooking', 'OnTheWay', 'Delivered'];
                     
-                    // Переходимо до наступного статусу, якщо це не останній
-                    if (statusIndex < allStatuses.length - 1) {
-                        const nextStatusIndex = statusIndex + 1;
-                        const newStatus = allStatuses[nextStatusIndex];
+            //         // Переходимо до наступного статусу, якщо це не останній
+            //         if (statusIndex < allStatuses.length - 1) {
+            //             const nextStatusIndex = statusIndex + 1;
+            //             const newStatus = allStatuses[nextStatusIndex];
                         
-                        // Оновлюємо атрибути
-                        timeline.setAttribute('data-status', newStatus);
-                        timeline.setAttribute('data-status-index', nextStatusIndex);
+            //             // Оновлюємо атрибути
+            //             timeline.setAttribute('data-status', newStatus);
+            //             timeline.setAttribute('data-status-index', nextStatusIndex);
                         
-                        // Оновлюємо прогрес-бар
-                        const progressBar = timeline.querySelector('.timeline-progress');
-                        const newProgressPercentage = (nextStatusIndex / (allStatuses.length - 1)) * 100;
-                        progressBar.style.width = `${newProgressPercentage}%`;
+            //             // Оновлюємо прогрес-бар
+            //             const progressBar = timeline.querySelector('.timeline-progress');
+            //             const newProgressPercentage = (nextStatusIndex / (allStatuses.length - 1)) * 100;
+            //             progressBar.style.width = `${newProgressPercentage}%`;
                         
-                        // Оновлюємо кроки
-                        const steps = timeline.querySelectorAll('.timeline-step');
-                        steps[statusIndex].classList.remove('timeline-step-active');
-                        steps[statusIndex].classList.add('timeline-step-completed');
-                        steps[nextStatusIndex].classList.add('timeline-step-active');
+            //             // Оновлюємо кроки
+            //             const steps = timeline.querySelectorAll('.timeline-step');
+            //             steps[statusIndex].classList.remove('timeline-step-active');
+            //             steps[statusIndex].classList.add('timeline-step-completed');
+            //             steps[nextStatusIndex].classList.add('timeline-step-active');
                         
-                        // Оновлюємо написи
-                        const labels = timeline.nextSibling.querySelectorAll('.timeline-label');
-                        labels[statusIndex].classList.remove('timeline-label-active');
-                        labels[statusIndex].classList.add('timeline-label-completed');
-                        labels[nextStatusIndex].classList.add('timeline-label-active');
+            //             // Оновлюємо написи
+            //             const labels = timeline.nextSibling.querySelectorAll('.timeline-label');
+            //             labels[statusIndex].classList.remove('timeline-label-active');
+            //             labels[statusIndex].classList.add('timeline-label-completed');
+            //             labels[nextStatusIndex].classList.add('timeline-label-active');
                         
-                        // Оновлюємо текстовий статус
-                        const statusElement = timeline.previousElementSibling;
-                        statusElement.textContent = newStatus === 'OnTheWay' ? 'On The Way' : newStatus;
-                        statusElement.className = `status status-${newStatus.toLowerCase()}`;
+            //             // Оновлюємо текстовий статус
+            //             const statusElement = timeline.previousElementSibling;
+            //             statusElement.textContent = newStatus === 'OnTheWay' ? 'On The Way' : newStatus;
+            //             statusElement.className = `status status-${newStatus.toLowerCase()}`;
+            //         }
+            //     });
+            // }
+            
+            // // Встановлюємо інтервал оновлення (5 хвилин = 300000 мс)
+            // // Для тестування можна змінити на менший інтервал, наприклад 10000 мс (10 секунд)
+            // setInterval(updateDeliveryStatus, 200000);
+        });
+
+        setInterval(async () => {
+            const response = await fetch('/profile/orders'); // Створіть окремий маршрут для отримання замовлень
+            const updatedOrders = await response.json();
+
+            // Оновіть DOM відповідно до нових даних
+            console.log(updatedOrders);
+        }, 300000); // Оновлення кожні 5 хвилин
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Existing timeline code remains...
+            
+            // Add close button to details popups
+            const detailsElements = document.querySelectorAll('details');
+            
+            detailsElements.forEach(details => {
+                details.addEventListener('toggle', function() {
+                    if (this.open) {
+                        const popup = this.querySelector('ul');
+                        
+                        // Create close button if it doesn't exist
+                        if (!popup.querySelector('.popup-close')) {
+                            const closeButton = document.createElement('span');
+                            closeButton.className = 'popup-close';
+                            closeButton.innerHTML = '×';
+                            closeButton.title = 'Close';
+                            
+                            // Add click event to close button
+                            closeButton.addEventListener('click', function(event) {
+                                event.stopPropagation();
+                                details.open = false;
+                            });
+                            
+                            popup.appendChild(closeButton);
+                        }
                     }
                 });
-            }
+            });
             
-            // Встановлюємо інтервал оновлення (5 хвилин = 300000 мс)
-            // Для тестування можна змінити на менший інтервал, наприклад 10000 мс (10 секунд)
-            setInterval(updateDeliveryStatus, 200000);
+            // Close on ESC key press
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape') {
+                    detailsElements.forEach(details => {
+                        if (details.open) {
+                            details.open = false;
+                        }
+                    });
+                }
+            });
+            
+            // Close on click outside
+            document.addEventListener('click', function(event) {
+                // Check if any details element is open
+                detailsElements.forEach(details => {
+                    if (details.open) {
+                        // Check if click target is outside the summary and its popup content
+                        const popup = details.querySelector('ul');
+                        const summary = details.querySelector('summary');
+                        
+                        // If click is not on the popup or summary, close the details
+                        if (!popup.contains(event.target) && event.target !== summary) {
+                            details.open = false;
+                        }
+                    }
+                });
+            });
+            
+            // Prevent clicks inside the popup from closing it
+            const popupContents = document.querySelectorAll('details ul');
+            popupContents.forEach(popup => {
+                popup.addEventListener('click', function(event) {
+                    event.stopPropagation();
+                });
+            });
         });
         </script>
     </body>
