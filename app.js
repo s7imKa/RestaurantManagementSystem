@@ -40,7 +40,7 @@ app.use((req, res, next) => {
     next();
 });
 
-// Додаємо middleware для підтримки методів PUT і DELETE
+// Додаємо middleware для поддержки методов PUT и DELETE
 app.use(methodOverride("_method")); // Add this line
 
 // Static files
@@ -64,7 +64,7 @@ app.use("/admin", dishRoutes);
 // Run the updateOrderStatus function every 5 minutes
 setInterval(adminController.updateOrderStatus, 300000); // 300000 milliseconds = 5 minutes
 
-sequelize.sync() // Використовуйте { alter: true }, щоб синхронізувати модель з таблицею
+sequelize.sync()
     .then(() => {
         console.log("Database synchronized");
     })

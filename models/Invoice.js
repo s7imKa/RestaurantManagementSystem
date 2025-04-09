@@ -1,29 +1,24 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
 
-const CartItem = sequelize.define("CartItem", {
+const Invoice = sequelize.define("Invoice", {
     id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true,
     },
-    quantity: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        defaultValue: 1,
-    },
-    dishName: {
+    productName: {
         type: DataTypes.STRING,
         allowNull: false,
     },
-    dishPrice: {
-        type: DataTypes.DECIMAL(10, 2),
-        allowNull: false,
-    },
-    userId: {
+    amount: {
         type: DataTypes.INTEGER,
         allowNull: false,
     },
+    processedAt: {
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW,
+    },
 });
 
-module.exports = CartItem;
+module.exports = Invoice;

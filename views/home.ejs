@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Restaurant Home</title>
         <link rel="stylesheet" href="/home_page.css" />
-        <link rel="stylesheet" href="/dark-theme.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     </head>
     
     <body>
@@ -174,8 +174,55 @@
             <button class="carousel-btn prev-btn">❮</button>
             <button class="carousel-btn next-btn">❯</button>
         </div>
+
+        <!-- Footer Section -->
+        <footer class="site-footer">
+            <div class="footer-container">
+                <div class="footer-column">
+                    <h3>Our Restaurant</h3>
+                    <p>Традиції та інновації в кожній страві. Відкрийте для себе світ неперевершених кулінарних вражень.</p>
+                    <div class="social-icons">
+                        <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Навігація</h3>
+                    <ul class="footer-links">
+                        <li><a href="/booking">Замовити столик</a></li>
+                        <li><a href="#about">Про нас</a></li>
+                        <li><a href="#menu-section">Меню</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Години роботи</h3>
+                    <ul class="working-hours">
+                        <li><span>Понеділок - П'ятниця:</span> 10:00 - 22:00</li>
+                        <li><span>Субота:</span> 11:00 - 23:00</li>
+                        <li><span>Неділя:</span> 11:00 - 22:00</li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Контакти</h3>
+                    <address>
+                        <p><i class="fas fa-map-marker-alt"></i> вул. Ресторанна, 123, Київ</p>
+                        <p><i class="fas fa-phone"></i> +380 (44) 123-45-67</p>
+                        <p><i class="fas fa-envelope"></i> info@ourrestaurant.com</p>
+                    </address>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 Our Restaurant. Всі права захищені.</p>
+            </div>
+        </footer>
         <script>
-            document.addEventListener("DOMContentLoaded", () => {
+            document.addEventListener("DOMContentLoaded", (e) => {
+                e.preventDefault();
                 const track = document.querySelector(".carousel-track");
                 const prevBtn = document.querySelector(".prev-btn");
                 const nextBtn = document.querySelector(".next-btn");

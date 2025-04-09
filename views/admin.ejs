@@ -4,13 +4,24 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Dashboard</title>
-  <link rel="stylesheet" href="/admin_panel.css">
+  <link rel="stylesheet" href="admin_panel.css">
 </head>
 <body>
-  <h1>Admin Dashboard</h1>
-  <a href="/admin/orders">View Orders</a>
-  <a href="/admin/dishes">Manage Dishes</a>
-  <a href="/admin/reservations">View Reservations</a>
-  <a href="/admin/inventory">Manage Inventory</a>
-  <a href="/" class="back-to-home">Back to Home</a></body>
+  <a href="/" class="back-to-home">Back to Home</a>
+  
+  <div class="admin-container">
+    <h1>Admin Dashboard</h1>
+    
+    <div class="admin-links">
+      <a href="/admin/orders"><span>View Orders</span></a>
+      <a href="/admin/dishes"><span>Manage Dishes</span></a>
+      <a href="/admin/reservations"><span>View Reservations</span></a>
+      <a href="/admin/inventory"><span>Manage Inventory</span></a>
+    </div>
+    
+    <!-- Decorative elements -->
+    <div class="accent-circle accent-circle-1"></div>
+    <div class="accent-circle accent-circle-2"></div>
+  </div>
+</body>
 </html>

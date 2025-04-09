@@ -1,21 +1,26 @@
- /* Modern Restaurant Website Dark Theme Styles */
+ /* Modern Restaurant Website Refined Dark Theme */
  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Cormorant+Garamond:wght@500;600;700&display=swap');
 
  :root {
-    --primary: #d7993c; /* Gold/amber */
-    --primary-light: #e5b568; /* Lighter gold shade */
-    --secondary: #a34a3b; /* Deep burgundy/wine color */
-    --accent: #fbc979; /* Light gold/champagne accent */
-    --light: #f7f9f9;
-    --dark: #1a1814; /* Slightly warmer dark tone */
-    --darker: #0f0d0b; /* Warmer darkest tone */
-    --gray: #2a2522; /* Warmer gray */
-    --light-gray: #3a3532; /* Warmer light gray */
-    --text: #e6e1d9; /* Slightly warmer text color */
-    --text-muted: #a09a94; /* Warmer muted text */
-    --shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
-    --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-}
+     --primary: #f0b742; /* Brighter gold */
+     --primary-light: #ffd166; /* Lighter gold shade */
+     --primary-dark: #e29700; /* Darker gold for hover states */
+     --secondary: #e63946; /* Vibrant red accent */
+     --secondary-light: #ff4d5e; /* Lighter red */
+     --accent: #4cc9f0; /* Blue accent for highlights */
+     --light: #f8f9fa;
+     --dark: #121212; /* Very dark background */
+     --darker: #080808; /* Almost black */
+     --gray: #2a2a2a; /* Dark gray */
+     --light-gray: #3a3a3a; /* Lighter gray */
+     --text: #e6e6e6; /* Light text color */
+     --text-muted: #a0a0a0; /* Muted text */
+     --shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+     --card-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+     --glow: 0 0 15px rgba(240, 183, 66, 0.5);
+     --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+     --border-radius: 8px;
+ }
 
  * {
      margin: 0;
@@ -27,131 +32,133 @@
  body {
      background-color: var(--dark);
      color: var(--text);
-     line-height: 1.6;
+     line-height: 1.5;
      padding: 0;
      max-width: 1400px;
      margin: 0 auto;
+     padding: 20px;
  }
 
  /* Typography */
  h1, h2, h3 {
      font-family: 'Cormorant Garamond', serif;
-     font-weight: 700;
+     font-weight: 600;
      color: var(--primary);
-     letter-spacing: -0.02em;
+     letter-spacing: -0.01em;
  }
 
- h1 {
-     font-size: 3rem;
-     text-align: center;
-     padding: 40px 20px;
-     margin-bottom: 20px;
-     position: relative;
- }
 
- h1::after {
-     content: "";
-     position: absolute;
-     bottom: 20px;
-     left: 50%;
-     transform: translateX(-50%);
-     width: 80px;
-     height: 3px;
-     background: var(--secondary);
- }
 
  h2 {
-    max-width: 90%;
-     font-size: 1.6rem;
-     margin: auto;
-     text-align: center;
-     position: relative;
-     background-color: rgba(0, 123, 255, 0.15);
-     color: (--primary);
-     border-radius: 20px;
- }
+    font-size: 1.8rem;
+    text-align: center;
+    padding: 12px;
+    margin: 5px auto 20px;
+    position: relative;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+    background-color: rgba(80, 60, 60, 0.15);
+    color: #e48900;
+    border-radius: 10px;
+    width: 50%;
+    max-width: 400px;
+    background-image: 
+        linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, 
+        transparent 50%, rgba(255, 255, 255, 0.15) 50%, 
+        rgba(255, 0, 0, 0.262) 75%, transparent 75%);
+    background-size: 20px 20px;
+}
 
- h2::after {
-     content: "";
-     position: absolute;
-     bottom: -10px;
-     left: 50%;
-     transform: translateX(-50%);
-     width: 60px;
-     height: 3px;
-     background: var(--secondary);
- }
-
- a {
-     text-decoration: none;
-     color: var(--primary);
-     font-weight: 600;
-     transition: var(--transition);
-     padding: 10px 18px;
-     display: inline-block;
-     margin: 5px;
-     border-radius: 8px;
- }
-
- a:hover {
-     color: var(--accent);
-     background-color: rgba(212, 167, 98, 0.1);
-     transform: translateY(-2px);
- }
-
- /* Back button - fixed at top center */
-a[href="/admin"] {
+h2::after {
+    content: "";
     position: absolute;
-    top: 20px; /* Відступ від верхнього краю */
-    left: 50%; /* Вирівнювання по центру */
-    transform: translateX(-50%); /* Центрування по горизонталі */
-    z-index: 1000;
-    background: var(--primary);
-    color: var(--dark);
-    border: none;
-    padding: 12px 25px;
+    bottom: -3px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 2px;
+    background: var(--secondary);
+}
+
+ h3 {
+     font-size: 1.4rem;
+     margin: 20px 0 15px 10px;
+     color: var(--text);
+     font-weight: 500;
+ }
+
+ a[href="/admin"] {
+    position: absolute;
+    top: 40px;
+    left: 100px;
+    background: var(--dark);
+    color: var(--primary);
+    border: 1px solid var(--primary);
+    padding: 10px 20px;
     border-radius: 50px;
     font-size: 14px;
     font-weight: 600;
     text-align: center;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     cursor: pointer;
-    width: auto;
-    max-width: 200px;
-    display: inline-block;
+    text-decoration: none;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    z-index: 100;
+}
+
+a[href="/admin"]::before {
+    content: "←";
+    margin-right: 8px;
+    font-size: 16px;
 }
 
 a[href="/admin"]:hover {
-    background: var(--secondary);
-    color: white;
-    transform: translate(-50%, -3px); /* Легкий підйом при наведенні */
-    box-shadow: 0 8px 20px rgba(163, 74, 59, 0.3);
+    background: var(--primary);
+    color: var(--dark);
+    transform: translateY(-3px);
+    box-shadow: var(--glow);
 }
 
-.delete-button {
-    background-color: #d9534f;
-    color: white;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 5px;
-    font-size: 14px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
+ /* Order Groups */
+ .order-group {
+     margin: 30px auto;
+     border-radius: var(--border-radius);
+     overflow: hidden;
+     box-shadow: var(--shadow);
+     background-color: var(--gray);
+     width: 95%;
+     max-width: 1200px;
+     border: 1px solid var(--light-gray);
+ }
 
-.delete-button:hover {
-    background-color: #c9302c;
-}
+ .order-group-header {
+     background-color: var(--primary-dark);
+     color: var(--dark);
+     padding: 10px 15px;
+     font-weight: 500;
+     font-size: 0.95rem;
+     display: flex;
+     justify-content: space-between;
+     align-items: center;
+     border-bottom: 1px solid var(--light-gray);
+ }
+
+ .order-count {
+     background-color: var(--gray);
+     color: var(--secondary);
+     padding: 2px 10px;
+     border-radius: 20px;
+     font-size: 0.85rem;
+     border: 1px solid var(--light-gray);
+ }
 
  /* Orders Tables */
  table {
-     width: 90%;
-     margin: 30px auto;
+     width: 100%;
      border-collapse: collapse;
-     box-shadow: var(--shadow);
-     border-radius: 15px;
-     overflow: hidden;
      background-color: var(--gray);
+     font-size: 0.9rem;
  }
 
  thead {
@@ -159,16 +166,16 @@ a[href="/admin"]:hover {
  }
 
  th {
-    font-size: 18px;
-     padding: 15px;
-     font-weight: 400;
+     padding: 10px 8px;
+     font-weight: 500;
      text-align: left;
-     color: var(--primary);
-     border-bottom: 2px solid var(--primary-light);
+     color: var(--primary-light);
+     border-bottom: 1px solid var(--light-gray);
+     white-space: nowrap;
  }
 
  td {
-     padding: 15px;
+     padding: 8px;
      border-bottom: 1px solid var(--light-gray);
      color: var(--text);
  }
@@ -178,24 +185,23 @@ a[href="/admin"]:hover {
  }
 
  tbody tr:hover {
-     background-color: var(--light-gray);
-     transform: translateY(-2px);
+     background-color: rgba(255, 255, 255, 0.05);
  }
 
  /* Form elements */
  select, button {
-     padding: 8px 12px;
-     border-radius: 50px;
+     padding: 5px 10px;
+     border-radius: 4px;
      border: none;
      font-family: 'Montserrat', sans-serif;
-     font-size: 14px;
+     font-size: 13px;
      transition: var(--transition);
  }
 
  select {
-     background-color: var(--dark);
+     background-color: var(--darker);
      color: var(--text);
-     margin-right: 10px;
+     margin-right: 6px;
      border: 1px solid var(--light-gray);
      cursor: pointer;
  }
@@ -203,55 +209,98 @@ a[href="/admin"]:hover {
  select:focus {
      outline: none;
      border-color: var(--primary);
-     box-shadow: 0 0 0 2px rgba(212, 167, 98, 0.2);
  }
 
  button {
-     background-color: var(--primary);
-     color: var(--dark);
-     font-weight: 600;
+     background-color: var(--gray);
+     color: var(--text);
+     font-weight: 500;
      cursor: pointer;
-     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+     border: 1px solid var(--light-gray);
  }
 
  button:hover {
-     background-color: var(--secondary);
-     color: white;
-     transform: translateY(-2px);
-     box-shadow: 0 6px 15px rgba(163, 74, 59, 0.3);
+     background-color: var(--light-gray);
+     border-color: var(--primary-light);
  }
 
- /* New order indicator */
- .new-order {
+ /* Status colors */
+ .status-pending {
+     color: var(--accent);
+ }
+
+ .status-in-progress {
      color: var(--primary);
-     font-weight: 700;
  }
 
- /* Back button */
- .back-button {
-     display: block;
-     margin: 40px auto;
-     width: fit-content;
-     background-color: var(--secondary);
-     color: white;
-     padding: 12px 30px;
-     border-radius: 50px;
-     font-weight: 600;
-     text-align: center;
-     box-shadow: 0 8px 20px rgba(163, 74, 59, 0.2);
+ .status-delivered {
+     color: #6a9c78;
  }
 
- .back-button:hover {
-     background-color: var(--primary);
+ .status-cancelled {
+     color: var(--secondary);
+ }
+
+ /* Table column sizes */
+ .col-name { width: 15%; }
+ .col-dish { width: 15%; }
+ .col-qty { width: 5%; }
+ .col-address { width: 25%; }
+ .col-phone { width: 12%; }
+ .col-status { width: 18%; }
+ .col-time { width: 10%; }
+
+ /* Toggle for groups */
+ .toggle-btn {
+     background: transparent;
      color: var(--dark);
-     transform: translateY(-3px);
-     box-shadow: 0 12px 25px rgba(212, 167, 98, 0.3);
+     border: none;
+     cursor: pointer;
+     font-size: 1.1rem;
+     transition: transform 0.3s ease;
+     padding: 0 8px;
+     box-shadow: none;
+ }
+
+ .toggle-btn:hover {
+     background: transparent;
+     color: var(--primary);
+     transform: scale(1.1);
+     box-shadow: none;
+     border: none;
+ }
+
+ .toggle-btn.collapsed {
+     transform: rotate(-90deg);
+ }
+
+ .order-details {
+     display: block;
+     transition: all 0.3s ease;
+ }
+
+ .order-details.collapsed {
+     display: none;
+ }
+
+ /* Date group styling */
+ .date-header {
+     color: var(--text-muted);
+     font-size: 1.1rem;
+     margin: 30px 0 15px 15px;
+     padding-bottom: 5px;
+     border-bottom: 1px solid var(--light-gray);
+     width: 85%;
  }
 
  /* Responsive adjustments */
  @media screen and (max-width: 1200px) {
      table {
-         width: 95%;
+         font-size: 0.85rem;
+     }
+     
+     td, th {
+         padding: 8px 6px;
      }
  }
 
@@ -262,22 +311,30 @@ a[href="/admin"]:hover {
      }
      
      th, td {
-         min-width: 120px;
+         min-width: 80px;
+     }
+     
+     h2 {
+         width: 70%;
      }
  }
 
  @media screen and (max-width: 600px) {
      h1 {
-         font-size: 2.2rem;
-         padding: 20px 0;
+         font-size: 1.6rem;
      }
      
      h2 {
-         font-size: 1.8rem;
+         font-size: 1.4rem;
+         width: 90%;
+     }
+     
+     .order-group {
+         width: 100%;
      }
      
      select, button {
-         padding: 6px 10px;
+         padding: 4px 8px;
          font-size: 12px;
      }
  }

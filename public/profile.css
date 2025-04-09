@@ -163,10 +163,12 @@ table {
     margin: 35px 0;
     background-color: var(--gray);
     border-radius: 12px;
-    overflow: hidden;
+    /* overflow: hidden; */
     border: 1px solid var(--light-gray);
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
+    overflow: visible; 
+
 }
 
 thead {
@@ -476,7 +478,7 @@ details summary::-webkit-details-marker {
 /* Вміст випадаючого вікна - ПОВЕРХ УСІХ ЕЛЕМЕНТІВ */
 details[open] ul {
     position: fixed; /* Фіксована позиція замість absolute */
-    z-index: 9999; /* Найвищий z-index */
+    z-index: 9999 !important; /* Найвищий z-index */
     top: 50%; /* Центрування по вертикалі */
     left: 50%; /* Центрування по горизонталі */
     transform: translate(-50%, -50%); /* Повне центрування */

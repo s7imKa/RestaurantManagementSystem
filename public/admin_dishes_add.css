@@ -2,19 +2,24 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Cormorant+Garamond:wght@500;600;700&display=swap');
 
 :root {
-    --primary: #d7993c; /* Gold/amber */
-    --primary-light: #e5b568; /* Lighter gold shade */
-    --secondary: #a34a3b; /* Deep burgundy/wine color */
-    --accent: #fbc979; /* Light gold/champagne accent */
-    --light: #f7f9f9;
-    --dark: #1a1814; /* Slightly warmer dark tone */
-    --darker: #0f0d0b; /* Warmer darkest tone */
-    --gray: #2a2522; /* Warmer gray */
-    --light-gray: #3a3532; /* Warmer light gray */
-    --text: #e6e1d9; /* Slightly warmer text color */
-    --text-muted: #a09a94; /* Warmer muted text */
-    --shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    --primary: #f0b742; /* Brighter gold */
+    --primary-light: #ffd166; /* Lighter gold shade */
+    --primary-dark: #cc9933; /* Darker gold for hover states */
+    --secondary: #bf0010; /* Vibrant red accent */
+    --secondary-light: #ff4d5e; /* Lighter red */
+    --accent: #4cc9f0; /* Blue accent for highlights */
+    --light: #f8f9fa;
+    --dark: #121212; /* Very dark background */
+    --darker: #080808; /* Almost black */
+    --gray: #2a2a2a; /* Dark gray */
+    --light-gray: #3a3a3a; /* Lighter gray */
+    --text: #e6e6e6; /* Light text color */
+    --text-muted: #a0a0a0; /* Muted text */
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    --card-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+    --glow: 0 0 15px rgba(240, 183, 66, 0.5);
     --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    --border-radius: 8px;
 }
 
 * {
@@ -34,28 +39,32 @@ body {
 }
 
 h2 {
-    font-family: 'Cormorant Garamond', serif;
-    font-weight: 700;
-    color: var(--primary);
-    letter-spacing: -0.02em;
-    font-size: 2.2rem;
-    margin: 40px auto;
+    font-size: 1.8rem;
     text-align: center;
+    padding: 12px;
+    margin: 5px auto 20px;
     position: relative;
-    background-color: rgba(0, 123, 255, 0.15);
-    color: (--primary);
-    border-radius: 20px;
-    width: 60%;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+    background-color: rgba(80, 60, 60, 0.15);
+    color: #e48900;
+    border-radius: 10px;
+    width: 50%;
+    max-width: 400px;
+    background-image: 
+        linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, 
+        transparent 50%, rgba(255, 255, 255, 0.15) 50%, 
+        rgba(255, 0, 0, 0.262) 75%, transparent 75%);
+    background-size: 20px 20px;
 }
 
 h2::after {
     content: "";
     position: absolute;
-    bottom: -10px;
+    bottom: -3px;
     left: 50%;
     transform: translateX(-50%);
-    width: 120px;
-    height: 3px;
+    width: 40px;
+    height: 2px;
     background: var(--secondary);
 }
 
@@ -232,33 +241,42 @@ tr:hover {
 
 
  /* Back button - fixed at top center */
- a[href="/admin"] {
+
+/* Back button - positioned left, next to heading */
+a[href="/admin"] {
     position: absolute;
-    top: 20px; /* Відступ від верхнього краю */
-    left: 50%; /* Вирівнювання по центру */
-    transform: translateX(-50%); /* Центрування по горизонталі */
-    z-index: 1000;
-    background: var(--primary);
-    color: var(--dark);
-    border: none;
-    padding: 12px 25px;
+    top: 40px;
+    left: 160px;
+    background: var(--dark);
+    color: var(--primary);
+    border: 1px solid var(--primary);
+    padding: 10px 20px;
     border-radius: 50px;
     font-size: 14px;
     font-weight: 600;
     text-align: center;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     cursor: pointer;
-    width: auto;
-    max-width: 200px;
-    display: inlin-block;
+    text-decoration: none;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    z-index: 100;
+}
+
+a[href="/admin"]::before {
+    content: "←";
+    margin-right: 8px;
+    font-size: 16px;
 }
 
 a[href="/admin"]:hover {
-    background: var(--secondary);
-    color: white;
-    transform: translate(-50%, -3px); /* Легкий підйом при наведенні */
-    box-shadow: 0 8px 20px rgba(163, 74, 59, 0.3);
+    background: var(--primary);
+    color: var(--dark);
+    transform: translateY(-3px);
+    box-shadow: var(--glow);
 }
+
 
 /* Delete button in table */
 table button {

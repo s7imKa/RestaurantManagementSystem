@@ -1,4 +1,3 @@
-
 <html lang="en">
   <head>
     <meta charset="UTF-8">
@@ -10,8 +9,8 @@
     </style>
   </head>
   <body>
-    <h1>Inventory Management</h1>
-    <a href="/admin">Back to Dashboard</a>
+    <h2>Inventory Management</h2>
+    <a href="/admin">Back to Admin</a>
   
     <!-- Форма для оновлення запасів -->
     <form action="/admin/inventory/update" method="POST">
@@ -44,21 +43,28 @@
                       <button type="button" class="fill-to-max" data-id="<%= item.name %>" data-maxstock="<%= item.maxStock %>" data-stock="<%= item.stock %>">
                           Fill to Max
                       </button>
-                      <button type="button" class="add-to-invoice" data-id="<%= item.id %>" data-name="<%= item.name %>">
+                      <!-- <button type="button" class="add-to-invoice" data-id="<%= item.id %>" data-name="<%= item.name %>">
                           Add to Invoice
-                      </button>
+                      </button> -->
                   </td>
               </tr>
               <% }); %>
           </tbody>
       </table>
-      <button type="submit">Update Inventory</button>
+
+      <!-- Додаємо кнопки під таблицею -->
+      <div class="table-actions">
+          <button type="button" id="fillAllToMax">Fill All to Max</button>
+          <button type="button" id="addAllToInvoice">Add All to Invoice</button>
+      </div>
+
+      <!-- <button type="submit">Update Inventory</button> -->
   </form>
 
   <!-- Таблиця накладної -->
-  <h2>Invoice</h2>
+  <!-- <h2>Invoice</h2> -->
   <form action="/admin/inventory/process" method="POST">
-      <table class="invoice-table">
+      <table class="invoice-table" id="invoiceTableWrapper" style="display: none;">
           <thead>
               <tr>
                   <th>Product</th>
@@ -70,8 +76,53 @@
               <!-- Динамічно додані рядки -->
           </tbody>
       </table>
-      <button type="submit">Process Invoice</button>
+      <button type="submit" id="processInvoiceButton" style="display: none;">Process Invoice</button>
   </form>
+
+
+
+  <h2>Invoice History</h2>
+
+ <!-- Форма для пошуку по даті -->
+ <div style="margin-bottom: 20px;">
+    <label for="searchDate">Search by Date:</label>
+    <input type="date" id="searchDate" />
+    <button type="button" id="searchButton">Search</button>
+</div>
+
+    <table class="invoice-history-table">
+        <thead>
+            <tr>
+                <th>Product Name</th>
+                <th>Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% 
+            let currentTimeGroup = null; 
+            invoices.forEach(invoice => { 
+                const invoiceDate = new Date(invoice.processedAt).toLocaleDateString(); // Форматуємо тільки дату
+                const invoiceTime = new Date(invoice.processedAt).toLocaleString(); // Форматуємо дату і час
+                if (currentTimeGroup !== invoiceTime) { 
+                    currentTimeGroup = invoiceTime; 
+            %>
+                <!-- Відображаємо заголовок групи -->
+                <tr id="group-<%= invoiceDate.replace(/[^a-zA-Z0-9]/g, '-') %>">
+                    <td colspan="2" style="font-weight: bold; background-color: #f0f0f0;">
+                        Processed At: <%= currentTimeGroup %>
+                    </td>
+                </tr>
+            <% 
+                } 
+            %>
+                <!-- Відображаємо рядок накладної -->
+                <tr>
+                    <td><%= invoice.productName %></td>
+                    <td><%= invoice.amount %></td>
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
 
   <script>
       // Заповнення до максимального запасу
@@ -115,9 +166,102 @@
               // Видалення з накладної
               newRow.querySelector('.remove-from-invoice').addEventListener('click', () => {
                   newRow.remove();
+                  toggleInvoiceTableVisibility(); // Оновлюємо видимість таблиці
               });
+
+              toggleInvoiceTableVisibility(); // Оновлюємо видимість таблиці
           });
       });
+
+      // Заповнення всіх інпутів до максимального запасу
+      document.getElementById('fillAllToMax').addEventListener('click', () => {
+          document.querySelectorAll('.fill-to-max').forEach(button => {
+              const id = button.getAttribute('data-id');
+              const maxStock = parseInt(button.getAttribute('data-maxstock'), 10);
+              const currentStock = parseInt(button.getAttribute('data-stock'), 10);
+              const input = document.querySelector(`input[name="restock[${id}]"]`);
+              if (input) {
+                  input.value = maxStock - currentStock;
+                  if (input.value < 0) {
+                      input.value = 0; // Не дозволяємо негативні значення
+                  }
+              }
+          });
+      });
+
+      // Додавання всіх заповнених інпутів до накладної
+      document.getElementById('addAllToInvoice').addEventListener('click', () => {
+          const invoiceTable = document.getElementById('invoiceTable');
+          document.querySelectorAll('input[name^="restock"]').forEach(input => {
+              const value = parseInt(input.value, 10);
+              if (value > 0) {
+                  const name = input.name.match(/restock\[(.+)\]/)[1];
+                  const existingRow = document.querySelector(`#invoiceTable tr[data-id="${name}"]`);
+                  if (existingRow) {
+                      alert(`Product "${name}" is already in the invoice.`);
+                      return;
+                  }
+
+                  const newRow = document.createElement('tr');
+                  newRow.setAttribute('data-id', name);
+                  newRow.innerHTML = `
+                      <td>${name}</td>
+                      <td><input type="number" name="invoice[${name}]" value="${value}" min="1"></td>
+                      <td><button type="button" class="remove-from-invoice">Remove</button></td>
+                  `;
+                  invoiceTable.appendChild(newRow);
+
+                  // Видалення з накладної
+                  newRow.querySelector('.remove-from-invoice').addEventListener('click', () => {
+                      newRow.remove();
+                      toggleInvoiceTableVisibility(); // Оновлюємо видимість таблиці
+                  });
+              }
+          });
+          toggleInvoiceTableVisibility(); // Оновлюємо видимість таблиці
+      });
+
+         // Пошук по даті
+    document.getElementById('searchButton').addEventListener('click', () => {
+        const searchDate = document.getElementById('searchDate').value;
+        if (!searchDate) {
+            alert('Please select a date.');
+            return;
+        }
+
+        // Форматуємо дату для пошуку
+        const formattedDate = new Date(searchDate).toLocaleDateString();
+        const targetRow = document.querySelector(`#group-${formattedDate.replace(/[^a-zA-Z0-9]/g, '-')}`);
+
+        if (targetRow) {
+            // Скролимо до відповідного заголовка групи
+            targetRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            targetRow.style.backgroundColor = '#ffeb3b'; // Виділяємо знайдений рядок
+            setTimeout(() => {
+                targetRow.style.backgroundColor = '#f0f0f0'; // Повертаємо початковий колір
+            }, 2000);
+        } else {
+            alert('No invoices found for the selected date.');
+        }
+    });
+
+    // Функція для перевірки наявності рядків у таблиці
+    function toggleInvoiceTableVisibility() {
+        const invoiceTable = document.getElementById('invoiceTable');
+        const tableWrapper = document.getElementById('invoiceTableWrapper');
+        const processButton = document.getElementById('processInvoiceButton');
+
+        if (invoiceTable.children.length > 0) {
+            tableWrapper.style.display = 'table'; // Показуємо таблицю
+            processButton.style.display = 'block'; // Показуємо кнопку
+        } else {
+            tableWrapper.style.display = 'none'; // Ховаємо таблицю
+            processButton.style.display = 'none'; // Ховаємо кнопку
+        }
+    }
+
+    // Викликаємо функцію при завантаженні сторінки
+    toggleInvoiceTableVisibility();
   </script>
   </body>
   </html>
