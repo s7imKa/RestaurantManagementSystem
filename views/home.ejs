@@ -1,50 +1,69 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uk">
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Restaurant Home</title>
+        <title>Головна сторінка</title>
         <link rel="stylesheet" href="/home_page.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     </head>
     
     <body>
         <button id="scrollToTop" class="scroll-to-top" title="Прогорнути вгору">⬆</button>
-        <!-- Updated smaller header with navigation -->
+        <!-- Оновлений компактний хедер із навігацією -->
         <header>
             <div class="nav-container">
-                <a href="/" class="logo">Our Restaurant</a>
+                <a href="/" class="logo">Наш Ресторан</a>
                 <nav>
-                <a href="/booking">Замовити столик</a>
-                <a href="#about">Про нас</a>
-                <a href="#reviews-section">Відгуки</a>
-                <a href="#menu-section" class="scroll-to-menu">Меню</a>
-                <% if (req.isAuthenticated()) { %>
-                    <% if (req.user.isAdmin) { %>
-                        <a href="/admin">Адмін</a>
-                    <% } %>
+                    <a href="/booking">Замовити столик</a>
+                    <a href="#about">Про нас</a>
+                    <a href="#reviews-section">Відгуки</a>
+                    <a href="#menu-section" class="scroll-to-menu">Меню</a>
+                    <% if (req.isAuthenticated()) { %>
+                        <% if (req.user.isAdmin) { %>
+                            <a href="/admin">Адмін</a>
+                        <% } %>
                         <a href="/auth/logout">Вихід</a>
-                    <% if (!req.user.isAdmin) { %>
-                        <a href="/profile" class="scroll-to-reviews">Профіль</a>
-                        <button onclick="window.location.href='/cart'" class="cart-button">Кошик</button>
-                    <% } %>
+                        <% if (!req.user.isAdmin) { %>
+                            <a href="/profile" class="scroll-to-reviews">Профіль</a>
+                            <button onclick="window.location.href='/cart'" class="cart-button">Кошик</button>
+                        <% } %>
                     <% } else { %>
                         <a href="/auth/login">Вхід</a>
                     <% } %>
-            </nav>
+                </nav>
             </div>
         </header>
 
-         <!-- Rest of the page content remains the same -->
-        <!-- New Welcome Banner -->
-        <div class="welcome-banner">
-            <h1>Ласкаво просимо до нашого ресторану!</h1>
-            <p>Відчуйте неперевершений смак справжньої кухні та атмосферу затишку</p>
+        <div class="banner-slider">
+            <div class="banner-slide active" style="background-image: url('./images/Banner/Банер_ласкаво_просимо.webp');">
+                <div class="welcome-banner-content">
+                    <h1>Ласкаво просимо!</h1>
+                    <p>Відчуйте неперевершений смак справжньої кухні та атмосферу затишку.</p>
+                </div>
+            </div>
+            <div class="banner-slide" style="background-image: url('./images/Banner/Банер_свіжі_продукти.jpg');">
+                <div class="welcome-banner-content">
+                    <h1>Свіжі інгредієнти</h1>
+                    <p>Ми використовуємо лише найкращі продукти для створення ваших улюблених страв.</p>
+                </div>
+            </div>
+            <div class="banner-slide" style="background-image: url('./images/Banner/Банер_забронюйте_столик.jpg');">
+                <div class="welcome-banner-content">
+                    <h1>Забронюйте столик</h1>
+                    <p>Забезпечте собі місце для незабутнього вечора вже сьогодні.</p>
+                </div>
+            </div>
+            <button class="prev-slide" aria-label="Попередній слайд">❮</button>
+            <button class="next-slide" aria-label="Наступний слайд">❯</button>
+            <div class="slide-indicators"></div>
         </div>
+
+
 
         <!-- Кнопки для вибору категорій -->
         <div class="category-buttons">
-            <button class="category-btn active" data-category="all">All</button>
+            <button class="category-btn active" data-category="all">Усі</button>
             <% for (const category in categories) { %>
                 <button class="category-btn" data-category="<%= category %>"><%= category %></button>
             <% } %>
@@ -54,16 +73,17 @@
         <div id="menu-section" class="dishes">
             <% for (const category in categories) { %>
                 <div class="category-section" data-category="<%= category %>">
-                    <h2><%= category %></h2>
-                    <div class="dish-grid">
+                    <h2 class="category-title">
+                        <span class="category-title-inner"><%= category %></span>
+                    </h2>                    <div class="dish-grid">
                         <% categories[category].forEach(dish => { %>
                             <div class="dish-card">
                                 <img src="<%= dish.imageUrl %>" alt="<%= dish.name %>" class="dish-image" />
                                 <h3><%= dish.name %></h3>
                                 <p><%= dish.description %></p>
-                                <p>Ingredients: <%= dish.ingredients %></p>
+                                <p>Інгредієнти: <%= dish.ingredients %></p>
                                 <div class="price-and-cart">
-                                    <p class="price">Price: <%= dish.price %>$</p>
+                                    <p class="price">Ціна: <%= dish.price %>₴</p>
                                     <form class="form-add-cart-routs" action="/order/addToCart" method="POST">
                                         <input type="hidden" name="dishName" value="<%= dish.name %>" />
                                         <input type="hidden" name="dishPrice" value="<%= dish.price %>" />
@@ -77,12 +97,12 @@
             <% } %>
         </div>
 
-        <!-- Оновлений стильний блок "Про нас" -->
+        <!-- Секція "Про нас" -->
         <section class="about-section" id="about">
             <div class="about-content">
                 <div class="about-text">
                     <div class="about-title-container">
-                        <h2>Про наш ресторан</h2>
+                        <h2>Про наc</h2>
                         <p class="about-subtitle">Традиції та інновації в кожній страві</p>
                     </div>
                     
@@ -109,7 +129,7 @@
                         </li>
                     </ul>
                     
-                    <a href="#menu-section" class="about-btn">Преглянути меню</a>
+                    <a href="#menu-section" class="about-btn">Переглянути меню</a>
                 </div>
                 
                 <div class="about-image-container">
@@ -120,32 +140,34 @@
         </section>
 
         <!-- Відгуки -->
-        <p id="reviews-section" style="color: #d4a762; font-size: 1.5rem; border-top: 1px solid #d4a66283;">Customer Reviews</p>
-        <form class="form-review" action="/reviews" method="POST">
-            <textarea
-                name="review"
-                id="review"
-                rows="4"
-                placeholder="Leave your review here..."
-                required
-            ></textarea>
+        <section id="reviews-section">
+            <h2>Відгуки клієнтів</h2>
+            <form class="form-review" action="/reviews" method="POST">
+                <textarea
+                    name="review"
+                    id="review"
+                    rows="4"
+                    placeholder="Залиште свій відгук тут..."
+                    required
+                ></textarea>
 
-            <!-- Рейтинг із зірочками -->
-            <div class="star-rating">
-                <input type="radio" id="star5" name="rating" value="5" />
-                <label for="star5" title="5 stars">★</label>
-                <input type="radio" id="star4" name="rating" value="4" />
-                <label for="star4" title="4 stars">★</label>
-                <input type="radio" id="star3" name="rating" value="3" />
-                <label for="star3" title="3 stars">★</label>
-                <input type="radio" id="star2" name="rating" value="2" />
-                <label for="star2" title="2 stars">★</label>
-                <input type="radio" id="star1" name="rating" value="1" />
-                <label for="star1" title="1 star">★</label>
-            </div>
+                <!-- Рейтинг із зірочками -->
+                <div class="star-rating">
+                    <input type="radio" id="star5" name="rating" value="5" />
+                    <label for="star5" title="5 зірок">★</label>
+                    <input type="radio" id="star4" name="rating" value="4" />
+                    <label for="star4" title="4 зірки">★</label>
+                    <input type="radio" id="star3" name="rating" value="3" />
+                    <label for="star3" title="3 зірки">★</label>
+                    <input type="radio" id="star2" name="rating" value="2" />
+                    <label for="star2" title="2 зірки">★</label>
+                    <input type="radio" id="star1" name="rating" value="1" />
+                    <label for="star1" title="1 зірка">★</label>
+                </div>
 
-            <button type="submit" class="submit-review-btn">Submit Review</button>
-        </form>
+                <button type="submit" class="submit-review-btn">Надіслати відгук</button>
+            </form>
+        </section>
 
         <div class="reviews-carousel">
             <div class="carousel-track-container">
@@ -175,11 +197,11 @@
             <button class="carousel-btn next-btn">❯</button>
         </div>
 
-        <!-- Footer Section -->
+        <!-- Footer -->
         <footer class="site-footer">
             <div class="footer-container">
                 <div class="footer-column">
-                    <h3>Our Restaurant</h3>
+                    <h3>Наш Ресторан</h3>
                     <p>Традиції та інновації в кожній страві. Відкрийте для себе світ неперевершених кулінарних вражень.</p>
                     <div class="social-icons">
                         <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
@@ -217,7 +239,7 @@
             </div>
             
             <div class="footer-bottom">
-                <p>&copy; 2025 Our Restaurant. Всі права захищені.</p>
+                <p>&copy; 2025 Наш Ресторан. Всі права захищені.</p>
             </div>
         </footer>
         <script>
@@ -328,6 +350,181 @@
                 });
             });
 
+
+            document.addEventListener("DOMContentLoaded", () => {
+                // Кешуємо DOM-елементи
+                const slider = document.querySelector(".banner-slider");
+                const slides = [...document.querySelectorAll(".banner-slide")];
+                const prevButton = document.querySelector(".prev-slide");
+                const nextButton = document.querySelector(".next-slide");
+                const indicatorsContainer = document.querySelector(".slide-indicators");
+                
+                // Налаштування
+                const CONFIG = {
+                    slideDuration: 20000,      // Час відображення слайду (мс)
+                    swipeThreshold: 50,       // Мінімальна відстань для свайпу (пікселі)
+                    animationDelay: 50        // Затримка для оптимізації анімації (мс)
+                };
+                
+                // Стан слайдера
+                const state = {
+                    currentSlide: 0,
+                    slidesCount: slides.length,
+                    isTransitioning: false,
+                    intervalId: null
+                };
+                
+                // Створюємо індикатори (точки)
+                const createIndicators = () => {
+                    const fragment = document.createDocumentFragment();
+                    
+                    slides.forEach((_, index) => {
+                        const indicator = document.createElement("div");
+                        indicator.classList.add("slide-indicator");
+                        if (index === 0) indicator.classList.add("active");
+                        
+                        // Уникаємо анонімних функцій всередині циклу для кращої продуктивності
+                        indicator.dataset.slideIndex = index;
+                        indicator.addEventListener("click", handleIndicatorClick);
+                        
+                        fragment.appendChild(indicator);
+                    });
+                    
+                    indicatorsContainer.appendChild(fragment);
+                    return [...document.querySelectorAll(".slide-indicator")];
+                };
+                
+                const indicators = createIndicators();
+                
+                // Обробники подій
+                function handleIndicatorClick(e) {
+                    if (state.isTransitioning) return;
+                    
+                    const index = parseInt(e.currentTarget.dataset.slideIndex);
+                    goToSlide(index);
+                    resetInterval();
+                }
+                
+                function handlePrevClick() {
+                    if (state.isTransitioning) return;
+                    
+                    prevSlide();
+                    resetInterval();
+                }
+                
+                function handleNextClick() {
+                    if (state.isTransitioning) return;
+                    
+                    nextSlide();
+                    resetInterval();
+                }
+                
+                function handleKeydown(e) {
+                    if (state.isTransitioning) return;
+                    
+                    if (e.key === "ArrowLeft") {
+                        prevSlide();
+                        resetInterval();
+                    } else if (e.key === "ArrowRight") {
+                        nextSlide();
+                        resetInterval();
+                    }
+                }
+                
+                // Процес зміни слайдів
+                function showSlide(index) {
+                    if (state.isTransitioning) return;
+                    
+                    state.isTransitioning = true;
+                    
+                    // Оновлюємо класи
+                    slides.forEach(slide => slide.classList.remove("active"));
+                    indicators.forEach(indicator => indicator.classList.remove("active"));
+                    
+                    slides[index].classList.add("active");
+                    indicators[index].classList.add("active");
+                    
+                    // Дозволяємо завершити анімацію перед наступною зміною
+                    setTimeout(() => {
+                        state.isTransitioning = false;
+                    }, CONFIG.animationDelay);
+                }
+                
+                function goToSlide(index) {
+                    state.currentSlide = index;
+                    showSlide(state.currentSlide);
+                }
+                
+                function nextSlide() {
+                    state.currentSlide = (state.currentSlide + 1) % state.slidesCount;
+                    showSlide(state.currentSlide);
+                }
+                
+                function prevSlide() {
+                    state.currentSlide = (state.currentSlide - 1 + state.slidesCount) % state.slidesCount;
+                    showSlide(state.currentSlide);
+                }
+                
+                // Керування автоматичним перемиканням
+                function startInterval() {
+                    state.intervalId = setInterval(nextSlide, CONFIG.slideDuration);
+                }
+                
+                function resetInterval() {
+                    clearInterval(state.intervalId);
+                    startInterval();
+                }
+                
+                // Обробка свайпів для мобільних пристроїв
+                function initSwipeHandling() {
+                    let touchStartX = 0;
+                    
+                    const handleTouchStart = (e) => {
+                        touchStartX = e.changedTouches[0].screenX;
+                    };
+                    
+                    const handleTouchEnd = (e) => {
+                        const touchEndX = e.changedTouches[0].screenX;
+                        const difference = touchEndX - touchStartX;
+                        
+                        if (Math.abs(difference) < CONFIG.swipeThreshold) return;
+                        
+                        if (difference < 0) {
+                            // Свайп вліво - наступний слайд
+                            nextSlide();
+                        } else {
+                            // Свайп вправо - попередній слайд
+                            prevSlide();
+                        }
+                        
+                        resetInterval();
+                    };
+                    
+                    slider.addEventListener("touchstart", handleTouchStart, { passive: true });
+                    slider.addEventListener("touchend", handleTouchEnd, { passive: true });
+                }
+                
+                // Ініціалізація слайдера
+                function init() {
+                    // Прикріплюємо обробники подій
+                    prevButton.addEventListener("click", handlePrevClick);
+                    nextButton.addEventListener("click", handleNextClick);
+                    document.addEventListener("keydown", handleKeydown);
+                    
+                    // Пауза автозміни при наведенні
+                    slider.addEventListener("mouseenter", () => clearInterval(state.intervalId));
+                    slider.addEventListener("mouseleave", startInterval);
+                    
+                    // Ініціалізуємо підтримку свайпів
+                    initSwipeHandling();
+                    
+                    // Запускаємо автоматичну зміну слайдів
+                    startInterval();
+                }
+                
+                // Запуск
+                init();
+            });
         </script>
     </body>
 </html>

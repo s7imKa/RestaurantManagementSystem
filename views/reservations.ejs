@@ -1,24 +1,26 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uk">
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Reservations</title>
+        <title>Бронювання</title>
         <link rel="stylesheet" href="/admin_reservation.css" />
     </head>
     <body>
-        <h2>Reservations</h2>
+        <a href="/admin">Назад до панелі </a>
+
+        <h2>Бронювання</h2>
         <table>
             <thead>
                 <tr>
-                    <th>Customer Name</th>
-                    <th>Date</th>
-                    <th>Time</th>
-                    <th>People</th>
-                    <th>Status</th>
-                    <th>Date Created</th>
-                    <th>Pre Order</th>
-                    <th>Action</th>
+                    <th>Ім'я клієнта</th>
+                    <th>Дата</th>
+                    <th>Час</th>
+                    <th>Кількість людей</th>
+                    <th>Статус</th>
+                    <th>Дата створення</th>
+                    <th>Попереднє замовлення</th>
+                    <th>Дія</th>
                 </tr>
             </thead>
             <tbody>
@@ -32,19 +34,18 @@
                     <td><%= reservation.people %></td>
                     <td><%= reservation.status %></td>
                     <td><%= reservation.createdAt.toLocaleDateString() %></td>
-                    <td><%= reservation.preOrder %></td>
+                    <td><%= reservation.preOrder ? reservation.preOrder : 'Немає' %></td>
                     <td>
                         <form
                             action="/admin/reservations/cancel/<%= reservation.id %>"
                             method="POST"
                         >
-                            <button type="submit">Отменить</button>
+                            <button type="submit">Скасувати</button>
                         </form>
                     </td>
                 </tr>
                 <% }) %>
             </tbody>
         </table>
-        <a href="/admin">Back to Admin</a>
     </body>
 </html>

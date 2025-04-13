@@ -1,27 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uk">
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Profile</title>
+        <title>Профіль</title>
         <link rel="stylesheet" href="/profile.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
     </head>
     <body>
-        <a href="/">Back to Home</a>
+        <a href="/">Головна</a>
 
         <div class="profile-container">
             <br>
-            <h2>Ваші замовлення тут</h2>
+            <h2>Ваші замовлення</h2>
             <% if (orders && orders.length > 0) { %>
             <table>
                 <thead>
                     <tr>
-                        <th>Dishes</th>
-                        <th>Order Time</th>
-                        <th>Status Delivery</th>
-                        <th>Pay Method</th>
-                        <th>Pay Status</th>
+                        <th>Страви</th>
+                        <th>Час замовлення</th>
+                        <th>Статус доставки</th>
+                        <th>Метод оплати</th>
+                        <th>Статус оплати</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -38,10 +38,10 @@
                         <tr>
                             <td>
                                 <details>
-                                    <summary>View Dishes</summary>
+                                    <summary>Страви</summary>
                                     <ul>
                                         <% groupedOrders[groupKey].forEach(order => { %>
-                                            <li><%= order.dish %> - <%= order.quantity %> pcs</li>
+                                            <li><%= order.dish %> - <%= order.quantity %> шт.</li>
                                         <% }); %>
                                     </ul>
                                 </details>
@@ -58,53 +58,50 @@
                                     <%= groupedOrders[groupKey][0].paymentStatus %>
                                 </span>
                             </td>
-                            
                         </tr>
                     <% }); %>
                 </tbody>
             </table>
             <% } else { %>
             <div class="empty-state">
-                <p>You don't have any orders yet</p>
+                <p>У вас ще немає замовлень</p>
             </div>
             <% } %>
         </div>
             
-            <h2>Reservations</h2>
-            <% if (reservations && reservations.length > 0) { %>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Table Number</th>
-                        <th>Date</th>
-                        <th>Time</th>
-                        <th>Pre-Order</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <% reservations.forEach(reservation => { %>
-                    <tr>
-                        <td><%= reservation.tableNumber %></td>
-                        <td><%= reservation.date.toLocaleDateString() %></td>
-                        <td><%= reservation.time %></td>
-                        <td><%= reservation.preOrder ? reservation.preOrder : 'No pre-order' %></td>
-                        <td>
-                            <form action="/profile/reservations/cancel/<%= reservation.id %>" method="POST">
-                                <button type="submit">Cancel</button>
-                            </form>
-                        </td>
-                    </tr>
-                    <% }); %>
-                </tbody>
-            </table>
-            <% } else { %>
-            <div class="empty-state">
-                <p>You don't have any reservations yet</p>
-            </div>
-            <% } %>
-            
+        <h2>Бронювання</h2>
+        <% if (reservations && reservations.length > 0) { %>
+        <table>
+            <thead>
+                <tr>
+                    <th>Номер столика</th>
+                    <th>Дата</th>
+                    <th>Час</th>
+                    <th>Попереднє замовлення</th>
+                    <th>Дії</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% reservations.forEach(reservation => { %>
+                <tr>
+                    <td><%= reservation.tableNumber %></td>
+                    <td><%= reservation.date.toLocaleDateString() %></td>
+                    <td><%= reservation.time %></td>
+                    <td><%= reservation.preOrder ? reservation.preOrder : 'Без попереднього замовлення' %></td>
+                    <td>
+                        <form action="/profile/reservations/cancel/<%= reservation.id %>" method="POST">
+                            <button type="submit">Скасувати</button>
+                        </form>
+                    </td>
+                </tr>
+                <% }); %>
+            </tbody>
+        </table>
+        <% } else { %>
+        <div class="empty-state">
+            <p>У вас ще немає бронювань</p>
         </div>
+        <% } %>
         
         <!-- JavaScript для візуалізації доставки -->
         <script>

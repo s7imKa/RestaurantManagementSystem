@@ -1,21 +1,7 @@
 /* Profile Page Styles for Restaurant Dark Theme - Покращена версія з фоном і блюром */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Cormorant+Garamond:wght@500;600;700&display=swap');
 
-:root {
-    --primary: #d7993c; /* Gold/amber */
-    --primary-light: #e5b568; /* Lighter gold shade */
-    --secondary: #a34a3b; /* Deep burgundy/wine color */
-    --accent: #f9d9a7; /* Light gold/champagne accent */
-    --light: #f7f9f9;
-    --dark: #1a1814; /* Slightly warmer dark tone */
-    --darker: #0f0d0b; /* Warmer darkest tone */
-    --gray: #2a2522; /* Warmer gray */
-    --light-gray: #3a3532; /* Warmer light gray */
-    --text: #e6e1d9; /* Slightly warmer text color */
-    --text-muted: #a09a94; /* Warmer muted text */
-    --shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-    --transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
-}
+@import url('./colors/colors.css');
 
 * {
     margin: 0;
@@ -101,7 +87,7 @@ h1::after {
 
 h2 {
     font-size: 1.8rem;
-    margin: 35px 0 25px;
+    margin: 0 0 25px;
     text-align: center;
     position: relative;
     background-color: rgba(0, 123, 255, 0.15);
@@ -120,23 +106,7 @@ h2::after {
     background: var(--secondary);
 }
 
-a {
-    text-decoration: none;
-    color: var(--primary);
-    font-weight: 500; /* Легший */
-    transition: var(--transition);
-    padding: 10px 16px;
-    display: inline-block;
-    margin: 4px;
-    border-radius: 10px; /* Заокругленіші кути */
-    text-align: center;
-}
 
-a:hover {
-    color: var(--accent);
-    background-color: rgba(212, 167, 98, 0.08);
-    transform: translateY(-1px);
-}
 
 /* Profile Container - більш зручний */
 .profile-container {
@@ -295,36 +265,38 @@ button:hover::before {
     background-color: rgba(255, 193, 7, 0.15);
     color: #ffc107;
 }
-
-/* Back button - fixed at top center */
 a[href="/"] {
     position: absolute;
-    top: 20px; /* Відступ від верхнього краю */
-    left: 50%; /* Вирівнювання по центру */
-    transform: translateX(-50%); /* Центрування по горизонталі */
-    z-index: 1000;
-    background: var(--primary);
-    color: var(--dark);
-    border: none;
-    padding: 12px 25px;
+    top: 0;
+    left: 100px;
+    background: var(--dark);
+    color: var(--primary);
+    border: 1px solid var(--primary);
+    padding: 10px 20px;
     border-radius: 50px;
     font-size: 14px;
     font-weight: 600;
     text-align: center;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     cursor: pointer;
-    width: auto;
-    max-width: 200px;
-    display: inline-block;
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
+    text-decoration: none;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    z-index: 100;
+}
+
+a[href="/"]::before {
+    content: "←";
+    margin-right: 8px;
+    font-size: 16px;
 }
 
 a[href="/"]:hover {
-    background: var(--secondary);
-    color: white;
-    transform: translate(-50%, -3px); /* Легкий підйом при наведенні */
-    box-shadow: 0 8px 20px rgba(163, 74, 59, 0.3);
+    background: var(--primary);
+    color: var(--dark);
+    transform: translateY(-3px);
+    box-shadow: var(--glow);
 }
 
 /* Empty State - більш симпатичний */

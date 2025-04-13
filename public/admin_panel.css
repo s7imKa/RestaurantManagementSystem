@@ -1,26 +1,8 @@
 /* Admin Dashboard Styles - Enhanced Dark Theme with Left-aligned Back Button */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap');
 
-:root {
-    --primary: #f0b742; /* Brighter gold */
-    --primary-light: #ffd166; /* Lighter gold shade */
-    --primary-dark: #cc9933; /* Darker gold for hover states */
-    --secondary: #bf0010; /* Vibrant red accent */
-    --secondary-light: #ff4d5e; /* Lighter red */
-    --accent: #4cc9f0; /* Blue accent for highlights */
-    --light: #f8f9fa;
-    --dark: #121212; /* Very dark background */
-    --darker: #080808; /* Almost black */
-    --gray: #2a2a2a; /* Dark gray */
-    --light-gray: #3a3a3a; /* Lighter gray */
-    --text: #e6e6e6; /* Light text color */
-    --text-muted: #a0a0a0; /* Muted text */
-    --shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-    --card-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
-    --glow: 0 0 15px rgba(240, 183, 66, 0.5);
-    --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-    --border-radius: 8px;
-}
+@import url('./colors/colors.css');
+
 
 * {
     margin: 0;

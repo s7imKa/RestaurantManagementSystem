@@ -1,21 +1,7 @@
 /* Modern Restaurant Website Dark Theme Styles */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Cormorant+Garamond:wght@500;600;700&display=swap');
 
-:root {
-    --primary: #d7993c; /* Gold/amber */
-    --primary-light: #e5b568; /* Lighter gold shade */
-    --secondary: #bf0010; /* Vibrant red accent */
-    --accent: #d7993c; /* Light gold/champagne accent */
-    --light: #f7f9f9;
-    --dark: #1a1814; /* Slightly warmer dark tone */
-    --darker: #0f0d0b; /* Warmer darkest tone */
-    --gray: #2a2522; /* Warmer gray */
-    --light-gray: #3a3532; /* Warmer light gray */
-    --text: #e6e1d9; /* Slightly warmer text color */
-    --text-muted: #a09a94; /* Warmer muted text */
-    --shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
-    --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-}
+@import url('./colors/colors.css');
 
 * {
     margin: 0;
@@ -67,77 +53,184 @@ body {
     transform: scale(1.1); /* Легке збільшення при наведенні */
     box-shadow: 0 5px 15px rgba(180, 7, 7, 0.849);
     color: var(--light);
-
 }
 
-/* Welcome Banner - FULL WIDTH */
-.welcome-banner {
-    background: linear-gradient(135deg, #1a1814, #2a1a10);
-    padding: 120px 0; /* Remove horizontal padding */
-    text-align: center;
-    margin-bottom: 30px;
-    border-radius: 0; /* Remove border radius since it's full width */
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+/* ============================================================== */
+                    /* банер */ 
+/* ============================================================== */
+.banner-slider {
     position: relative;
     overflow: hidden;
-    width: 100vw; /* Full viewport width */
-    height: 500px;
-    left: 50%;
-    right: 50%;
-    margin-left: -50vw;
-    margin-right: -50vw;
+    height: 550px;
+    border-radius: 20px;
+    box-shadow: var(--shadow, 0 10px 30px rgba(0, 0, 0, 0.15));
+    margin: 20px auto;
+    max-width: 1400px;
 }
 
-/* Add a content container inside the banner to maintain content width */
-.welcome-banner-content {
-    margin: 0 auto;
-    padding: 0 20px;
-    position: relative;
-    z-index: 2;
-}
-
-.welcome-banner::before {
-    content: "";
+.banner-slide {
     position: absolute;
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0;
-    background: url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') center/cover;
-    opacity: 0.15;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--dark, #333), var(--darker, #111));
+    background-size: cover;
+    background-position: center 60%; /* Зміщення фону догори */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    transition: opacity 0.8s ease;
+    opacity: 0;
     z-index: 1;
+    visibility: hidden;
 }
 
-.welcome-banner h1 {
-    font-size: 3.5rem;
-    color: var(--accent);
-    position: relative;
-    z-index: 2;
-    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
-    margin-bottom: 15px;
+.banner-slide::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6); /* Збільшено затемнення */
+    z-index: -1;
 }
 
-.welcome-banner p {
-    font-size: 1.2rem;
-    color: var(--text);
+.banner-slide.active {
+    opacity: 1;
+    z-index: 2;
+    visibility: visible;
+}
+
+.welcome-banner-content {
     position: relative;
     z-index: 2;
+    padding: 20px;
+    max-width: 90%;
+}
+
+.welcome-banner-content h1 {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    color: var(--accent, #ff9800);
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+    margin-bottom: 20px;
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+    transition-delay: 0.3s;
+}
+
+.welcome-banner-content p {
+    font-size: clamp(1rem, 2vw, 1.3rem);
+    color: var(--text, #fff);
     max-width: 700px;
     margin: 0 auto;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+    transition-delay: 0.5s;
 }
 
-.welcome-banner::after {
-    content: "";
+.banner-slide.active .welcome-banner-content h1,
+.banner-slide.active .welcome-banner-content p {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.prev-slide,
+.next-slide {
     position: absolute;
-    bottom: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.6);
+    color: var(--light, #fff);
+    border: none;
+    font-size: 1.8rem;
+    cursor: pointer;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    z-index: 3;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    outline: none;
+}
+
+.prev-slide:hover,
+.next-slide:hover {
+    background-color: var(--primary, #2196f3);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.prev-slide:active,
+.next-slide:active {
+    transform: translateY(-50%) scale(0.95);
+}
+
+.prev-slide {
+    left: 20px;
+}
+
+.next-slide {
+    right: 20px;
+}
+
+.slide-indicators {
+    position: absolute;
+    bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
-    width: 150px;
-    height: 4px;
-    background: var(--secondary);
-    z-index: 2;
-    border-radius: 4px 4px 0 0;
+    display: flex;
+    gap: 10px;
+    z-index: 3;
 }
+
+.slide-indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.slide-indicator.active {
+    background-color: var(--accent, #ff9800);
+    transform: scale(1.2);
+}
+
+@media (max-width: 768px) {
+    .banner-slider {
+        height: 300px;
+        border-radius: 15px;
+    }
+    
+    .prev-slide,
+    .next-slide {
+        width: 40px;
+        height: 40px;
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .banner-slider {
+        height: 250px;
+        border-radius: 10px;
+    }
+    
+    .prev-slide, 
+    .next-slide {
+        width: 35px;
+        height: 35px;
+        font-size: 1.2rem;
+    }
+}
+/* ============================================================== */
 
 header {
     width: 100vw; /* Займає всю ширину вікна браузера */
@@ -251,35 +344,57 @@ h1 {
 }
 
 
-
-h2 {
-    font-size: 1.8rem;
-    text-align: center;
-    padding: 12px;
-    margin: 5px auto 20px;
+.category-title {
     position: relative;
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
-    background-color: rgba(80, 60, 60, 0.15);
-    color: #e48900;
-    border-radius: 10px;
-    width: 50%;
-    max-width: 400px;
-    background-image: 
-        linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, 
-        transparent 50%, rgba(255, 255, 255, 0.15) 50%, 
-        rgba(255, 0, 0, 0.262) 75%, transparent 75%);
-    background-size: 20px 20px;
+    text-align: center;
+    margin: 0 0 30px;
+    overflow: hidden;
 }
 
-h2::after {
+.category-title-inner {
+    position: relative;
+    display: inline-block;
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--primary);
+    padding: 0 25px;
+}
+
+.category-title-inner::before,
+.category-title-inner::after {
     content: "";
     position: absolute;
-    bottom: -3px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 40px;
+    top: 50%;
+    width: 200px;
     height: 2px;
-    background: var(--secondary);
+    background: linear-gradient(90deg, transparent, #e67d2277, transparent);
+}
+
+.category-title-inner::before {
+    right: 100%;
+}
+
+.category-title-inner::after {
+    left: 100%;
+}
+
+.category-title::before,
+.category-title::after {
+    content: "•";
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.3rem;
+    color: #6e70ebcc;
+}
+
+.category-title::before {
+    left: calc(50% - 80px);
+}
+
+.category-title::after {
+    right: calc(50% - 80px);
 }
 
 a {

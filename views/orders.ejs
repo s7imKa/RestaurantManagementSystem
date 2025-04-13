@@ -1,17 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uk">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Orders</title>
+    <title>Замовлення</title>
     <link rel="stylesheet" href="/admin_orders.css" />
 </head>
 <body>
-    <a href="/admin">Back to Admin</a>
+    <a href="/admin">Назад до панелі </a>
     
-    <h2>New Orders</h2>
+    <h2>Нові замовлення</h2>
     <% 
-    // First, group by date (YYYY-MM-DD)
+    // Групуємо замовлення за датою (YYYY-MM-DD)
     const ordersByDate = orders.reduce((groups, order) => { 
         const dateKey = order.createdAt.toISOString().split('T')[0];
         if (!groups[dateKey]) groups[dateKey] = [];
@@ -19,21 +19,19 @@
         return groups;
     }, {});
 
-    // Sort dates in descending order (newest first)
+    // Сортуємо дати у зворотному порядку (новіші спочатку)
     const sortedDates = Object.keys(ordersByDate).sort((a, b) => new Date(b) - new Date(a));
     
-    // For each date, group by minute-level timestamp
+    // Для кожної дати групуємо за хвилинами
     sortedDates.forEach(dateKey => {
-        // Group by minute (YYYY-MM-DDTHH:MM)
         const ordersByMinute = ordersByDate[dateKey].reduce((minuteGroups, order) => {
-            // Extract just the minute-level timestamp (removing seconds and milliseconds)
             const minuteKey = order.createdAt.toISOString().substring(0, 16);
             if (!minuteGroups[minuteKey]) minuteGroups[minuteKey] = [];
             minuteGroups[minuteKey].push(order);
             return minuteGroups;
         }, {});
         
-        const dateDisplay = new Date(dateKey).toLocaleDateString('en-US', { 
+        const dateDisplay = new Date(dateKey).toLocaleDateString('uk-UA', { 
             weekday: 'long', 
             year: 'numeric', 
             month: 'long', 
@@ -42,17 +40,16 @@
     %>
         <div class="date-header"><%= dateDisplay %></div>
         <% 
-        // Sort minutes in descending order
         const sortedMinutes = Object.keys(ordersByMinute).sort((a, b) => new Date(b) - new Date(a));
 
         sortedMinutes.forEach(minuteKey => {
             const pendingOrders = ordersByMinute[minuteKey].filter(order => 
-                order.status !== 'Delivered' && order.status !== 'Cancelled'
+                order.status !== 'Доставлено' && order.status !== 'Скасовано'
             );
             
             if (pendingOrders.length > 0) {
                 const orderTime = new Date(minuteKey);
-                const timeDisplay = orderTime.toLocaleTimeString('en-US', { 
+                const timeDisplay = orderTime.toLocaleTimeString('uk-UA', { 
                     hour: '2-digit', 
                     minute:'2-digit'
                 });
@@ -60,17 +57,18 @@
             <div class="order-group">
                 <div class="order-group-header">
                     <button class="toggle-btn">▼</button>
-                    <span>Order at <%= timeDisplay %> <%= pendingOrders[0].customerName %></span>                    <span class="order-count"><%= pendingOrders.length %> <%= pendingOrders.length === 1 ? 'item' : 'items' %></span>
+                    <span>Замовлення о <%= timeDisplay %> від <%= pendingOrders[0].customerName %></span>
+                    <span class="order-count"><%= pendingOrders.length %> <%= pendingOrders.length === 1 ? 'позиція' : 'позицій' %></span>
                 </div>
                 <div class="order-details">
                     <table>
                         <thead>
                             <tr>
-                                <th class="col-dish">Dish</th>
-                                <th class="col-qty">Qty</th>
-                                <th class="col-address">Address</th>
-                                <th class="col-phone">Phone</th>
-                                <th class="col-status">Status</th>
+                                <th class="col-dish">Страва</th>
+                                <th class="col-qty">Кількість</th>
+                                <th class="col-address">Адреса</th>
+                                <th class="col-phone">Телефон</th>
+                                <th class="col-status">Статус</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -83,12 +81,12 @@
                                     <td>
                                         <form action="/admin/updateOrder/<%= order.id %>" method="POST">
                                             <select name="status">
-                                                <option value="Pending" <%= order.status === 'Pending' ? 'selected' : '' %>>Pending</option>
-                                                <option value="In Progress" <%= order.status === 'In Progress' ? 'selected' : '' %>>In Progress</option>
-                                                <option value="Delivered" <%= order.status === 'Delivered' ? 'selected' : '' %>>Delivered</option>
-                                                <option value="Cancelled" <%= order.status === 'Cancelled' ? 'selected' : '' %>>Cancelled</option>
+                                                <option value="Очікується" <%= order.status === 'Очікується' ? 'selected' : '' %>>Очікується</option>
+                                                <option value="В процесі" <%= order.status === 'В процесі' ? 'selected' : '' %>>В процесі</option>
+                                                <option value="Доставлено" <%= order.status === 'Доставлено' ? 'selected' : '' %>>Доставлено</option>
+                                                <option value="Скасовано" <%= order.status === 'Скасовано' ? 'selected' : '' %>>Скасовано</option>
                                             </select>
-                                            <button type="submit">Update</button>
+                                            <button type="submit">Оновити</button>
                                         </form>
                                     </td>
                                 </tr>
@@ -105,20 +103,17 @@
     });
     %>
 
-    <h2>Completed Orders</h2>
+    <h2>Завершені замовлення</h2>
     <% 
-    // For each date, group by minute-level timestamp (for completed orders)
     sortedDates.forEach(dateKey => {
-        // Group by minute (YYYY-MM-DDTHH:MM)
         const ordersByMinute = ordersByDate[dateKey].reduce((minuteGroups, order) => {
-            // Extract just the minute-level timestamp (removing seconds and milliseconds)
             const minuteKey = order.createdAt.toISOString().substring(0, 16);
             if (!minuteGroups[minuteKey]) minuteGroups[minuteKey] = [];
             minuteGroups[minuteKey].push(order);
             return minuteGroups;
         }, {});
         
-        const dateDisplay = new Date(dateKey).toLocaleDateString('en-US', { 
+        const dateDisplay = new Date(dateKey).toLocaleDateString('uk-UA', { 
             weekday: 'long', 
             year: 'numeric', 
             month: 'long', 
@@ -127,17 +122,16 @@
     %>
         <div class="date-header"><%= dateDisplay %></div>
         <% 
-        // Sort minutes in descending order
         const sortedMinutes = Object.keys(ordersByMinute).sort((a, b) => new Date(b) - new Date(a));
 
         sortedMinutes.forEach(minuteKey => {
             const completedOrders = ordersByMinute[minuteKey].filter(order => 
-                order.status === 'Delivered' || order.status === 'Cancelled'
+                order.status === 'Доставлено' || order.status === 'Скасовано'
             );
             
             if (completedOrders.length > 0) {
                 const orderTime = new Date(minuteKey);
-                const timeDisplay = orderTime.toLocaleTimeString('en-US', { 
+                const timeDisplay = orderTime.toLocaleTimeString('uk-UA', { 
                     hour: '2-digit', 
                     minute:'2-digit'
                 });
@@ -145,19 +139,19 @@
             <div class="order-group">
                 <div class="order-group-header">
                     <button class="toggle-btn collapsed">▼</button>
-                    <span>Order at <%= timeDisplay %></span>
-                    <span class="order-count"><%= completedOrders.length %> <%= completedOrders.length === 1 ? 'item' : 'items' %></span>
+                    <span>Замовлення о <%= timeDisplay %></span>
+                    <span class="order-count"><%= completedOrders.length %> <%= completedOrders.length === 1 ? 'позиція' : 'позицій' %></span>
                 </div>
                 <div class="order-details collapsed">
                     <table>
                         <thead>
                             <tr>
-                                <th class="col-name">Customer</th>
-                                <th class="col-dish">Dish</th>
-                                <th class="col-qty">Qty</th>
-                                <th class="col-address">Address</th>
-                                <th class="col-phone">Phone</th>
-                                <th class="col-status">Status</th>
+                                <th class="col-name">Клієнт</th>
+                                <th class="col-dish">Страва</th>
+                                <th class="col-qty">Кількість</th>
+                                <th class="col-address">Адреса</th>
+                                <th class="col-phone">Телефон</th>
+                                <th class="col-status">Статус</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -168,7 +162,7 @@
                                     <td><%= order.quantity %></td>
                                     <td><%= order.deliveryAddress %></td>
                                     <td><%= order.phoneNumber %></td>
-                                    <td class="<%= order.status === 'Delivered' ? 'status-delivered' : 'status-cancelled' %>">
+                                    <td class="<%= order.status === 'Доставлено' ? 'status-delivered' : 'status-cancelled' %>">
                                         <%= order.status %>
                                     </td>
                                 </tr>
@@ -186,7 +180,6 @@
     %>
 
     <script>
-        // Add toggle functionality for order groups
         document.querySelectorAll('.toggle-btn').forEach(button => {
             button.addEventListener('click', function() {
                 this.classList.toggle('collapsed');

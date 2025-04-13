@@ -1,45 +1,44 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uk">
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Booking a Table | Modern Restaurant</title>
+        <title>Бронювання столика | Сучасний ресторан</title>
         <link rel="stylesheet" href="/booking_table.css" />
     </head>
     <body>
         <div class="container">
-            <h1>Book a Table</h1>
-            <a href="/">Back to Home</a>
-
+            <h1>Забронювати столик</h1>
+            <a href="/">Головна</a>
 
             <form action="/booking" method="POST" id="bookingForm">
                 <div class="form-grid">
                     <div>
-                        <label for="customerName">Name:</label>
+                        <label for="customerName">Ім'я:</label>
                         <input
                             type="text"
                             name="customerName"
                             id="customerName"
                             required
-                            placeholder="Your full name"
+                            placeholder="Ваше повне ім'я"
                         />
                     </div>
                     
                     <div>
-                        <label for="people">Number of People:</label>
+                        <label for="people">Кількість людей:</label>
                         <select name="people" id="people" required>
-                            <option value="" disabled selected>Select number of people</option>
-                            <option value="1">1 person</option>
-                            <option value="2">2 people</option>
-                            <option value="3">3 people</option>
-                            <option value="4">4 people</option>
-                            <option value="5">5 people</option>
-                            <option value="6">6 people</option>
+                            <option value="" disabled selected>Оберіть кількість людей</option>
+                            <option value="1">1 людина</option>
+                            <option value="2">2 людини</option>
+                            <option value="3">3 людини</option>
+                            <option value="4">4 людини</option>
+                            <option value="5">5 людей</option>
+                            <option value="6">6 людей</option>
                         </select>
                     </div>
                     
                     <div>
-                        <label for="date">Date:</label>
+                        <label for="date">Дата:</label>
                         <input
                             type="date"
                             name="date"
@@ -52,7 +51,7 @@
                     </div>
                     
                     <div>
-                        <label for="time">Time:</label>
+                        <label for="time">Час:</label>
                         <input
                             type="time"
                             name="time"
@@ -64,10 +63,10 @@
                     </div>
                     
                     <div class="form-grid-full">
-                        <button type="button" id="togglePreOrder">Toggle Pre-Order Options</button>
+                        <button type="button" id="togglePreOrder">Переглянути опції попереднього замовлення</button>
                         <div id="preOrderList">
                             <div class="pre-order-container">
-                                <% const preOrderItems = ["Water", "Wine", "Sparkling Water", "Flowers", "Candles", "Coffee", "Champagne", "Dessert"]; 
+                                <% const preOrderItems = ["Вода", "Вино", "Газована вода", "Квіти", "Свічки", "Кава", "Шампанське", "Десерт"]; 
                                 preOrderItems.forEach(item => { %>
                                 <div class="pre-order-card" data-item="<%= item %>">
                                     <input
@@ -88,31 +87,31 @@
                     </div>
                 </div>
 
-                <h2>Select a Table</h2>
+                <h2>Оберіть столик</h2>
                 
-                <!-- Restaurant Floor Plan with Zones -->
+                <!-- План ресторану -->
                 <div class="restaurant-floor-plan">
                     <div class="restaurant-walls"></div>
                     <div class="window-area"></div>
-                    <div class="bar-area">Bar</div>
+                    <div class="bar-area">Бар</div>
                     <div class="booth-area"></div>
-                    <div class="kitchen-area">Kitchen</div>
-                    <div class="entrance"></div>
+                    <div class="kitchen-area">Кухня</div>
+                    <div class="entrance">Вхід</div>
                     
-                    <!-- Floor zones -->
+                    <!-- Зони -->
                     <div class="window-zone"></div>
                     <div class="center-zone"></div>
                     <div class="bar-zone"></div>
                     <div class="booth-zone"></div>
                     
-                    <!-- Table layout -->
+                    <!-- Розташування столиків -->
                     <div class="table-layout">
-                        <!-- Window tables -->
+                        <!-- Столики біля вікна -->
                         <div class="table-card window table-1 <%= occupiedTables.some(table => table.tableNumber === 1) ? 'occupied' : '' %>" data-table-number="1">
                             <span>1</span>
                             <div class="table-surface"></div>
-                            <div class="table-location">Window</div>
-                            <div class="table-capacity">4 ppl</div>
+                            <div class="table-location">Вікно</div>
+                            <div class="table-capacity">4 осіб</div>
                             <div class="chairs">
                                 <div class="chair"></div>
                                 <div class="chair"></div>
@@ -124,8 +123,8 @@
                         <div class="table-card window table-2 <%= occupiedTables.some(table => table.tableNumber === 2) ? 'occupied' : '' %>" data-table-number="2">
                             <span>2</span>
                             <div class="table-surface"></div>
-                            <div class="table-location">Window</div>
-                            <div class="table-capacity">4 ppl</div>
+                            <div class="table-location">Вікно</div>
+                            <div class="table-capacity">4 осіб</div>
                             <div class="chairs">
                                 <div class="chair"></div>
                                 <div class="chair"></div>
@@ -137,8 +136,8 @@
                         <div class="table-card window table-3 <%= occupiedTables.some(table => table.tableNumber === 3) ? 'occupied' : '' %>" data-table-number="3">
                             <span>3</span>
                             <div class="table-surface"></div>
-                            <div class="table-location">Window</div>
-                            <div class="table-capacity">4 ppl</div>
+                            <div class="table-location">Вікно</div>
+                            <div class="table-capacity">4 осіб</div>
                             <div class="chairs">
                                 <div class="chair"></div>
                                 <div class="chair"></div>
@@ -150,8 +149,8 @@
                         <div class="table-card window table-4 <%= occupiedTables.some(table => table.tableNumber === 4) ? 'occupied' : '' %>" data-table-number="4">
                             <span>4</span>
                             <div class="table-surface"></div>
-                            <div class="table-location">Window</div>
-                            <div class="table-capacity">4 ppl</div>
+                            <div class="table-location">Вікно</div>
+                            <div class="table-capacity">4 осіб</div>
                             <div class="chairs">
                                 <div class="chair"></div>
                                 <div class="chair"></div>
@@ -165,7 +164,7 @@
                             <span>5</span>
                             <div class="table-surface"></div>
                             <div class="table-location">Center</div>
-                            <div class="table-capacity">4 ppl</div>
+                            <div class="table-capacity">4 осіб</div>
                             <div class="chairs">
                                 <div class="chair"></div>
                                 <div class="chair"></div>
@@ -179,7 +178,7 @@
                             <span>6</span>
                             <div class="table-surface"></div>
                             <div class="table-location">Center</div>
-                            <div class="table-capacity">4 ppl</div>
+                            <div class="table-capacity">4 осіб</div>
                             <div class="chairs">
                                 <div class="chair"></div>
                                 <div class="chair"></div>
@@ -192,7 +191,7 @@
                             <span>7</span>
                             <div class="table-surface"></div>
                             <div class="table-location">Center</div>
-                            <div class="table-capacity">4 ppl</div>
+                            <div class="table-capacity">4 осіб</div>
                             <div class="chairs">
                                 <div class="chair"></div>
                                 <div class="chair"></div>
@@ -205,7 +204,7 @@
                             <span>8</span>
                             <div class="table-surface"></div>
                             <div class="table-location">Center</div>
-                            <div class="table-capacity">4 ppl</div>
+                            <div class="table-capacity">4 осіб</div>
                             <div class="chairs">
                                 <div class="chair"></div>
                                 <div class="chair"></div>
@@ -218,8 +217,8 @@
                         <div class="table-card booth rectangle table-9 <%= occupiedTables.some(table => table.tableNumber === 9) ? 'occupied' : '' %>" data-table-number="9">
                             <span>9</span>
                             <div class="table-surface"></div>
-                            <div class="table-location">Booth</div>
-                            <div class="table-capacity">2 ppl</div>
+                            <div class="table-location">Кабінки</div>
+                            <div class="table-capacity">2 осіб</div>
                             <div class="chairs">
                                 <div class="chair"></div>
                                 <div class="chair"></div>
@@ -229,8 +228,8 @@
                         <div class="table-card booth rectangle table-10 <%= occupiedTables.some(table => table.tableNumber === 10) ? 'occupied' : '' %>" data-table-number="10">
                             <span>10</span>
                             <div class="table-surface"></div>
-                            <div class="table-location">Booth</div>
-                            <div class="table-capacity">2 ppl</div>
+                            <div class="table-location">Кабінки</div>
+                            <div class="table-capacity">2 осіб</div>
                             <div class="chairs">
                                 <div class="chair"></div>
                                 <div class="chair"></div>
@@ -242,7 +241,7 @@
                             <span>11</span>
                             <div class="table-surface"></div>
                             <div class="table-location">Bar</div>
-                            <div class="table-capacity">3 ppl</div>
+                            <div class="table-capacity">3 осіб</div>
                             <div class="chairs">
                                 <div class="chair"></div>
                                 <div class="chair"></div>
@@ -255,7 +254,7 @@
                             <span>12</span>
                             <div class="table-surface"></div>
                             <div class="table-location">Bar</div>
-                            <div class="table-capacity">3 ppl</div>
+                            <div class="table-capacity">3 осіб</div>
                             <div class="chairs">
                                 <div class="chair"></div>
                                 <div class="chair"></div>
@@ -267,8 +266,8 @@
                         <div class="table-card entrance table-13 <%= occupiedTables.some(table => table.tableNumber === 13) ? 'occupied' : '' %>" data-table-number="13">
                             <span>13</span>
                             <div class="table-surface"></div>
-                            <div class="table-location">Entrance</div>
-                            <div class="table-capacity">4 ppl</div>
+                            <div class="table-location">Крайні</div>
+                            <div class="table-capacity">4 осіб</div>
                             <div class="chairs">
                                 <div class="chair"></div>
                                 <div class="chair"></div>
@@ -280,8 +279,8 @@
                         <div class="table-card entrance table-14 <%= occupiedTables.some(table => table.tableNumber === 14) ? 'occupied' : '' %>" data-table-number="14">
                             <span>14</span>
                             <div class="table-surface"></div>
-                            <div class="table-location">Entrance</div>
-                            <div class="table-capacity">4 ppl</div>
+                            <div class="table-location">Крайні</div>
+                            <div class="table-capacity">4 осіб</div>
                             <div class="chairs">
                                 <div class="chair"></div>
                                 <div class="chair"></div>
@@ -291,59 +290,59 @@
                         </div>
                     </div>
                     
-                    <!-- Floor legend -->
+                    <!-- Легенда -->
                     <div class="floor-legend">
                         <div class="legend-item">
                             <div class="legend-color window"></div>
-                            <span>Window Tables</span>
+                            <span>Зона вікна</span>
                         </div>
                         <div class="legend-item">
                             <div class="legend-color center"></div>
-                            <span>Center Tables</span>
+                            <span>Центральна зона</span>
                         </div>
                         <div class="legend-item">
                             <div class="legend-color booth"></div>
-                            <span>Booth Tables</span>
+                            <span>Кабінки</span>
                         </div>
                         <div class="legend-item">
                             <div class="legend-color bar"></div>
-                            <span>Bar Tables</span>
+                            <span>Зона бару</span>
                         </div>
                     </div>
                 </div>
 
                 <input type="hidden" name="tableNumber" id="selectedTableNumber" required />
                 
-                <button type="submit">Book Now</button>
+                <button type="submit">Забронювати</button>
             </form>
 
-            <h2>Occupied Tables for <%= selectedDate %></h2>
+            <h2>Зайняті столики на <%= selectedDate %></h2>
             <ul>
                 <% if (occupiedTables && occupiedTables.length > 0) { %> 
                     <% occupiedTables.forEach(function(table) { %>
                     <li>
                         <div>
-                            <strong>Table Number:</strong> <%= table.tableNumber %><br>
-                            <strong>Time:</strong> <%= table.time %>
+                            <strong>Номер столика:</strong> <%= table.tableNumber %><br>
+                            <strong>Час:</strong> <%= table.time %>
                         </div>
                         <div>
-                            <strong>Customer:</strong> <%= table.customerName %><br>
-                            <strong>People:</strong> <%= table.people %>
+                            <strong>Клієнт:</strong> <%= table.customerName %><br>
+                            <strong>Кількість людей:</strong> <%= table.people %>
                         </div>
                     </li>
                     <% }) %>
                 <% } else { %>
-                    <p>No reservations for this date.</p>
+                    <p>На цю дату немає бронювань.</p>
                 <% } %>
             </ul>
         </div>
 
         <footer>
-            <p>&copy; 2025 Modern Restaurant. All rights reserved.</p>
+            <p>&copy; 2025 Сучасний ресторан. Усі права захищені.</p>
             <div>
-                <a >Privacy Policy</a>
-                <a >Terms of Service</a>
-                <a >Contact Us</a>
+                <a href="#">Політика конфіденційності</a>
+                <a href="#">Умови використання</a>
+                <a href="#">Зв'язатися з нами</a>
             </div>
         </footer>
 

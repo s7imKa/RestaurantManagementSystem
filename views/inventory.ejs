@@ -1,29 +1,30 @@
-<html lang="en">
+<!DOCTYPE html>
+<html lang="uk">
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inventory Management</title>
+    <title>Управління запасами</title>
     <link rel="stylesheet" href="/admin_inventory.css">
     <style>
 
     </style>
   </head>
   <body>
-    <h2>Inventory Management</h2>
-    <a href="/admin">Back to Admin</a>
+    <h2>Управління запасами</h2>
+    <a href="/admin">Назад до панелі </a>
   
     <!-- Форма для оновлення запасів -->
     <form action="/admin/inventory/update" method="POST">
       <table class="inventory-table">
           <thead>
               <tr>
-                  <th>Product</th>
-                  <th>Min</th>
-                  <th>Max</th>
-                  <th>Current Stock</th>
-                  <th>Stock (%)</th>
-                  <th>Restock Amount</th>
-                  <th>Actions</th>
+                  <th>Продукт</th>
+                  <th>Мін</th>
+                  <th>Макс</th>
+                  <th>Поточний запас</th>
+                  <th>(%)</th>
+                  <th>Кількість</th>
+                  <th>Дії</th>
               </tr>
           </thead>
           <tbody>
@@ -37,15 +38,12 @@
                   <td><%= item.stock %></td>
                   <td><%= stockPercentage %>%</td> <!-- Відображаємо відсоток запасу -->
                   <td>
-                      <input type="number" name="restock[<%= item.name %>]" min="0" placeholder="Add units">
+                      <input type="number" name="restock[<%= item.name %>]" min="0" placeholder="Додати одиниці">
                   </td>
                   <td>
                       <button type="button" class="fill-to-max" data-id="<%= item.name %>" data-maxstock="<%= item.maxStock %>" data-stock="<%= item.stock %>">
-                          Fill to Max
+                          Розрахувати
                       </button>
-                      <!-- <button type="button" class="add-to-invoice" data-id="<%= item.id %>" data-name="<%= item.name %>">
-                          Add to Invoice
-                      </button> -->
                   </td>
               </tr>
               <% }); %>
@@ -54,47 +52,42 @@
 
       <!-- Додаємо кнопки під таблицею -->
       <div class="table-actions">
-          <button type="button" id="fillAllToMax">Fill All to Max</button>
-          <button type="button" id="addAllToInvoice">Add All to Invoice</button>
+          <button type="button" id="fillAllToMax">Заповнити всі до максимуму</button>
+          <button type="button" id="addAllToInvoice">Додати всі до накладної</button>
       </div>
-
-      <!-- <button type="submit">Update Inventory</button> -->
   </form>
 
   <!-- Таблиця накладної -->
-  <!-- <h2>Invoice</h2> -->
   <form action="/admin/inventory/process" method="POST">
       <table class="invoice-table" id="invoiceTableWrapper" style="display: none;">
           <thead>
               <tr>
-                  <th>Product</th>
-                  <th>Amount</th>
-                  <th>Actions</th>
+                  <th>Продукт</th>
+                  <th>Кількість</th>
+                  <th>Дії</th>
               </tr>
           </thead>
           <tbody id="invoiceTable">
               <!-- Динамічно додані рядки -->
           </tbody>
       </table>
-      <button type="submit" id="processInvoiceButton" style="display: none;">Process Invoice</button>
+      <button type="submit" id="processInvoiceButton" style="display: none;">Обробити накладну</button>
   </form>
 
-
-
-  <h2>Invoice History</h2>
+  <h2>Історія накладних</h2>
 
  <!-- Форма для пошуку по даті -->
  <div style="margin-bottom: 20px;">
-    <label for="searchDate">Search by Date:</label>
+    <label for="searchDate">Пошук за датою:</label>
     <input type="date" id="searchDate" />
-    <button type="button" id="searchButton">Search</button>
+    <button type="button" id="searchButton">Пошук</button>
 </div>
 
     <table class="invoice-history-table">
         <thead>
             <tr>
-                <th>Product Name</th>
-                <th>Amount</th>
+                <th>Назва продукту</th>
+                <th>Кількість</th>
             </tr>
         </thead>
         <tbody>
@@ -109,7 +102,7 @@
                 <!-- Відображаємо заголовок групи -->
                 <tr id="group-<%= invoiceDate.replace(/[^a-zA-Z0-9]/g, '-') %>">
                     <td colspan="2" style="font-weight: bold; background-color: #f0f0f0;">
-                        Processed At: <%= currentTimeGroup %>
+                        Оброблено: <%= currentTimeGroup %>
                     </td>
                 </tr>
             <% 

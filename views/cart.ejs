@@ -1,25 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+    <html lang="uk">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cart</title>
+    <title>Кошик</title>
     <link rel="stylesheet" href="/cart.css">
-   
 </head>
 <body>
-    <a href="/">Back to Home</a>
+    <a href="/">Головна</a>
 
-    <h2>Shopping Cart</h2>
+    <h2>Кошик покупок</h2>
 
     <% if (cartItems && cartItems.length > 0) { %>
         <table class="cart-table">
             <thead>
                 <tr>
-                    <th>Dish</th>
-                    <th>Price</th>
-                    <th>Quantity</th>
-                    <th>Action</th>
+                    <th>Страва</th>
+                    <th>Ціна</th>
+                    <th>Кількість</th>
+                    <th>Дія</th>
                 </tr>
             </thead>
             <tbody>
@@ -27,7 +26,7 @@
                 <% cartItems.forEach(item => { %>
                 <tr>
                     <td><%= item.dishName %></td>
-                    <td><%= item.dishPrice %>$</td>
+                    <td><%= item.dishPrice %>₴</td>
                     <td>
                         <form action="/order/cart/<%= item.id %>/update" method="POST" style="display: inline;">
                             <input type="hidden" name="quantity" value="<%= item.quantity - 1 %>" />
@@ -36,13 +35,13 @@
                         <span><%= item.quantity %></span>
                         <form action="/order/cart/<%= item.id %>/update" method="POST" style="display: inline;">
                             <input type="hidden" name="quantity" value="<%= item.quantity + 1 %>" />
-                            <button style="background-color: #465362;"  type="submit">+</button>
+                            <button style="background-color: #465362;" type="submit">+</button>
                         </form>
                     </td>
                     
                     <td>
                         <form action="/order/cart/<%= item.id %>/remove" method="POST">
-                            <button type="submit">Remove</button>
+                            <button type="submit">Видалити</button>
                         </form>
                     </td>
                 </tr>
@@ -50,10 +49,8 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <tr>
-                        <td colspan="3">Total:</td>
-                        <td><%= total %>$</td>
-                    </tr>
+                    <td colspan="3">Загалом:</td>
+                    <td><%= total %>₴</td>
                 </tr>
             </tfoot>
         </table>
@@ -61,56 +58,56 @@
         <div class="checkout-form">
             <form class="form" action="/order/checkout" method="POST" id="checkoutForm">
                 <div class="form-group">
-                    <label for="customerName">Customer Name:</label>
-                    <input type="text" name="customerName" id="customerName" placeholder="Customer Name" required>
+                    <label for="customerName">Ім'я клієнта:</label>
+                    <input type="text" name="customerName" id="customerName" placeholder="Ваше ім'я" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="city">City:</label>
-                    <input type="text" name="city" id="city" placeholder="City" required>
+                    <label for="city">Місто:</label>
+                    <input type="text" name="city" id="city" placeholder="Ваше місто" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="street">Street:</label>
-                    <input type="text" name="street" id="street" placeholder="Street" required>
+                    <label for="street">Вулиця:</label>
+                    <input type="text" name="street" id="street" placeholder="Ваша вулиця" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="houseNumber">House Number:</label>
-                    <input type="text" name="houseNumber" id="houseNumber" placeholder="House Number" required>
+                    <label for="houseNumber">Номер будинку:</label>
+                    <input type="text" name="houseNumber" id="houseNumber" placeholder="Номер будинку" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="apartmentNumber">Apartment Number:</label>
-                    <input type="text" name="apartmentNumber" id="apartmentNumber" placeholder="Apartment Number">
+                    <label for="apartmentNumber">Номер квартири:</label>
+                    <input type="text" name="apartmentNumber" id="apartmentNumber" placeholder="Номер квартири">
                 </div>
 
                 <div class="form-group">
-                    <label for="phoneNumber">Phone Number:</label>
-                    <input type="text" name="phoneNumber" id="phoneNumber" placeholder="Phone Number" required>
+                    <label for="phoneNumber">Номер телефону:</label>
+                    <input type="text" name="phoneNumber" id="phoneNumber" placeholder="Ваш номер телефону" required>
                 </div>
 
-                <p style="padding-bottom: 10px;" >Pay:</p>
+                <p style="padding-bottom: 10px;">Оплата:</p>
                 <div class="payment-method">
                     <div>
                         <input type="radio" id="cash" name="paymentMethod" value="cash" checked>
-                        <label for="cash">Оплата наличными</label>
+                        <label for="cash">Готівкою</label>
                     </div>
                     <div>
                         <input type="radio" id="card" name="paymentMethod" value="card">
-                        <label for="card">Оплата картой</label>
+                        <label for="card">Карткою</label>
                     </div>
                 </div>
 
                 <div id="card-details" style="display: none;">
-                    <h3>Данные карты</h3>
+                    <h3>Дані картки</h3>
                     <div class="form-group">
-                        <label for="cardNumber">Номер карты:</label>
-                        <input type="text" id="cardNumber" name="cardNumber" placeholder="Card Number (XXXX XXXX XXXX XXXX)">
+                        <label for="cardNumber">Номер картки:</label>
+                        <input type="text" id="cardNumber" name="cardNumber" placeholder="Номер картки (XXXX XXXX XXXX XXXX)">
                     </div>
                     <div class="form-group">
-                        <label for="cardExpiry">Срок действия:</label>
-                        <input type="text" id="cardExpiry" name="cardExpiry" placeholder="Expiry Date (MM/YY)">
+                        <label for="cardExpiry">Термін дії:</label>
+                        <input type="text" id="cardExpiry" name="cardExpiry" placeholder="Термін дії (MM/YY)">
                     </div>
                     <div class="form-group">
                         <label for="cardCvv">CVV:</label>
@@ -118,16 +115,16 @@
                     </div>
                 </div>
 
-                <button type="submit">Place Order</button>
+                <button type="submit">Оформити замовлення</button>
             </form>
         </div>
     <% } else { %>
-        <p>Your cart is empty.</p>
+        <p>Ваш кошик порожній.</p>
     <% } %>
 
 
     <script>
-        // Показывать/скрывать детали карты в зависимости от выбранного способа оплаты
+        // Показувати/ховати деталі картки залежно від вибраного способу оплати
         document.querySelectorAll('input[name="paymentMethod"]').forEach(input => {
             input.addEventListener('change', function() {
                 document.getElementById('card-details').style.display = 
@@ -135,7 +132,7 @@
             });
         });
         
-        // Валидация данных карты при отправке формы
+        // Валідація даних картки при відправці форми
         document.getElementById('checkoutForm').addEventListener('submit', function(e) {
             const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
             
@@ -146,18 +143,18 @@
                 
                 if (!cardNumber || !cardExpiry || !cardCvv) {
                     e.preventDefault();
-                    alert('Пожалуйста, заполните все данные карты');
+                    alert('Будь ласка, заповніть усі дані картки');
                 } else if (cardNumber.length < 13 || cardNumber.length > 19) {
                     e.preventDefault();
-                    alert('Неверный формат номера карты');
+                    alert('Невірний формат номера картки');
                 } else if (!/^\d{3,4}$/.test(cardCvv)) {
                     e.preventDefault();
-                    alert('Неверный формат CVV');
+                    alert('Невірний формат CVV');
                 }
             }
         });
         
-        // Форматирование номера карты (добавление пробелов)
+        // Форматування номера картки (додавання пробілів)
         document.getElementById('cardNumber').addEventListener('input', function(e) {
             let value = this.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
             let formattedValue = '';
@@ -172,7 +169,7 @@
             this.value = formattedValue;
         });
         
-        // Форматирование срока действия
+        // Форматування терміну дії
         document.getElementById('cardExpiry').addEventListener('input', function(e) {
             let value = this.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
             
