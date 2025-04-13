@@ -14,10 +14,12 @@ const path = require("path");
 const methodOverride = require("method-override");
 const SequelizeStore = require("connect-session-sequelize")(session.Store);
 const sessionStore = new SequelizeStore({ db: sequelize });
+const compression = require("compression");
 
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(compression());
 app.set("view engine", "ejs");
 
 app.use(
@@ -45,6 +47,12 @@ app.use((req, res, next) => {
     res.locals.error = req.flash("error");
     res.locals.messages = req.flash();
     res.locals.user = req.user;
+    next();
+});
+
+app.use((req, res, next) => {
+    console.log("Session ID:", req.sessionID);
+    console.log("Session Data:", req.session);
     next();
 });
 

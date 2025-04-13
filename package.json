@@ -12,7 +12,9 @@
   "description": "",
   "dependencies": {
     "bcryptjs": "^3.0.2",
+    "compression": "^1.8.0",
     "connect-flash": "^0.1.1",
+    "connect-session-sequelize": "^7.1.7",
     "dotenv": "^16.5.0",
     "ejs": "^3.1.10",
     "express": "^4.21.2",
