@@ -4,7 +4,7 @@ const bcrypt = require("bcryptjs");
 async function addAdmin() {
     try {
         const [results] = await sequelize.query(
-            `SELECT * FROM users WHERE username = ?`,
+            `SELECT * FROM Users WHERE username = ?`,
             { replacements: ["admin"] }
         );
 
@@ -13,7 +13,7 @@ async function addAdmin() {
             return;
         }
 
-        const hashedPassword = await bcrypt.hash("1234", 10); // Задайте надійний пароль
+        const hashedPassword = await bcrypt.hash("2005", 10); // Задайте надійний пароль
         await sequelize.query(
             `INSERT INTO users (username, email, password, isAdmin, createdAt, updatedAt) VALUES (?, ?, ?, ?, NOW(), NOW())`,
             {

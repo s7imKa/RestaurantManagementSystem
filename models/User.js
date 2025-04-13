@@ -46,7 +46,7 @@ User.prototype.validPassword = async function (password) {
     return await bcrypt.compare(password, this.password);
 };
 
-User.hasMany(CartItem);
-CartItem.belongsTo(User);
+User.hasMany(CartItem, { foreignKey: "userId", onDelete: "CASCADE" });
+CartItem.belongsTo(User, { foreignKey: "userId" });
 
 module.exports = User;
