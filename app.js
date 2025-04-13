@@ -12,6 +12,8 @@ const bcrypt = require("bcryptjs");
 const adminController = require("./controllers/adminController");
 const path = require("path");
 const methodOverride = require("method-override");
+const SequelizeStore = require("connect-session-sequelize")(session.Store);
+const sessionStore = new SequelizeStore({ db: sequelize });
 
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -20,14 +22,20 @@ app.set("view engine", "ejs");
 
 app.use(
     session({
-        secret: process.env.SESSION_SECRET, // Використовуємо змінну з .env
+        secret: process.env.SESSION_SECRET, // Використовуйте секрет із .env
         resave: false,
         saveUninitialized: false,
+        store: sessionStore, // Зберігаємо сесії в базі даних
         cookie: {
-            maxAge: 30 * 60 * 1000, // 30 minutes
+            maxAge: 30 * 60 * 1000, // 30 хвилин
+            httpOnly: true, // Забезпечує безпеку cookies
+            secure: false, // Встановіть true, якщо використовуєте HTTPS
+            sameSite: "lax", // Або "strict" для більшої безпеки
         },
     })
 );
+
+sessionStore.sync(); // Синхронізує таблицю сесій
 
 app.use(flash());
 app.use(passport.initialize());
