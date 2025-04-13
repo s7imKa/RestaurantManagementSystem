@@ -1,0 +1,6 @@
+# Файли та директорії, які слід ігнорувати
+node_modules/
+.env
+.vscode/
+*.log
+.DS_Store
