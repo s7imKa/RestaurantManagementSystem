@@ -32,7 +32,7 @@ app.use(
             maxAge: 30 * 60 * 1000, // 30 хвилин
             httpOnly: true, // Забезпечує безпеку cookies
             secure: false, // Встановіть true, якщо використовуєте HTTPS
-            sameSite: "lax", // Або "strict" для більшої безпеки
+            sameSite: "none", // Або "strict" для більшої безпеки
         },
     })
 );
