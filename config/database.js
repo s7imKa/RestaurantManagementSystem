@@ -1,11 +1,17 @@
+require('dotenv').config();
 const { Sequelize } = require('sequelize');
 
 // Налаштування підключення до бази даних MySQL
-const sequelize = new Sequelize('restaurant', 'root', '2005', {
-  host: 'localhost',
-  dialect: 'mysql',
-  logging: false // Add this line
-});
+const sequelize = new Sequelize(
+  process.env.DB_NAME,
+  process.env.DB_USER,
+  process.env.DB_PASSWORD,
+  {
+    host: process.env.DB_HOST,
+    dialect: process.env.DB_DIALECT,
+    logging: false, // Add this line
+  }
+);
 
 // Перевірка підключення
 sequelize.authenticate()

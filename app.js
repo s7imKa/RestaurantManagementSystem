@@ -1,26 +1,26 @@
-const sequelize = require("./config/database"); // Add this line
+require('dotenv').config(); // Додаємо dotenv для використання змінних з .env
+const sequelize = require("./config/database");
 const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
 const multer = require("multer");
 const upload = multer({ dest: "public/images/" }); // Destination folder for uploaded images
-const session = require("express-session"); // Add this line
-const passport = require("./passport"); // Add this line
-const flash = require("connect-flash"); // Add this line
-const bcrypt = require("bcryptjs"); // Add this line
-const adminController = require("./controllers/adminController"); // Import the admin controller
-const path = require("path"); // Add this line
-const methodOverride = require("method-override"); // Add this line
+const session = require("express-session");
+const passport = require("./passport");
+const flash = require("connect-flash");
+const bcrypt = require("bcryptjs");
+const adminController = require("./controllers/adminController");
+const path = require("path");
+const methodOverride = require("method-override");
 
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.set("view engine", "ejs");
 
-// Add these lines
 app.use(
     session({
-        secret: "ibef9wd9f8wd9f7wd8f9w8dfydclskfv", // Change this to a strong, random key
+        secret: process.env.SESSION_SECRET, // Використовуємо змінну з .env
         resave: false,
         saveUninitialized: false,
         cookie: {
@@ -29,9 +29,9 @@ app.use(
     })
 );
 
-app.use(flash()); // Add this line
-app.use(passport.initialize()); // Add this line
-app.use(passport.session()); // Add this line
+app.use(flash());
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use((req, res, next) => {
     res.locals.error = req.flash("error");
@@ -41,10 +41,10 @@ app.use((req, res, next) => {
 });
 
 // Додаємо middleware для поддержки методов PUT и DELETE
-app.use(methodOverride("_method")); // Add this line
+app.use(methodOverride("_method"));
 
 // Static files
-app.use(express.static(path.join(__dirname, "public"))); // Add this line
+app.use(express.static(path.join(__dirname, "public")));
 
 // Routes
 const indexRoutes = require("./routes/index");
@@ -73,8 +73,9 @@ sequelize.sync()
     });
 
 // Start server
-app.listen(3000, () => {
-    console.log("Server is running on http://localhost:3000  ✅ ");
+const PORT = process.env.PORT || 3000; // Використовуємо змінну з .env
+app.listen(PORT, () => {
+    console.log(`Server is running on http://localhost:${PORT} ✅`);
 });
 
 async function hashPassword(password) {
