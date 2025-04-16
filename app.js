@@ -31,7 +31,7 @@ app.use(
         cookie: {
             maxAge: 30 * 60 * 1000, // 30 хвилин
             httpOnly: true, // Забезпечує безпеку cookies
-            secure: false, // Встановіть true, якщо використовуєте HTTPS
+            secure: process.env.NODE_ENV === "production",
             sameSite: "none", // Або "strict" для більшої безпеки
         },
     })
