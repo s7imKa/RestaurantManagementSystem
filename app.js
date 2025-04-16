@@ -42,15 +42,17 @@ sessionStore.sync()
     .catch(err => console.error("Error", err));
 
 app.use(flash());
+
 app.use(passport.initialize());
+
 app.use(passport.session());
 
 app.use((req, res, next) => {
     res.locals.error = req.flash("error");
     res.locals.messages = req.flash();
     res.locals.user = req.user;
-    console.log("------------------User in session:", req.user);
-    console.log("Session ID:", req.sessionID);
+    // console.log("------------------User in session:", req.user);
+    // console.log("Session ID:", req.sessionID);
     // console.log("Session Data:", req.session);
     next();
 });
