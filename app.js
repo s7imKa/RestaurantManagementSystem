@@ -31,7 +31,7 @@ app.use(
         cookie: {
             maxAge: 30 * 60 * 1000, // 30 хвилин
             httpOnly: true, // Забезпечує безпеку cookies
-            secure: process.env.NODE_ENV === "production",
+            secure: true,
             sameSite: "none", // Або "strict" для більшої безпеки
         },
     })
@@ -56,6 +56,10 @@ app.use((req, res, next) => {
     next();
 });
 
+sessionStore.sync()
+    .then(() => console.log("Session store synchronized"))
+    .catch((err) => console.error("Error synchronizing session store:", err));
+    
 // Додаємо middleware для поддержки методов PUT и DELETE
 app.use(methodOverride("_method"));
 

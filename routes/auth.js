@@ -55,14 +55,27 @@ router.get("/login", (req, res) => {
     res.render("login", { message: message.length > 0 ? message[0] : "" });
 });
 
-router.post(
-    "/login",
-    passport.authenticate("local", {
-        successRedirect: "/",
-        failureRedirect: "/auth/login",
-        failureFlash: true,
-    })
-);
+router.post("/login", (req, res, next) => {
+    passport.authenticate("local", (err, user, info) => {
+        if (err) {
+            console.error("Authentication error:", err);
+            return next(err);
+        }
+        if (!user) {
+            console.log("Authentication failed:", info.message);
+            req.flash("error", info.message);
+            return res.redirect("/auth/login");
+        }
+        req.login(user, (err) => {
+            if (err) {
+                console.error("Login error:", err);
+                return next(err);
+            }
+            console.log("User logged in:", user);
+            res.redirect("/");
+        });
+    })(req, res, next);
+});
 
 router.get("/logout", (req, res) => {
     req.logout((err) => {
