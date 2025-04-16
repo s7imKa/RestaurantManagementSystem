@@ -51,7 +51,7 @@ app.use((req, res, next) => {
     res.locals.user = req.user;
     console.log("------------------User in session:", req.user);
     console.log("Session ID:", req.sessionID);
-    console.log("Session Data:", req.session);
+    // console.log("Session Data:", req.session);
     next();
 });
 

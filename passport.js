@@ -37,9 +37,10 @@ passport.serializeUser((user, done) => {
 });
 
 passport.deserializeUser(async (id, done) => {
+    console.log("Deserializing user with ID:", id);
     try {
-        console.log("Deserializing user with ID:", id);
-        const user = await User.findByPk(id);
+        const user = await User.findByPk(id); // Завантажуємо користувача з бази даних
+        console.log("User found:", user);
         done(null, user);
     } catch (err) {
         console.error("Error deserializing user:", err);
