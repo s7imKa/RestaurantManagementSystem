@@ -86,11 +86,5 @@ router.get("/logout", (req, res) => {
     });
 });
 
-router.get("/test-session", (req, res) => {
-    res.json({
-        sessionID: req.sessionID,
-        user: req.user,
-    });
-});
 
 module.exports = router;
