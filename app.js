@@ -29,10 +29,10 @@ app.use(
         saveUninitialized: false,
         store: sessionStore, // Зберігаємо сесії в базі даних
         cookie: {
-            maxAge: 30 * 60 * 1000, // 30 хвилин
-            httpOnly: true, // Забезпечує безпеку cookies
-            secure: true,
-            sameSite: "none", // Або "strict" для більшої безпеки
+            maxAge: 30 * 60 * 1000,
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production", // Використовується тільки в production
+            sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
         },
     })
 );
@@ -59,7 +59,7 @@ app.use((req, res, next) => {
 sessionStore.sync()
     .then(() => console.log("Session store synchronized"))
     .catch((err) => console.error("Error synchronizing session store:", err));
-    
+
 // Додаємо middleware для поддержки методов PUT и DELETE
 app.use(methodOverride("_method"));
 
