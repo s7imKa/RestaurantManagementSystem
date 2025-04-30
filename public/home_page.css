@@ -379,16 +379,6 @@ h1 {
     left: 100%;
 }
 
-.category-title::before,
-.category-title::after {
-    content: "•";
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 1.3rem;
-    color: #6e70ebcc;
-}
-
 .category-title::before {
     left: calc(50% - 80px);
 }

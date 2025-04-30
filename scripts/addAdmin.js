@@ -13,7 +13,7 @@ async function addAdmin() {
             return;
         }
 
-        const hashedPassword = await bcrypt.hash("2005", 10); // Задайте надійний пароль
+        const hashedPassword = await bcrypt.hash("1111", 10); // Задайте надійний пароль
         await sequelize.query(
             `INSERT INTO users (username, email, password, isAdmin, createdAt, updatedAt) VALUES (?, ?, ?, ?, NOW(), NOW())`,
             {

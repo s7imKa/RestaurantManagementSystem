@@ -5,7 +5,7 @@ const Inventory = require("../models/Inventory");
 const multer = require("multer");
 const path = require("path");
 // Список категорій
-const categories = ["Супи", "Піца", "Напої", "Алкоголь"];
+const categories = ["Основні страви", "Супи", "Піца", "Гарніри", "Закуски", "Напої", "Сніданки"];
 
 // Налаштування для multer
 const storage = multer.diskStorage({
