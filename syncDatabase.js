@@ -20,3 +20,4 @@ require('./models/CartItem');
         await sequelize.close();
     }
 })();
+

@@ -14,7 +14,7 @@ const Order = sequelize.define("Order", {
     quantity: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        defaultValue: 1, // Значення за замовчуванням
+        defaultValue: 1, 
     },
     customerName: {
         type: DataTypes.STRING,

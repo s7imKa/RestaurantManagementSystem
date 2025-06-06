@@ -275,7 +275,7 @@ button[type="submit"]:hover {
     letter-spacing: 0.5px;
     padding: 10px 8px; /* Reduced horizontal padding */
     border-bottom: 2px solid var(--primary-light);
-    white-space: nowrap; /* Prevent wrapping in headers */
+    white-space: nowrap; 
 }
 
 /* More compact table cells */

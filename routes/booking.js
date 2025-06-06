@@ -9,7 +9,6 @@ router.get("/", isAuthenticated, (req, res) => {
     const selectedDate = req.query.date || new Date().toISOString().slice(0, 10);
     console.log("Selected Date:", selectedDate);
 
-    // Создаем даты для диапазона (начало и конец выбранного дня)
     const startDate = new Date(selectedDate);
     const endDate = new Date(selectedDate);
     endDate.setDate(endDate.getDate() + 1);
@@ -40,7 +39,6 @@ router.post("/", isAuthenticated, (req, res) => {
     const { customerName, tableNumber, date, time, people, preOrder } = req.body;
     const userId = req.user.id;
 
-    // Проверка наличия обязательных полей
     if (!tableNumber) {
         return res.status(400).send("Please select a table");
     }

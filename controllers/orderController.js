@@ -13,12 +13,12 @@ exports.placeOrder = (req, res) => {
         dish,
         deliveryAddress,
         phoneNumber,
-    }); // Отладочный вывод
+    }); 
 
     Order.create({ customerName, dish, deliveryAddress, phoneNumber })
         .then(() => res.redirect("/"))
         .catch((err) => {
-            console.error("Error placing order:", err); // Отладочный вывод
+            console.error("Error placing order:", err); 
             res.status(500).send("Error placing order");
         });
 };

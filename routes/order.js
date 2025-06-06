@@ -212,13 +212,13 @@ router.post("/checkout", isAuthenticated, async (req, res) => {
     }
 });
 
-// Маршрут для удаления элемента из корзины
+// Маршрут для видалення елемента із корзини
 router.post("/cart/:id/remove", isAuthenticated, async (req, res) => {
     try {
         const itemId = req.params.id;
         const userId = req.user.id;
         
-        // Находим элемент корзины, убеждаемся, что он принадлежит текущему пользователю
+        //Знаходим елемент корзини для певного користувача
         const cartItem = await CartItem.findOne({
             where: { 
                 id: itemId,
@@ -230,10 +230,10 @@ router.post("/cart/:id/remove", isAuthenticated, async (req, res) => {
             return res.status(404).send("Cart item not found or you don't have permission");
         }
         
-        // Удаляем элемент из корзины
+        
         await cartItem.destroy();
         
-        // Перенаправляем обратно на страницу корзины
+        // Перенаправляєм на сторінку корзини
         res.redirect("/cart");
     } catch (err) {
         console.error("Error removing item from cart:", err);
